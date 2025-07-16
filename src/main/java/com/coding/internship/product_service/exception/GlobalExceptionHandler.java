@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice(basePackages = "com.example.test.product_service")
+@ControllerAdvice(basePackages = "com.coding.internship.product_service")
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(RessourceNotFoundException.class)

@@ -23,12 +23,6 @@ public class ProductService {
     private final ProductMapper productMapper;
 
     public Product createProduct(ProductCreationDto productCreationDto) {
-//        Product product = new Product();
-//        product.setName(productCreationDto.getName());
-//        product.setDescription(productCreationDto.getDescription());
-//        product.setPrice(productCreationDto.getPrice());
-//        product.setCategory(productCreationDto.getCategory());
-//        return productRepository.save(product);
         var product = Product
                 .builder()
                 .name(productCreationDto.getName())

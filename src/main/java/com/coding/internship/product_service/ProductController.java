@@ -26,15 +26,9 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody ProductCreationDto productCreationDto) {
         Product product = productService.createProduct(productCreationDto);
-//        return ResponseEntity.ok(product);
         return new ResponseEntity<>(product,HttpStatus.CREATED);
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<ProductDataDto>> getAllProducts() {
-//        return ResponseEntity.ok(productService.getAllProducts());
-//
-//    }
 
     @GetMapping("{id}")
     public ResponseEntity<ProductDataDto> getProductById(@PathVariable Long id) {
