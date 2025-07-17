@@ -11,9 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class DroolsService {
 
+    private final KieContainer kieContainer;
+
 
     public Product applyDiscount(Product product) {
-        KieContainer kieContainer= KieServices.Factory.get().getKieClasspathContainer();
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {
             kieSession.insert(product);
