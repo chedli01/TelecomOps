@@ -74,7 +74,7 @@ public class ProductController {
             throw new RessourceNotFoundException("product not found");
         }
 
-        return droolsService.applyDiscount(product.get());
+        return productRepository.save(droolsService.applyDiscount(product.get()));
     }
 
 
