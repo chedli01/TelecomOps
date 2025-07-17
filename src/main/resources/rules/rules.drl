@@ -1,0 +1,9 @@
+package rules
+import com.coding.internship.product_service.model.Product
+
+rule "Price Discount"
+    when
+        $product : Product(price>1000)
+    then
+        $product.setPrice( $product.getPrice() - ($product.getPrice()*0.1));
+end
