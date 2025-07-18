@@ -1,9 +1,10 @@
 package com.coding.internship.product_service.enums;
 
 public enum ProductCategory {
-    BOOK,
-    MOBILE,
-    ELECTRONIC,
-    ACCESSORIES
+    SMARTPHONE,
+    SIM_CARD,
+    ROUTER,
+    ACCESSORY,
+    SERVICE
 
 }
