@@ -15,12 +15,15 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final DroolsService droolsService;
+
 
     public Product createProduct(ProductCreationDto productCreationDto) {
         var product = Product
@@ -83,6 +86,16 @@ public class ProductService {
     public List<ProductDataDto> findPaginated(Pageable pageable){
         Page<Product> page = productRepository.findAll(pageable);
         return page.getContent().stream().map(productMapper::mapToDto).toList();
+    }
+
+    public Product makeDiscount(Long id) {
+        Optional<Product> product=productRepository.findById(id);
+        if(product.isEmpty()){
+            throw new RessourceNotFoundException("product not found");
+        }
+
+        return productRepository.save(droolsService.applyDiscount(product.get()));
+
     }
 
 

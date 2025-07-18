@@ -6,8 +6,6 @@ import com.coding.internship.product_service.dto.ProductDataDto;
 import com.coding.internship.product_service.dto.ProductUpdateDto;
 import com.coding.internship.product_service.exception.RessourceNotFoundException;
 import com.coding.internship.product_service.model.Product;
-import com.coding.internship.product_service.repository.ProductRepository;
-import com.coding.internship.product_service.service.DroolsService;
 import com.coding.internship.product_service.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -17,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
@@ -25,8 +22,6 @@ import java.util.Optional;
 public class ProductController {
 
     private final ProductService productService;
-    private final DroolsService droolsService;
-    private final ProductRepository productRepository;
 
 
     @PostMapping
@@ -69,12 +64,7 @@ public class ProductController {
     }
     @PostMapping("/discount/{id}")
     public Product applyDiscount(@PathVariable Long id){
-        Optional<Product> product=productRepository.findById(id);
-        if(!product.isPresent()){
-            throw new RessourceNotFoundException("product not found");
-        }
-
-        return productRepository.save(droolsService.applyDiscount(product.get()));
+        return productService.makeDiscount(id);
     }
 
 
