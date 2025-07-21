@@ -1,9 +1,25 @@
 package rules
 import com.coding.internship.product_service.model.Product
+import com.coding.internship.product_service.enums.ProductCategory
 
-rule "Price Discount" no-loop true
+
+//rule "Price Discount" no-loop true
+//    when
+//        $product : Product(price>1000)
+//    then
+//        modify($product){setPrice( $product.getPrice() - ($product.getPrice()*0.1))}
+//end
+global String targetCategory;
+global java.util.List modifiedProducts;
+
+rule "Category Discount" no-loop true
     when
-        $product : Product(price>1000)
+        $product : Product(category.name() == targetCategory, $originalPrice : price)
     then
-        modify($product){setPrice( $product.getPrice() - ($product.getPrice()*0.1))}
+        double newPrice = $originalPrice * 0.9; // 10% discount
+        modify($product) {
+            setPrice(newPrice)
+        };
+        modifiedProducts.add($product);
+        System.out.println("Applied discount to " + $product.getId());
 end

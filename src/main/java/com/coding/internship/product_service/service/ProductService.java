@@ -4,6 +4,7 @@ import com.coding.internship.product_service.dto.ProductCreationDto;
 import com.coding.internship.product_service.dto.ProductCriteriaDto;
 import com.coding.internship.product_service.dto.ProductDataDto;
 import com.coding.internship.product_service.dto.ProductUpdateDto;
+import com.coding.internship.product_service.enums.ProductCategory;
 import com.coding.internship.product_service.exception.RessourceNotFoundException;
 import com.coding.internship.product_service.mapper.ProductMapper;
 import com.coding.internship.product_service.model.Product;
@@ -96,6 +97,10 @@ public class ProductService {
 
         return productRepository.save(droolsService.applyDiscount(product.get()));
 
+    }
+    public List<Product> makeDiscountForCategory(String category){
+        List<Product> products=productRepository.findAll();
+        return droolsService.applyDiscountForCategory(products,category);
     }
 
 

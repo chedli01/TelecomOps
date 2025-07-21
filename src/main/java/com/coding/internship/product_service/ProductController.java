@@ -4,6 +4,7 @@ import com.coding.internship.product_service.dto.ProductCreationDto;
 import com.coding.internship.product_service.dto.ProductCriteriaDto;
 import com.coding.internship.product_service.dto.ProductDataDto;
 import com.coding.internship.product_service.dto.ProductUpdateDto;
+import com.coding.internship.product_service.enums.ProductCategory;
 import com.coding.internship.product_service.exception.RessourceNotFoundException;
 import com.coding.internship.product_service.model.Product;
 import com.coding.internship.product_service.service.ProductService;
@@ -65,6 +66,10 @@ public class ProductController {
     @PostMapping("/discount/{id}")
     public Product applyDiscount(@PathVariable Long id){
         return productService.makeDiscount(id);
+    }
+    @PostMapping("/discount/category/{category}")
+    public List<Product> applyDiscountForCategory(@PathVariable String category){
+        return productService.makeDiscountForCategory(category);
     }
 
 
