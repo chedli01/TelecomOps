@@ -71,6 +71,10 @@ public class ProductController {
     public List<Product> applyDiscountForCategory(@PathVariable String category){
         return productService.makeDiscountForCategory(category);
     }
+    @PostMapping("/change/{id}")
+    public Product changeInDb(@PathVariable Long id){
+        return productService.changeInDb(id);
+    }
 
 
 

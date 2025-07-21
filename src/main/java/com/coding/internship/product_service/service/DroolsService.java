@@ -16,6 +16,7 @@ import java.util.List;
 public class DroolsService {
 
     private final KieContainer kieContainer;
+    private final SpeceficService speceficService;
 
 
     public Product applyDiscount(Product product) {
@@ -49,6 +50,23 @@ public class DroolsService {
 
             return modifiedProducts;
         } finally {
+            kieSession.dispose();
+        }
+    }
+
+    public Product changeInDb(Product product,Long id){
+        KieSession kieSession = kieContainer.newKieSession("ksession-rules");
+        try {
+            kieSession.setGlobal("productService",speceficService);
+            kieSession.setGlobal("ProductId",id);
+            kieSession.insert(product);
+            kieSession.getAgenda().getAgendaGroup("renaming").setFocus();
+            kieSession.fireAllRules();
+            return product;
+
+
+        }
+        finally {
             kieSession.dispose();
         }
     }
