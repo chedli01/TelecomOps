@@ -3,12 +3,15 @@ import com.coding.internship.product_service.model.Product
 import com.coding.internship.product_service.enums.ProductCategory
 
 
-//rule "Price Discount" no-loop true
-//    when
-//        $product : Product(price>1000)
-//    then
-//        modify($product){setPrice( $product.getPrice() - ($product.getPrice()*0.1))}
-//end
+rule "Price Discount"
+    agenda-group "pricing"
+    no-loop true
+    when
+        $product : Product(price>1000)
+    then
+        System.out.println("Applied discount to " + $product.getId());
+        modify($product){setPrice( $product.getPrice() - ($product.getPrice()*0.1))}
+end
 global String targetCategory;
 global java.util.List modifiedProducts;
 

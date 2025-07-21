@@ -22,6 +22,7 @@ public class DroolsService {
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {
             kieSession.insert(product);
+            kieSession.getAgenda().getAgendaGroup("pricing").setFocus();
             kieSession.fireAllRules();
             return product;
         } finally {
