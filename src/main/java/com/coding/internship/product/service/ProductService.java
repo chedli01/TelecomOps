@@ -1,14 +1,13 @@
-package com.coding.internship.product_service.service;
+package com.coding.internship.product.service;
 
-import com.coding.internship.product_service.dto.ProductCreationDto;
-import com.coding.internship.product_service.dto.ProductCriteriaDto;
-import com.coding.internship.product_service.dto.ProductDataDto;
-import com.coding.internship.product_service.dto.ProductUpdateDto;
-import com.coding.internship.product_service.enums.ProductCategory;
-import com.coding.internship.product_service.exception.RessourceNotFoundException;
-import com.coding.internship.product_service.mapper.ProductMapper;
-import com.coding.internship.product_service.model.Product;
-import com.coding.internship.product_service.repository.ProductRepository;
+import com.coding.internship.product.dto.ProductCreationDto;
+import com.coding.internship.product.dto.ProductCriteriaDto;
+import com.coding.internship.product.dto.ProductDataDto;
+import com.coding.internship.product.dto.ProductUpdateDto;
+import com.coding.internship.product.exception.RessourceNotFoundException;
+import com.coding.internship.product.mapper.ProductMapper;
+import com.coding.internship.product.model.Product;
+import com.coding.internship.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -98,14 +97,14 @@ public class ProductService {
         return productRepository.save(droolsService.applyDiscount(product.get()));
 
     }
-    public List<Product> makeDiscountForCategory(String category){
-        List<Product> products=productRepository.findAll();
-        return droolsService.applyDiscountForCategory(products,category);
-    }
-    public Product changeInDb(Long id){
-        Product product=productRepository.findById(id).orElseThrow(()->new RessourceNotFoundException("product not found"));
-        return droolsService.changeInDb(product,id);
-    }
+//    public List<Product> makeDiscountForCategory(String category){
+//        List<Product> products=productRepository.findAll();
+//        return droolsService.applyDiscountForCategory(products,category);
+//    }
+//    public Product changeInDb(Long id){
+//        Product product=productRepository.findById(id).orElseThrow(()->new RessourceNotFoundException("product not found"));
+//        return droolsService.changeInDb(product,id);
+//    }
 
 
 }

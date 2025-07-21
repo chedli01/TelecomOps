@@ -1,13 +1,12 @@
-package com.coding.internship.product_service;
+package com.coding.internship.product;
 
-import com.coding.internship.product_service.dto.ProductCreationDto;
-import com.coding.internship.product_service.dto.ProductCriteriaDto;
-import com.coding.internship.product_service.dto.ProductDataDto;
-import com.coding.internship.product_service.dto.ProductUpdateDto;
-import com.coding.internship.product_service.enums.ProductCategory;
-import com.coding.internship.product_service.exception.RessourceNotFoundException;
-import com.coding.internship.product_service.model.Product;
-import com.coding.internship.product_service.service.ProductService;
+import com.coding.internship.product.dto.ProductCreationDto;
+import com.coding.internship.product.dto.ProductCriteriaDto;
+import com.coding.internship.product.dto.ProductDataDto;
+import com.coding.internship.product.dto.ProductUpdateDto;
+import com.coding.internship.product.exception.RessourceNotFoundException;
+import com.coding.internship.product.model.Product;
+import com.coding.internship.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
@@ -67,14 +66,14 @@ public class ProductController {
     public Product applyDiscount(@PathVariable Long id){
         return productService.makeDiscount(id);
     }
-    @PostMapping("/discount/category/{category}")
-    public List<Product> applyDiscountForCategory(@PathVariable String category){
-        return productService.makeDiscountForCategory(category);
-    }
-    @PostMapping("/change/{id}")
-    public Product changeInDb(@PathVariable Long id){
-        return productService.changeInDb(id);
-    }
+//    @PostMapping("/discount/category/{category}")
+//    public List<Product> applyDiscountForCategory(@PathVariable String category){
+//        return productService.makeDiscountForCategory(category);
+//    }
+//    @PostMapping("/change/{id}")
+//    public Product changeInDb(@PathVariable Long id){
+//        return productService.changeInDb(id);
+//    }
 
 
 

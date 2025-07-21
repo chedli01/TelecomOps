@@ -1,6 +1,6 @@
-package com.coding.internship.product_service.repository;
+package com.coding.internship.product.repository;
 
-import com.coding.internship.product_service.model.Product;
+import com.coding.internship.product.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

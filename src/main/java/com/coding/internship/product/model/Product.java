@@ -1,6 +1,6 @@
-package com.coding.internship.product_service.model;
+package com.coding.internship.product.model;
 
-import com.coding.internship.product_service.enums.ProductCategory;
+import com.coding.internship.product.enums.ProductCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

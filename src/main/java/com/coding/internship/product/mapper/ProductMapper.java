@@ -1,7 +1,7 @@
-package com.coding.internship.product_service.mapper;
+package com.coding.internship.product.mapper;
 
-import com.coding.internship.product_service.dto.ProductDataDto;
-import com.coding.internship.product_service.model.Product;
+import com.coding.internship.product.dto.ProductDataDto;
+import com.coding.internship.product.model.Product;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

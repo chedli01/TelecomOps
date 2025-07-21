@@ -1,4 +1,4 @@
-package com.coding.internship.product_service.enums;
+package com.coding.internship.product.enums;
 
 public enum ProductCategory {
     SMARTPHONE,

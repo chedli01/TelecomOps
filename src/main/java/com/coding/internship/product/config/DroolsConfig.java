@@ -1,4 +1,4 @@
-package com.coding.internship.product_service.config;
+package com.coding.internship.product.config;
 
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;

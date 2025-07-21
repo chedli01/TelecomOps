@@ -1,7 +1,7 @@
-package com.coding.internship.product_service.service;
+package com.coding.internship.product.service;
 
-import com.coding.internship.product_service.enums.ProductCategory;
-import com.coding.internship.product_service.model.Product;
+import com.coding.internship.product.enums.ProductCategory;
+import com.coding.internship.product.model.Product;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 

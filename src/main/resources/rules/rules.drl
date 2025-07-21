@@ -1,7 +1,7 @@
 package rules
-import com.coding.internship.product_service.model.Product
-import com.coding.internship.product_service.enums.ProductCategory
-import com.coding.internship.product_service.service.SpeceficService
+import com.coding.internship.product.model.Product
+import com.coding.internship.product.enums.ProductCategory
+import com.coding.internship.product.service.SpeceficService
 
 
 rule "Price Discount"
@@ -13,34 +13,34 @@ rule "Price Discount"
         System.out.println("Applied discount to " + $product.getId());
         modify($product){setPrice( $product.getPrice() - ($product.getPrice()*0.1))}
 end
-global String targetCategory;
-global java.util.List modifiedProducts;
-
-rule "Category Discount" no-loop true
-    when
-        $product : Product(category.name() == targetCategory, $originalPrice : price)
-    then
-        double newPrice = $originalPrice * 0.9; // 10% discount
-        modify($product) {
-            setPrice(newPrice)
-        };
-        modifiedProducts.add($product);
-        System.out.println("Applied discount to " + $product.getId());
-end
-
-global SpeceficService productService;
-global Long ProductId;
-
-rule "Change Description"
-    agenda-group "renaming"
-    no-loop true
-    when
-        $product : Product(id==ProductId)
-    then
-        modify($product){
-        setDescription("changedddd")
-
-        }
-        System.out.println("Changed description of " + $product.getId());
-        productService.deleteProductById(ProductId);
-end
+//global String targetCategory;
+//global java.util.List modifiedProducts;
+//
+//rule "Category Discount" no-loop true
+//    when
+//        $product : Product(category.name() == targetCategory, $originalPrice : price)
+//    then
+//        double newPrice = $originalPrice * 0.9; // 10% discount
+//        modify($product) {
+//            setPrice(newPrice)
+//        };
+//        modifiedProducts.add($product);
+//        System.out.println("Applied discount to " + $product.getId());
+//end
+//
+//global SpeceficService productService;
+//global Long ProductId;
+//
+//rule "Change Description"
+//    agenda-group "renaming"
+//    no-loop true
+//    when
+//        $product : Product(id==ProductId)
+//    then
+//        modify($product){
+//        setDescription("changedddd")
+//
+//        }
+//        System.out.println("Changed description of " + $product.getId());
+//        productService.deleteProductById(ProductId);
+//end
