@@ -1,9 +1,7 @@
 package com.coding.internship.user.client;
 
 import com.coding.internship.user.client.dto.ClientDataDto;
-import com.coding.internship.user.client.model.Client;
 import com.coding.internship.user.client.service.ClientService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
