@@ -1,6 +1,5 @@
 package com.coding.internship.user.admin.dto;
 
-import com.coding.internship.user.dto.UserDataDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminDataDto extends UserDataDto {
+public class AdminDataDto{
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String username;
+    private String email;
     private String department;
     private String role;
 }

@@ -1,5 +1,6 @@
 package com.coding.internship.user.admin;
 
+import com.coding.internship.user.admin.dto.AdminDataDto;
 import com.coding.internship.user.admin.model.Admin;
 import com.coding.internship.user.admin.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ public class AdminController {
     private final AdminService adminService;
 
     @GetMapping("/{id}")
-    public Admin findAdminById(@PathVariable Long id){
+    public AdminDataDto findAdminById(@PathVariable Long id){
         return adminService.findAdminById(id);
     }
     @PostMapping

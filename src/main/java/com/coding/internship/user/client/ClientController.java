@@ -1,5 +1,6 @@
 package com.coding.internship.user.client;
 
+import com.coding.internship.user.client.dto.ClientDataDto;
 import com.coding.internship.user.client.model.Client;
 import com.coding.internship.user.client.service.ClientService;
 import lombok.Data;
@@ -16,7 +17,7 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping("/{id}")
-    public Client findClientById(@PathVariable Long id){
+    public ClientDataDto findClientById(@PathVariable Long id){
         return clientService.findClientById(id);
     }
 }
