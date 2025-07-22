@@ -11,6 +11,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "admins")
@@ -23,4 +27,7 @@ public class Admin extends User {
     private DepartmentType department;
     @Enumerated(EnumType.STRING)
     private AdminRole role;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
 }

@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User implements UserDetails {
+public abstract class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -28,11 +28,11 @@ public class User implements UserDetails {
     protected String password;
     @Column(unique = true)
     protected String email;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
+//
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return List.of();
+//    }
 
     @Override
     public String getUsername() {

@@ -8,6 +8,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "clients")
@@ -23,5 +27,8 @@ public class Client extends User {
     @Enumerated(EnumType.STRING)
     private ClientType type;
 
-
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
 }
