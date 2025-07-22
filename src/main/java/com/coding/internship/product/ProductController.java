@@ -4,7 +4,7 @@ import com.coding.internship.product.dto.ProductCreationDto;
 import com.coding.internship.product.dto.ProductCriteriaDto;
 import com.coding.internship.product.dto.ProductDataDto;
 import com.coding.internship.product.dto.ProductUpdateDto;
-import com.coding.internship.product.exception.RessourceNotFoundException;
+import com.coding.internship.exception.RessourceNotFoundException;
 import com.coding.internship.product.model.Product;
 import com.coding.internship.product.service.ProductService;
 import lombok.RequiredArgsConstructor;

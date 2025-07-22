@@ -1,13 +1,11 @@
-package com.coding.internship.product.service;
+package com.coding.internship.drools.service;
 
 import com.coding.internship.product.model.Product;
+import com.coding.internship.product.service.SpeceficService;
 import lombok.Data;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Service

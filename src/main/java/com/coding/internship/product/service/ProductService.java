@@ -1,10 +1,11 @@
 package com.coding.internship.product.service;
 
+import com.coding.internship.drools.service.DroolsService;
 import com.coding.internship.product.dto.ProductCreationDto;
 import com.coding.internship.product.dto.ProductCriteriaDto;
 import com.coding.internship.product.dto.ProductDataDto;
 import com.coding.internship.product.dto.ProductUpdateDto;
-import com.coding.internship.product.exception.RessourceNotFoundException;
+import com.coding.internship.exception.RessourceNotFoundException;
 import com.coding.internship.product.mapper.ProductMapper;
 import com.coding.internship.product.model.Product;
 import com.coding.internship.product.repository.ProductRepository;

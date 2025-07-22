@@ -1,6 +1,6 @@
 package com.coding.internship.product.service;
 
-import com.coding.internship.product.exception.RessourceNotFoundException;
+import com.coding.internship.exception.RessourceNotFoundException;
 import com.coding.internship.product.repository.ProductRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;

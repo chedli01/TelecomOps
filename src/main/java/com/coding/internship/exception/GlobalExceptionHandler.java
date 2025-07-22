@@ -1,4 +1,4 @@
-package com.coding.internship.product.exception;
+package com.coding.internship.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
