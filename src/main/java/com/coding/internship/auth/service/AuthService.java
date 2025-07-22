@@ -35,7 +35,7 @@ public class AuthService {
                 .isStudent(registerRequest.getIsStudent())
                 .build();
         clientRepository.save(client);
-        return RegisterResponse.builder().build();
+        return RegisterResponse.builder().email(client.getEmail()).firstName(client.getFirstName()).lastName(client.getLastName()).build();
 
 
 
