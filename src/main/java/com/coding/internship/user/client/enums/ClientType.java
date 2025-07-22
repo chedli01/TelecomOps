@@ -1,6 +1,6 @@
 package com.coding.internship.user.client.enums;
 
-public enum ClientRole {
+public enum ClientType {
     CUSTOMER,
     SUBSCRIBER,
     VIP
