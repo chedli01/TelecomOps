@@ -25,7 +25,7 @@ rule "Category Discount" no-loop true
             setPrice(newPrice)
         };
         modifiedProducts.add($product);
-        System.out.println("Applied discount to " + $product.getId() + " with new price" + newPrice);
+        System.out.println("Applied discount to " + $product.getId() + " with new price" + newPrice + "having as category"+ $product.getCategory());
 end
 //
 //global SpeceficService productService;
