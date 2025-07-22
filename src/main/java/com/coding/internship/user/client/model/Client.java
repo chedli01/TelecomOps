@@ -26,7 +26,8 @@ public class Client extends User {
     private String cin;
     private Boolean isStudent;
     @Enumerated(EnumType.STRING)
-    private ClientType type;
+    @Builder.Default
+    private ClientType type = ClientType.CUSTOMER;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
