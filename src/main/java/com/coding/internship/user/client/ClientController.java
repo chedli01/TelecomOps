@@ -4,6 +4,7 @@ import com.coding.internship.user.client.model.Client;
 import com.coding.internship.user.client.service.ClientService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClientController {
     private final ClientService clientService;
 
-    @RequestMapping("/{id}")
+    @GetMapping("/{id}")
     public Client findClientById(@PathVariable Long id){
         return clientService.findClientById(id);
     }
