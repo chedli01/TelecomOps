@@ -1,5 +1,7 @@
 package com.coding.internship.auth;
 
+import com.coding.internship.auth.dto.AuthRequest;
+import com.coding.internship.auth.dto.AuthResponse;
 import com.coding.internship.auth.dto.RegisterRequest;
 import com.coding.internship.auth.dto.RegisterResponse;
 import com.coding.internship.auth.service.AuthService;
@@ -18,5 +20,9 @@ public class AuthController {
     @PostMapping("/register")
     public RegisterResponse register(@RequestBody RegisterRequest registerRequest){
         return authService.register(registerRequest) ;
+    }
+    @PostMapping("/login")
+    public AuthResponse login(@RequestBody AuthRequest request){
+        return authService.login(request) ;
     }
 }
