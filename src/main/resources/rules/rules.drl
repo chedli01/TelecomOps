@@ -13,20 +13,20 @@ rule "Price Discount"
         System.out.println("Applied discount to " + $product.getId());
         modify($product){setPrice( $product.getPrice() - ($product.getPrice()*0.1))}
 end
-//global String targetCategory;
-//global java.util.List modifiedProducts;
-//
-//rule "Category Discount" no-loop true
-//    when
-//        $product : Product(category.name() == targetCategory, $originalPrice : price)
-//    then
-//        double newPrice = $originalPrice * 0.9; // 10% discount
-//        modify($product) {
-//            setPrice(newPrice)
-//        };
-//        modifiedProducts.add($product);
-//        System.out.println("Applied discount to " + $product.getId());
-//end
+global String targetCategory;
+global java.util.List modifiedProducts;
+
+rule "Category Discount" no-loop true
+    when
+        $product : Product(category.name() == targetCategory, $originalPrice : price)
+    then
+        double newPrice = $originalPrice * 0.9; // 10% discount
+        modify($product) {
+            setPrice(newPrice)
+        };
+        modifiedProducts.add($product);
+        System.out.println("Applied discount to " + $product.getId() + " with new price" + newPrice);
+end
 //
 //global SpeceficService productService;
 //global Long ProductId;
