@@ -1,4 +1,4 @@
-package com.coding.internship.user.client.model;
+package com.coding.internship.user.admin.model;
 
 import com.coding.internship.user.model.User;
 import jakarta.persistence.Entity;
@@ -8,16 +8,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "clients")
+@Table(name = "admins")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Client extends User {
-    private String address;
-    private String phoneNumber;
-    private String cin;
-    private Boolean isStudent;
+@NoArgsConstructor
+public class Admin extends User {
+    private String department;
     private String role;
-
-
 }
