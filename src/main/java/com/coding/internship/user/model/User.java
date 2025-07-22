@@ -20,7 +20,6 @@ public class User {
     protected Long id;
     protected String firstName;
     protected String lastName;
-    protected String username;
     protected String password;
     @Column(unique = true)
     protected String email;
