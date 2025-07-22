@@ -1,6 +1,7 @@
 package com.coding.internship.security.config;
 
 import com.coding.internship.security.jwt.JwtAuthenticationFilter;
+import com.coding.internship.user.admin.enums.AdminRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +39,7 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers(WHITE_LIST_URL).permitAll().anyRequest().authenticated()
+                        req.requestMatchers(WHITE_LIST_URL).permitAll().requestMatchers("/api/admin/*").hasRole(AdminRole.SUPER_ADMIN.name()).anyRequest().authenticated()
 
 
                 )
