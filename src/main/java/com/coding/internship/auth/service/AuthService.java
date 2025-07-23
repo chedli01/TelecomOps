@@ -2,8 +2,8 @@ package com.coding.internship.auth.service;
 
 import com.coding.internship.auth.dto.AuthRequest;
 import com.coding.internship.auth.dto.AuthResponse;
-import com.coding.internship.auth.dto.RegisterRequest;
-import com.coding.internship.auth.dto.RegisterResponse;
+import com.coding.internship.auth.dto.ClientRegisterRequest;
+import com.coding.internship.auth.dto.ClientRegisterResponse;
 import com.coding.internship.security.jwt.JwtService;
 import com.coding.internship.user.admin.repository.AdminRepository;
 import com.coding.internship.user.client.model.Client;
@@ -25,19 +25,19 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
 
-    public RegisterResponse register(RegisterRequest registerRequest){
+    public ClientRegisterResponse register(ClientRegisterRequest clientRegisterRequest){
         var client = Client.builder()
-                .email(registerRequest.getEmail())
-                .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .address(registerRequest.getAddress())
-                .cin(registerRequest.getCin())
-                .firstName(registerRequest.getFirstname())
-                .lastName(registerRequest.getLastname())
-                .phoneNumber(registerRequest.getPhoneNumber())
-                .isStudent(registerRequest.getIsStudent())
+                .email(clientRegisterRequest.getEmail())
+                .password(passwordEncoder.encode(clientRegisterRequest.getPassword()))
+                .address(clientRegisterRequest.getAddress())
+                .cin(clientRegisterRequest.getCin())
+                .firstName(clientRegisterRequest.getFirstname())
+                .lastName(clientRegisterRequest.getLastname())
+                .phoneNumber(clientRegisterRequest.getPhoneNumber())
+                .isStudent(clientRegisterRequest.getIsStudent())
                 .build();
-        clientRepository.save(client);
-        return RegisterResponse.builder().email(client.getEmail()).firstName(client.getFirstName()).lastName(client.getLastName()).build();
+        Client savedClient= clientRepository.save(client);
+        return ClientRegisterResponse.builder().email(client.getEmail()).firstName(client.getFirstName()).lastName(client.getLastName()).clientType(savedClient.getType()).build();
 
 
 
