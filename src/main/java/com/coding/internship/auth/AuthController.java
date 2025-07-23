@@ -1,9 +1,6 @@
 package com.coding.internship.auth;
 
-import com.coding.internship.auth.dto.AuthRequest;
-import com.coding.internship.auth.dto.AuthResponse;
-import com.coding.internship.auth.dto.ClientRegisterRequest;
-import com.coding.internship.auth.dto.ClientRegisterResponse;
+import com.coding.internship.auth.dto.*;
 import com.coding.internship.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +19,9 @@ public class AuthController {
         return authService.register(clientRegisterRequest) ;
     }
     @PostMapping("/admin/register")
+    public AdminRegisterResponse adminRegister(@RequestBody AdminRegisterRequest adminRegisterRequest){
+        return authService.registerAdmin(adminRegisterRequest);
+    }
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request){

@@ -1,5 +1,6 @@
 package com.coding.internship.auth.dto;
 
+import com.coding.internship.user.admin.enums.AdminRole;
 import com.coding.internship.user.admin.enums.DepartmentType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,4 +16,5 @@ public class AdminRegisterResponse {
     private String lastname;
     private String email;
     private DepartmentType department;
+    private AdminRole adminRole;
 }

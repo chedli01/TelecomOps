@@ -1,10 +1,8 @@
 package com.coding.internship.auth.service;
 
-import com.coding.internship.auth.dto.AuthRequest;
-import com.coding.internship.auth.dto.AuthResponse;
-import com.coding.internship.auth.dto.ClientRegisterRequest;
-import com.coding.internship.auth.dto.ClientRegisterResponse;
+import com.coding.internship.auth.dto.*;
 import com.coding.internship.security.jwt.JwtService;
+import com.coding.internship.user.admin.model.Admin;
 import com.coding.internship.user.admin.repository.AdminRepository;
 import com.coding.internship.user.client.model.Client;
 import com.coding.internship.user.client.repository.ClientRepository;
@@ -41,6 +39,24 @@ public class AuthService {
 
 
 
+    }
+    public AdminRegisterResponse registerAdmin(AdminRegisterRequest adminRegisterRequest){
+        var admin = Admin.builder()
+                .email(adminRegisterRequest.getEmail())
+                .password(passwordEncoder.encode(adminRegisterRequest.getPassword()))
+                .firstName(adminRegisterRequest.getFirstname())
+                .lastName(adminRegisterRequest.getLastname())
+                .department(adminRegisterRequest.getDepartment())
+                .build();
+        Admin savedAdmin= adminRepository.save(admin);
+        return AdminRegisterResponse
+                .builder()
+                .firstname(savedAdmin.getFirstName())
+                .lastname(savedAdmin.getLastName())
+                .email(savedAdmin.getEmail())
+                .department(savedAdmin.getDepartment())
+                .adminRole(savedAdmin.getRole())
+                .build();
     }
 
     public AuthResponse login(AuthRequest request){
