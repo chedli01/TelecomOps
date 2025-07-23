@@ -31,7 +31,6 @@ public class ClientRegisterRequest {
     @Size(min = 8,max = 8,message = "cin should be composed of 8 numbers ")
     @NotBlank(message = "field cin is required")
     private String cin;
-    @NotBlank(message = "field isStudent is required")
     private Boolean isStudent;
 
 }

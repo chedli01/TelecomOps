@@ -35,7 +35,7 @@ public class AuthService {
                 .isStudent(clientRegisterRequest.getIsStudent())
                 .build();
         Client savedClient= clientRepository.save(client);
-        return ClientRegisterResponse.builder().email(client.getEmail()).firstName(client.getFirstName()).lastName(client.getLastName()).clientType(savedClient.getType()).build();
+        return ClientRegisterResponse.builder().email(client.getEmail()).firstName(client.getFirstName()).lastName(client.getLastName()).clientType(savedClient.getType()).createdAt(savedClient.getCreatedAt()).build();
 
 
 
