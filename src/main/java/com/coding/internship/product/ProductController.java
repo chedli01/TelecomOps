@@ -7,11 +7,14 @@ import com.coding.internship.product.dto.ProductUpdateDto;
 import com.coding.internship.exception.RessourceNotFoundException;
 import com.coding.internship.product.model.Product;
 import com.coding.internship.product.service.ProductService;
+import com.coding.internship.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,10 +32,9 @@ public class ProductController {
         Product product = productService.createProduct(productCreationDto);
         return new ResponseEntity<>(product,HttpStatus.CREATED);
     }
-
-
     @GetMapping("{id}")
-    public ResponseEntity<ProductDataDto> getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductDataDto> getProductById(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        System.out.println("user : " + user.getEmail()+user.getFirstName()+user.getId());
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
