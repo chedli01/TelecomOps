@@ -24,7 +24,6 @@ public class AdminRegisterRequest {
     @Size(min = 6, message = "Password must be at least 6 characters")
     @NotBlank(message = "field password is required")
     private String password;
-    @NotBlank(message = "field department is required")
     private DepartmentType department;
 
 }
