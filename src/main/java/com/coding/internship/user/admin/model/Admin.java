@@ -8,6 +8,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -27,7 +28,8 @@ public class Admin extends User {
     @Enumerated(EnumType.STRING)
     private DepartmentType department;
     @Enumerated(EnumType.STRING)
-    private AdminRole role;
+    @Builder.Default
+    private AdminRole role =  AdminRole.ADMIN;
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }

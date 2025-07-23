@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/register")
+    @PostMapping("/client/register")
     public ClientRegisterResponse register(@RequestBody ClientRegisterRequest clientRegisterRequest){
         return authService.register(clientRegisterRequest) ;
     }
+    @PostMapping("/admin/register")
+
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request){
         return authService.login(request) ;
