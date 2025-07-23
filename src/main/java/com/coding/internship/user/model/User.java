@@ -6,9 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,6 +31,11 @@ public abstract class User implements UserDetails {
     protected String password;
     @Column(unique = true)
     protected String email;
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    protected LocalDateTime createdAt;
+    @UpdateTimestamp
+    protected LocalDateTime updatedAt;
 //
 //    @Override
 //    public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -30,6 +30,7 @@ public class Admin extends User {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private AdminRole role =  AdminRole.ADMIN;
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
