@@ -19,9 +19,12 @@ public class AdminRegisterRequest {
     @NotBlank(message = "Lastname should not be blank")
     private String lastname;
     @Email(message = "Email should be valid")
+    @NotBlank(message = "field email is required")
     private String email;
     @Size(min = 6, message = "Password must be at least 6 characters")
+    @NotBlank(message = "field password is required")
     private String password;
+    @NotBlank(message = "field department is required")
     private DepartmentType department;
 
 }
