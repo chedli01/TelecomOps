@@ -2,6 +2,7 @@ package com.coding.internship.subscription.model;
 
 import com.coding.internship.plan.model.Plan;
 import com.coding.internship.subscription.enums.SubscriptionStatus;
+import com.coding.internship.user.client.model.Client;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +30,9 @@ public class Subscription {
     private SubscriptionStatus status;
     private Double discount;
     @ManyToOne
-    @JoinColumn(name = "plan_id")
+    @JoinColumn(name = "plan_id", nullable = false)
     private Plan plan;
+    @ManyToOne
+    @JoinColumn(name = "client_id",nullable = false)
+    private Client client;
 }

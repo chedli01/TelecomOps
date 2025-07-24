@@ -1,11 +1,9 @@
 package com.coding.internship.user.client.model;
 
+import com.coding.internship.subscription.model.Subscription;
 import com.coding.internship.user.client.enums.ClientType;
 import com.coding.internship.user.model.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,6 +26,8 @@ public class Client extends User {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private ClientType type = ClientType.CUSTOMER;
+    @OneToMany(mappedBy = "client")
+    private List<Subscription> subscriptions;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
