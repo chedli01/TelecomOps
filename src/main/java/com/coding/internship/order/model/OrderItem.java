@@ -6,22 +6,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
-@Table(name = "orders")
+@Table(name = "order_items")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Order {
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String orderNumber;
-    private String description;
-    private Double total;
-    private Double discount;
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems;
+    private Integer quantity;
+    private Double unitPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
+
 }
