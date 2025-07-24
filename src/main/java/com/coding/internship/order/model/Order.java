@@ -1,6 +1,7 @@
 package com.coding.internship.order.model;
 
 import com.coding.internship.invoice.model.OrderInvoice;
+import com.coding.internship.user.client.model.Client;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,4 +28,7 @@ public class Order {
     private List<OrderItem> orderItems;
     @OneToOne(mappedBy = "order")
     private OrderInvoice invoice;
+    @ManyToOne
+    @JoinColumn(name = "client_id",nullable = false)
+    private Client client;
 }

@@ -1,5 +1,6 @@
 package com.coding.internship.user.client.model;
 
+import com.coding.internship.order.model.Order;
 import com.coding.internship.subscription.model.Subscription;
 import com.coding.internship.user.client.enums.ClientType;
 import com.coding.internship.user.model.User;
@@ -28,6 +29,8 @@ public class Client extends User {
     private ClientType type = ClientType.CUSTOMER;
     @OneToMany(mappedBy = "client")
     private List<Subscription> subscriptions;
+    @OneToMany(mappedBy = "client")
+    private List<Order> orders;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
