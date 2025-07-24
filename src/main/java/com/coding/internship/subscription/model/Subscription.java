@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +30,8 @@ public class Subscription {
     private Double remainingCalls;
     private Integer remainingSms;
     @Enumerated(EnumType.STRING)
-    private SubscriptionStatus status;
+    @Builder.Default
+    private SubscriptionStatus status = SubscriptionStatus.ACTIVE;
     private Double discount;
     @ManyToOne
     @JoinColumn(name = "plan_id", nullable = false)
