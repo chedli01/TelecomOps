@@ -18,5 +18,6 @@ public class Order {
     private Long id;
     private String orderNumber;
     private String description;
+    private Double total;
     private Double discount;
 }
