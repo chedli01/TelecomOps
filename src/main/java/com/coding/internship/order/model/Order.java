@@ -1,6 +1,7 @@
 package com.coding.internship.order.model;
 
 import com.coding.internship.invoice.model.OrderInvoice;
+import com.coding.internship.order.enums.OrderStatus;
 import com.coding.internship.user.client.model.Client;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class Order {
     private String description;
     private Double total;
     private Double discount;
+    private OrderStatus status;
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
     @OneToOne(mappedBy = "order")
