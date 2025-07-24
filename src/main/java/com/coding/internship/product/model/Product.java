@@ -1,5 +1,6 @@
 package com.coding.internship.product.model;
 
+import com.coding.internship.order.model.OrderItem;
 import com.coding.internship.product.enums.ProductCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,4 +33,6 @@ public class Product {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+    @OneToMany(mappedBy = "product")
+    private List<OrderItem> orderItems;
 }
