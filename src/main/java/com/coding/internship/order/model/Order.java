@@ -1,5 +1,6 @@
 package com.coding.internship.order.model;
 
+import com.coding.internship.invoice.model.OrderInvoice;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,4 +25,6 @@ public class Order {
     private Double discount;
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
+    @OneToOne(mappedBy = "order")
+    private OrderInvoice invoice;
 }
