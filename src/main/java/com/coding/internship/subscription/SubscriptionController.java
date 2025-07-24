@@ -16,7 +16,7 @@ public class SubscriptionController {
 
     @PostMapping
     public SubscriptionDataDto subscribeToPlan(@PathVariable Long planId, @AuthenticationPrincipal Client client){
-        var subscription = Subscription.builder().plan().
+        return subscriptionService.subscribeToPlan(planId, client.getId());
 
 
     }
