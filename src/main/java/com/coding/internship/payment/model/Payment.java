@@ -1,5 +1,6 @@
 package com.coding.internship.payment.model;
 
+import com.coding.internship.invoice.model.Invoice;
 import com.coding.internship.payment.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,5 +23,8 @@ public class Payment {
     private String paymentNumber;
     private LocalDateTime paymentDate;
     private PaymentMethod paymentMethod;
+    @OneToOne
+    @JoinColumn(name = "invoice_id",nullable = false)
+    private Invoice invoice;
 
 }

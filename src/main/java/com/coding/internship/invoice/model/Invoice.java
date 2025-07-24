@@ -1,6 +1,7 @@
 package com.coding.internship.invoice.model;
 
 import com.coding.internship.invoice.enums.InvoiceStatus;
+import com.coding.internship.payment.model.Payment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,5 +34,7 @@ public class Invoice {
     protected LocalDateTime createdAt;
     @UpdateTimestamp
     protected LocalDateTime updatedAt;
+    @OneToOne(mappedBy = "invoice")
+    protected Payment payment;
 
 }
