@@ -25,6 +25,10 @@ public class Subscription {
     private Double remainingData;
     private Double remainingCalls;
     private Integer remainingSms;
+    @Enumerated(EnumType.STRING)
     private SubscriptionStatus status;
     private Double discount;
+    @ManyToOne
+    @JoinColumn(name = "plan_id")
+    private Plan plan;
 }

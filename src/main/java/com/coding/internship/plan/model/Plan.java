@@ -1,10 +1,13 @@
 package com.coding.internship.plan.model;
 
+import com.coding.internship.subscription.model.Subscription;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "plans")
@@ -24,5 +27,7 @@ public class Plan {
     private Double callsMinutes;
     private Integer smsNumber;
     private Integer validityDays;
+    @OneToMany(mappedBy = "plan")
+    private List<Subscription> subscriptions;
 
 }
