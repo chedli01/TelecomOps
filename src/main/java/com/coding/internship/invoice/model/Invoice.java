@@ -3,9 +3,9 @@ package com.coding.internship.invoice.model;
 import com.coding.internship.invoice.enums.InvoiceStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,21 +16,22 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String invoiceNumber;
-    private String description;
-    private Double total;
-    private LocalDateTime dueDate;
+    protected String invoiceNumber;
+    protected String description;
+    protected Double total;
+    protected LocalDateTime dueDate;
     @Enumerated(EnumType.STRING)
-    private InvoiceStatus status;
+    protected InvoiceStatus status;
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    protected LocalDateTime createdAt;
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    protected LocalDateTime updatedAt;
 
 }

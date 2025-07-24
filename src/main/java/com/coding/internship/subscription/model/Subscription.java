@@ -1,5 +1,7 @@
 package com.coding.internship.subscription.model;
 
+import com.coding.internship.invoice.model.Invoice;
+import com.coding.internship.invoice.model.SubscriptionInvoice;
 import com.coding.internship.plan.model.Plan;
 import com.coding.internship.subscription.enums.SubscriptionStatus;
 import com.coding.internship.user.client.model.Client;
@@ -35,4 +37,6 @@ public class Subscription {
     @ManyToOne
     @JoinColumn(name = "client_id",nullable = false)
     private Client client;
+    @OneToOne(mappedBy = "subscription")
+    private SubscriptionInvoice invoice;
 }
