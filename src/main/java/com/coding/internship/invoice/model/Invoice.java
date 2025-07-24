@@ -1,5 +1,6 @@
 package com.coding.internship.invoice.model;
 
+import com.coding.internship.invoice.enums.InvoiceStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +25,8 @@ public class Invoice {
     private String description;
     private Double total;
     private LocalDateTime dueDate;
+    @Enumerated(EnumType.STRING)
+    private InvoiceStatus status;
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
