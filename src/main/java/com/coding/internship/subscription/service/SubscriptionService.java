@@ -5,6 +5,7 @@ import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.repository.PlanRepository;
 import com.coding.internship.plan.service.PlanService;
 import com.coding.internship.subscription.dto.SubscriptionDataDto;
+import com.coding.internship.subscription.dto.SubscriptionUpdateDto;
 import com.coding.internship.subscription.enums.SubscriptionStatus;
 import com.coding.internship.subscription.mapper.SubscriptionMapper;
 import com.coding.internship.subscription.model.Subscription;
@@ -40,9 +41,11 @@ public class SubscriptionService {
 
 
     }
+
     public List<SubscriptionDataDto> getAllSubscriptions(){
         return subscriptionRepository.findAll().stream().map(subscriptionMapper::mapToDto).toList();
     }
+
     public SubscriptionDataDto makeCall(Long clientId,Double minutes){
         Subscription subscription = subscriptionRepository.findByClientId(clientId);
         if(subscription.getRemainingCalls()<minutes){
@@ -51,11 +54,9 @@ public class SubscriptionService {
         if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
             throw new IllegalArgumentException("subscription is inactive");
         }
-        subscription.setRemainingCalls(subscription.getRemainingCalls()-minutes);
-        subscriptionRepository.save(subscription);
-        return subscriptionMapper.mapToDto(subscription);
-
+        return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingCalls(subscription.getRemainingCalls()-minutes).build());
     }
+
     public SubscriptionDataDto makeSms(Long clientId){
         Subscription subscription = subscriptionRepository.findByClientId(clientId);
         if(subscription.getRemainingSms()<1){
@@ -64,10 +65,9 @@ public class SubscriptionService {
         if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
             throw new IllegalArgumentException("subscription is inactive");
         }
-        subscription.setRemainingSms(subscription.getRemainingSms()-1);
-        subscriptionRepository.save(subscription);
-        return subscriptionMapper.mapToDto(subscription);
+        return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingSms(subscription.getRemainingSms()-1).build());
     }
+
     public SubscriptionDataDto consumeData(Long clientId,Double data){
         Subscription subscription = subscriptionRepository.findByClientId(clientId);
         if(subscription.getRemainingData()<data){
@@ -76,9 +76,29 @@ public class SubscriptionService {
         if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
             throw new IllegalArgumentException("subscription is inactive");
         }
-        subscription.setRemainingData(subscription.getRemainingData()-data);
+        return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingData(subscription.getRemainingData()-data).build());
+    }
+
+    public SubscriptionDataDto updateSubscription(Long id, SubscriptionUpdateDto subscriptionUpdateDto){
+        Subscription subscription = subscriptionRepository.findById(id).orElseThrow(()->new RuntimeException("subscription not found"));
+        if(subscriptionUpdateDto.getDiscount()!=null){
+            subscription.setDiscount(subscriptionUpdateDto.getDiscount());
+        }
+        if(subscriptionUpdateDto.getRemainingCalls()!=null){
+            subscription.setRemainingCalls(subscriptionUpdateDto.getRemainingCalls());
+        }
+        if(subscriptionUpdateDto.getRemainingData()!=null){
+            subscription.setRemainingData(subscriptionUpdateDto.getRemainingData());
+        }
+        if(subscriptionUpdateDto.getRemainingSms()!=null){
+            subscription.setRemainingSms(subscriptionUpdateDto.getRemainingSms());
+        }
+        if(subscriptionUpdateDto.getStatus()!=null){
+            subscription.setStatus(subscriptionUpdateDto.getStatus());
+        }
         subscriptionRepository.save(subscription);
         return subscriptionMapper.mapToDto(subscription);
+
     }
 
 
