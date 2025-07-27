@@ -17,5 +17,8 @@ public class ClientService {
         Client client = clientRepository.findById(id).orElseThrow(()->new RuntimeException("client not found"));
         return clientMapper.mapToDto(client);
     }
+    public Client getClientById(Long id){
+        return clientRepository.findById(id).orElseThrow(()->new RuntimeException("client not found"));
+    }
 
 }

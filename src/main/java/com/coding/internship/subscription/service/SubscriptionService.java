@@ -11,6 +11,7 @@ import com.coding.internship.subscription.model.Subscription;
 import com.coding.internship.subscription.repository.SubscriptionRepository;
 import com.coding.internship.user.client.model.Client;
 import com.coding.internship.user.client.repository.ClientRepository;
+import com.coding.internship.user.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +22,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
-    private final ClientRepository clientRepository;
     private final SubscriptionMapper subscriptionMapper;
     private final PlanService planService;
+    private final ClientService clientService;
 
     public SubscriptionDataDto subscribeToPlan(Long planId, Long clientId){
         Plan plan = planService.getPlanById(planId);
-        Client client = clientRepository.findById(clientId).orElseThrow();
+        Client client = clientService.getClientById(clientId);
         var subscription = Subscription.builder()
                            .plan(plan)
                            .client(client).startDate(LocalDateTime.now()).endDate(LocalDateTime.now().plusDays(plan.getValidityDays()))
