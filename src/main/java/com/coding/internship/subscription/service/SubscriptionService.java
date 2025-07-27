@@ -1,5 +1,6 @@
 package com.coding.internship.subscription.service;
 
+import com.coding.internship.generic.GenericMapper;
 import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.repository.PlanRepository;
 import com.coding.internship.subscription.dto.SubscriptionDataDto;
