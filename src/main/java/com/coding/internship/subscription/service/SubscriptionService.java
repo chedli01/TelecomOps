@@ -1,8 +1,6 @@
 package com.coding.internship.subscription.service;
 
-import com.coding.internship.generic.GenericMapper;
 import com.coding.internship.plan.model.Plan;
-import com.coding.internship.plan.repository.PlanRepository;
 import com.coding.internship.plan.service.PlanService;
 import com.coding.internship.subscription.dto.SubscriptionDataDto;
 import com.coding.internship.subscription.dto.SubscriptionUpdateDto;
@@ -11,7 +9,6 @@ import com.coding.internship.subscription.mapper.SubscriptionMapper;
 import com.coding.internship.subscription.model.Subscription;
 import com.coding.internship.subscription.repository.SubscriptionRepository;
 import com.coding.internship.user.client.model.Client;
-import com.coding.internship.user.client.repository.ClientRepository;
 import com.coding.internship.user.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
