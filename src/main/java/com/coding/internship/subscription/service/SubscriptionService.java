@@ -3,6 +3,7 @@ package com.coding.internship.subscription.service;
 import com.coding.internship.generic.GenericMapper;
 import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.repository.PlanRepository;
+import com.coding.internship.plan.service.PlanService;
 import com.coding.internship.subscription.dto.SubscriptionDataDto;
 import com.coding.internship.subscription.enums.SubscriptionStatus;
 import com.coding.internship.subscription.mapper.SubscriptionMapper;
@@ -20,12 +21,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
-    private final PlanRepository planRepository;
     private final ClientRepository clientRepository;
     private final SubscriptionMapper subscriptionMapper;
+    private final PlanService planService;
 
     public SubscriptionDataDto subscribeToPlan(Long planId, Long clientId){
-        Plan plan = planRepository.findById(planId).orElseThrow();
+        Plan plan = planService.getPlanById(planId);
         Client client = clientRepository.findById(clientId).orElseThrow();
         var subscription = Subscription.builder()
                            .plan(plan)
