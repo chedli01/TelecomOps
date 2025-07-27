@@ -56,6 +56,30 @@ public class SubscriptionService {
         return subscriptionMapper.mapToDto(subscription);
 
     }
+    public SubscriptionDataDto makeSms(Long clientId){
+        Subscription subscription = subscriptionRepository.findByClientId(clientId);
+        if(subscription.getRemainingSms()<1){
+            throw new IllegalArgumentException("not enough sms");
+        }
+        if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
+            throw new IllegalArgumentException("subscription is inactive");
+        }
+        subscription.setRemainingSms(subscription.getRemainingSms()-1);
+        subscriptionRepository.save(subscription);
+        return subscriptionMapper.mapToDto(subscription);
+    }
+    public SubscriptionDataDto consumeData(Long clientId,Double data){
+        Subscription subscription = subscriptionRepository.findByClientId(clientId);
+        if(subscription.getRemainingData()<data){
+            throw new IllegalArgumentException("not enough data");
+        }
+        if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
+            throw new IllegalArgumentException("subscription is inactive");
+        }
+        subscription.setRemainingData(subscription.getRemainingData()-data);
+        subscriptionRepository.save(subscription);
+        return subscriptionMapper.mapToDto(subscription);
+    }
 
 
 }

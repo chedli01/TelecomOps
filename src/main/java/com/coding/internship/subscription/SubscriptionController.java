@@ -31,4 +31,12 @@ public class SubscriptionController {
         return subscriptionService.makeCall(client.getId(),minutes);
 
     }
+    @PostMapping("/sms")
+    public SubscriptionDataDto makeSms(@AuthenticationPrincipal Client client){
+        return subscriptionService.makeSms(client.getId());
+    }
+    @PostMapping("/data/{quantity}")
+    public SubscriptionDataDto useData(@AuthenticationPrincipal Client client,@PathVariable Double quantity){
+        return subscriptionService.consumeData(client.getId(),quantity);
+    }
 }
