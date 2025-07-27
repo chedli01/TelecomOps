@@ -1,6 +1,8 @@
 package com.coding.internship.invoice.service;
 
 import com.coding.internship.invoice.dto.InvoiceCreateDto;
+import com.coding.internship.invoice.enums.InvoiceStatus;
+import com.coding.internship.invoice.model.Invoice;
 import com.coding.internship.invoice.model.SubscriptionInvoice;
 import com.coding.internship.invoice.repository.InvoiceRepository;
 import com.coding.internship.invoice.repository.OrderInvoiceRepository;
@@ -28,5 +30,13 @@ public class InvoiceService {
         return invoice.getInvoiceNumber();
 
 
+    }
+    public Invoice getInvoiceById(Long id){
+        return invoiceRepository.findById(id).orElseThrow(()->new RuntimeException("invoice not found"));
+    }
+    public Invoice setPaid(Long id){
+        Invoice invoice= getInvoiceById(id);
+        invoice.setStatus(InvoiceStatus.PAID);
+        return invoiceRepository.save(invoice);
     }
 }
