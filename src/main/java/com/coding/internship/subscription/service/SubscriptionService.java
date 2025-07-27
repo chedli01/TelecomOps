@@ -40,6 +40,19 @@ public class SubscriptionService {
     public List<SubscriptionDataDto> getAllSubscriptions(){
         return subscriptionRepository.findAll().stream().map(subscriptionMapper::mapToDto).toList();
     }
+    public SubscriptionDataDto makeCall(Long clientId,Double minutes){
+        Subscription subscription = subscriptionRepository.findByClientId(clientId);
+        if(subscription.getRemainingCalls()<minutes){
+            throw new IllegalArgumentException("not enough calls");
+        }
+        if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
+            throw new IllegalArgumentException("subscription is inactive");
+        }
+        subscription.setRemainingCalls(subscription.getRemainingCalls()-minutes);
+        subscriptionRepository.save(subscription);
+        return subscriptionMapper.mapToDto(subscription);
+
+    }
 
 
 }

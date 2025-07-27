@@ -26,4 +26,9 @@ public class SubscriptionController {
     public List<SubscriptionDataDto> getAllSubscriptions(){
         return subscriptionService.getAllSubscriptions();
     }
+    @PostMapping("/call/{minutes}")
+    public SubscriptionDataDto makeCall(@AuthenticationPrincipal Client client,@PathVariable Double minutes){
+        return subscriptionService.makeCall(client.getId(),minutes);
+
+    }
 }
