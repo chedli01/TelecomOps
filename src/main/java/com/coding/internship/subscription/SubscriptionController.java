@@ -8,16 +8,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/subscription/{planId}")
+@RequestMapping("/api/subscription")
 @RequiredArgsConstructor
 public class SubscriptionController {
     private final SubscriptionService subscriptionService;
 
-    @PostMapping
+    @PostMapping("/{planId}")
     public SubscriptionDataDto subscribeToPlan(@PathVariable Long planId, @AuthenticationPrincipal Client client){
         return subscriptionService.subscribeToPlan(planId, client.getId());
 
 
+    }
+    @GetMapping
+    public List<SubscriptionDataDto> getAllSubscriptions(){
+        return subscriptionService.getAllSubscriptions();
     }
 }

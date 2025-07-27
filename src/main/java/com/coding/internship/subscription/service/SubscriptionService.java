@@ -4,6 +4,7 @@ import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.repository.PlanRepository;
 import com.coding.internship.subscription.dto.SubscriptionDataDto;
 import com.coding.internship.subscription.enums.SubscriptionStatus;
+import com.coding.internship.subscription.mapper.SubscriptionMapper;
 import com.coding.internship.subscription.model.Subscription;
 import com.coding.internship.subscription.repository.SubscriptionRepository;
 import com.coding.internship.user.client.model.Client;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final PlanRepository planRepository;
     private final ClientRepository clientRepository;
+    private final SubscriptionMapper subscriptionMapper;
 
     public SubscriptionDataDto subscribeToPlan(Long planId, Long clientId){
         Plan plan = planRepository.findById(planId).orElseThrow();
@@ -29,11 +32,14 @@ public class SubscriptionService {
                 .remainingData(plan.getDataQuota()).remainingCalls(plan.getCallsMinutes()).remainingSms(plan.getSmsNumber()).discount(0.0).status(SubscriptionStatus.ACTIVE)
                 .build();
         Subscription savedSub = subscriptionRepository.save(subscription);
-        return SubscriptionDataDto.builder().id(savedSub.getId()).startDate(savedSub.getStartDate()).endDate(savedSub.getEndDate())
-                .planName(plan.getName()).planDescription(plan.getDescription()).planPrice(plan.getPrice()).totalToPay(plan.getPrice()-savedSub.getDiscount()).build();
+        return subscriptionMapper.mapToDto(savedSub);
 
 
 
     }
+    public List<SubscriptionDataDto> getAllSubscriptions(){
+        return subscriptionRepository.findAll().stream().map(subscriptionMapper::mapToDto).toList();
+    }
+
 
 }
