@@ -20,8 +20,9 @@ public class InvoiceService {
         var invoice = SubscriptionInvoice.builder().invoiceNumber(invoiceCreateDto.getInvoiceNumber())
                 .description(invoiceCreateDto.getDescription())
                 .dueDate(invoiceCreateDto.getDueDate())
-                .total(subscription.getPlan().getPrice()-subscription.getDiscount())
+                .total(invoiceCreateDto.getTotal())
                 .status(invoiceCreateDto.getStatus())
+                .subscription(subscription)
                 .build();
         subscriptionInvoiceRepository.save(invoice);
         return invoice.getInvoiceNumber();

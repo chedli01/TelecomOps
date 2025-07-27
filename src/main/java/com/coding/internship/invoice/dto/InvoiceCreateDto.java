@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class InvoiceCreateDto {
-    protected String invoiceNumber;
-    protected String description;
-    protected Double total;
-    protected LocalDateTime dueDate;
-    protected InvoiceStatus status;
+    private String invoiceNumber;
+    private String description;
+    private LocalDateTime dueDate;
+    private InvoiceStatus status;
+    private Double total;
 }

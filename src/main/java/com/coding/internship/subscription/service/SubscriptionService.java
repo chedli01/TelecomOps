@@ -1,5 +1,8 @@
 package com.coding.internship.subscription.service;
 
+import com.coding.internship.invoice.dto.InvoiceCreateDto;
+import com.coding.internship.invoice.enums.InvoiceStatus;
+import com.coding.internship.invoice.service.InvoiceService;
 import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.service.PlanService;
 import com.coding.internship.subscription.dto.SubscriptionDataDto;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,7 @@ public class SubscriptionService {
     private final SubscriptionMapper subscriptionMapper;
     private final PlanService planService;
     private final ClientService clientService;
+    private final InvoiceService invoiceService;
 
     public SubscriptionDataDto subscribeToPlan(Long planId, Long clientId){
         Plan plan = planService.getPlanById(planId);
@@ -33,6 +38,9 @@ public class SubscriptionService {
                 .remainingData(plan.getDataQuota()).remainingCalls(plan.getCallsMinutes()).remainingSms(plan.getSmsNumber()).discount(0.0).status(SubscriptionStatus.ACTIVE)
                 .build();
         Subscription savedSub = subscriptionRepository.save(subscription);
+        UUID uuid = UUID.randomUUID();
+
+        invoiceService.createSubInvoice(savedSub, InvoiceCreateDto.builder().invoiceNumber(uuid.toString()).description(plan.getDescription()).dueDate(savedSub.getEndDate().minusDays(3L)).status(InvoiceStatus.UNPAID).total(plan.getPrice()-savedSub.getDiscount()).build());
         return subscriptionMapper.mapToDto(savedSub);
 
 
