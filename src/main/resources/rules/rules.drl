@@ -2,6 +2,10 @@ package rules
 import com.coding.internship.product.model.Product
 import com.coding.internship.product.enums.ProductCategory
 import com.coding.internship.product.service.SpeceficService
+import com.coding.internship.user.client.model.Client
+import com.coding.internship.order.model.Order
+
+
 
 
 rule "Price Discount"
@@ -26,6 +30,20 @@ rule "Category Discount" no-loop true
         };
         modifiedProducts.add($product);
         System.out.println("Applied discount to " + $product.getId() + " with new price" + newPrice + "having as category"+ $product.getCategory());
+end
+
+rule "Order Discount For Students"
+     agenda-group "discount"
+     no-loop true
+     when
+       $order : Order($client:getClient(),client.isStudent==true)
+     then
+       modify($order){
+       setDiscount($order.getTotal()*0.1)
+       }
+
+       System.out.println("discount for student applied");
+
 end
 //
 //global SpeceficService productService;

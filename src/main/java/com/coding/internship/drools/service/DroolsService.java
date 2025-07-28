@@ -1,10 +1,13 @@
 package com.coding.internship.drools.service;
 
+import com.coding.internship.order.model.Order;
 import com.coding.internship.product.model.Product;
 import com.coding.internship.product.service.SpeceficService;
+import com.coding.internship.user.client.model.Client;
 import lombok.Data;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.mvel2.ast.Or;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -49,6 +52,19 @@ public class DroolsService {
 
             return modifiedProducts;
         } finally {
+            kieSession.dispose();
+        }
+    }
+    public Order applyDiscountForStudent(Order order){
+        KieSession kieSession = kieContainer.newKieSession("ksession-rules");
+        try {
+
+            kieSession.insert(order);
+            kieSession.getAgenda().getAgendaGroup("discount").setFocus();
+            kieSession.fireAllRules();
+            return order;
+        }
+        finally {
             kieSession.dispose();
         }
     }
