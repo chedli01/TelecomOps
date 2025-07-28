@@ -1,5 +1,8 @@
 package com.coding.internship.order.service;
 
+import com.coding.internship.invoice.dto.InvoiceCreateDto;
+import com.coding.internship.invoice.enums.InvoiceStatus;
+import com.coding.internship.invoice.service.InvoiceService;
 import com.coding.internship.order.dto.OrderCreateDto;
 import com.coding.internship.order.dto.OrderItemCreateDto;
 import com.coding.internship.order.enums.OrderStatus;
@@ -21,6 +24,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemService orderItemService;
     private final ClientService clientService;
+    private final InvoiceService invoiceService;
 
     public Order makeOrder(OrderCreateDto orderCreateDto,Long clientId){
         List<OrderItem> orderItems = new ArrayList<>();
@@ -41,6 +45,7 @@ public class OrderService {
             orderItem.setOrder(order);
         }
         Order savedOrder = orderRepository.save(order);
+        invoiceService.createOrderInvoice(InvoiceCreateDto.builder().invoiceNumber(uuid.toString()).description(order.getDescription()).dueDate(savedOrder.getCreatedAt().plusDays(7L)).status(InvoiceStatus.UNPAID).total(order.getTotal()-savedOrder.getDiscount()).build(), savedOrder);
         return savedOrder;
     }
     private Double calculateTotal(List<OrderItem> orderItems){
