@@ -1,5 +1,6 @@
 package com.coding.internship.subscription.service;
 
+import com.coding.internship.drools.service.DroolsService;
 import com.coding.internship.invoice.dto.InvoiceCreateDto;
 import com.coding.internship.invoice.enums.InvoiceStatus;
 import com.coding.internship.invoice.service.InvoiceService;
@@ -28,6 +29,7 @@ public class SubscriptionService {
     private final PlanService planService;
     private final ClientService clientService;
     private final InvoiceService invoiceService;
+    private final DroolsService droolsService;
 
     public Subscription subscribeToPlan(Long planId, Long clientId){
         Plan plan = planService.getPlanById(planId);
@@ -74,13 +76,17 @@ public class SubscriptionService {
     }
 
     public Subscription consumeData(Long clientId,Double data){
-        Subscription subscription = subscriptionRepository.findByClientId(clientId);
-        if(subscription.getRemainingData()<data){
-            throw new IllegalArgumentException("not enough data");
+        Subscription subscription = clientService.getActiveSub(clientId);
+//        if(subscription.getRemainingData()<data){
+//            throw new IllegalArgumentException("not enough data");
+//        }
+
+        if(droolsService.verifyData(subscription,data)==false){
+            throw new IllegalArgumentException("not valid transaction");
         }
-        if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
-            throw new IllegalArgumentException("subscription is inactive");
-        }
+//        if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
+//            throw new IllegalArgumentException("subscription is inactive");
+//        }
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingData(subscription.getRemainingData()-data).build());
     }
 

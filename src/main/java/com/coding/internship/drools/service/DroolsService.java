@@ -1,5 +1,6 @@
 package com.coding.internship.drools.service;
 
+import com.coding.internship.drools.dto.DataVerificationResult;
 import com.coding.internship.drools.dto.ResponseObjectDto;
 import com.coding.internship.order.model.Order;
 import com.coding.internship.product.model.Product;
@@ -73,6 +74,24 @@ public class DroolsService {
         finally {
             kieSession.dispose();
         }
+    }
+    public Boolean verifyData(Subscription subscription,Double consumedData){
+        KieSession kieSession = kieContainer.newKieSession("ksession-rules");
+        try {
+            DataVerificationResult dataVerificationResult = new DataVerificationResult();
+            kieSession.setGlobal("consumedData", consumedData);
+
+
+            kieSession.insert(subscription);
+            kieSession.insert(dataVerificationResult);
+            kieSession.getAgenda().getAgendaGroup("data").setFocus();
+            kieSession.fireAllRules();
+            return dataVerificationResult.isVerified();
+        }
+        finally {
+            kieSession.dispose();
+        }
+
     }
 //
 //    public Product changeInDb(Product product,Long id){

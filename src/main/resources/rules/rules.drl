@@ -5,6 +5,8 @@ import com.coding.internship.product.service.SpeceficService
 import com.coding.internship.user.client.model.Client
 import com.coding.internship.order.model.Order
 import com.coding.internship.subscription.model.Subscription
+import com.coding.internship.drools.dto.DataVerificationResult
+import com.coding.internship.subscription.enums.SubscriptionStatus
 
 
 
@@ -62,6 +64,22 @@ rule "Order Discount For Big Total "
         System.out.println("discount for big total applied");
 end
 
+global Double consumedData;
+
+rule "data verification"
+    agenda-group "data"
+    no-loop true
+    when
+       $subscription : Subscription(getRemainingData()>=consumedData,getStatus().equals(SubscriptionStatus.ACTIVE))
+       $result : DataVerificationResult()
+
+
+
+    then
+       modify($result){
+          setVerified(true)
+       }
+end
 
 //
 //global SpeceficService productService;
