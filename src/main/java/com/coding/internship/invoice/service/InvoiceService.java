@@ -21,10 +21,15 @@ public class InvoiceService {
     private final OrderInvoiceRepository orderInvoiceRepository;
 
     public SubscriptionInvoice createSubInvoice(Subscription subscription, InvoiceCreateDto invoiceCreateDto){
-        Invoice invoice = buildInvoice(invoiceCreateDto);
-        SubscriptionInvoice subscriptionInvoice =(SubscriptionInvoice) invoice;
-        subscriptionInvoice.setSubscription(subscription);
-        return subscriptionInvoiceRepository.save(subscriptionInvoice);
+
+        var invoice = SubscriptionInvoice.builder().invoiceNumber(invoiceCreateDto.getInvoiceNumber())
+                .description(invoiceCreateDto.getDescription())
+                .dueDate(invoiceCreateDto.getDueDate())
+                .total(invoiceCreateDto.getTotal())
+                .status(invoiceCreateDto.getStatus())
+                .subscription(subscription)
+                .build();
+        return subscriptionInvoiceRepository.save(invoice);
     }
     public OrderInvoice createOrderInvoice(InvoiceCreateDto invoiceCreateDto, Order order){
         var invoice = OrderInvoice.builder().invoiceNumber(invoiceCreateDto.getInvoiceNumber())

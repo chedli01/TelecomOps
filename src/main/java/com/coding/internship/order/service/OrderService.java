@@ -1,5 +1,6 @@
 package com.coding.internship.order.service;
 
+import com.coding.internship.drools.dto.ResponseObjectDto;
 import com.coding.internship.drools.service.DroolsService;
 import com.coding.internship.invoice.dto.InvoiceCreateDto;
 import com.coding.internship.invoice.enums.InvoiceStatus;
@@ -10,6 +11,9 @@ import com.coding.internship.order.enums.OrderStatus;
 import com.coding.internship.order.model.Order;
 import com.coding.internship.order.model.OrderItem;
 import com.coding.internship.order.repository.OrderRepository;
+import com.coding.internship.subscription.dto.SubscriptionUpdateDto;
+import com.coding.internship.subscription.model.Subscription;
+import com.coding.internship.subscription.service.SubscriptionService;
 import com.coding.internship.user.client.model.Client;
 import com.coding.internship.user.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,7 @@ public class OrderService {
     private final ClientService clientService;
     private final InvoiceService invoiceService;
     private final DroolsService droolsService;
+    private final SubscriptionService subscriptionService;
 
     public Order makeOrder(OrderCreateDto orderCreateDto,Long clientId){
         List<OrderItem> orderItems = new ArrayList<>();
@@ -47,7 +52,9 @@ public class OrderService {
             orderItem.setOrder(order);
         }
 //        Order savedOrder = orderRepository.save(order);
-        Order savedOrder =orderRepository.save(droolsService.applyDiscountOnOrder(order)) ;
+        ResponseObjectDto responseObjectDto = droolsService.applyDiscountOnOrder(order);
+        Order savedOrder =orderRepository.save(responseObjectDto.getOrder()) ;
+        subscriptionService.updateSubscription(responseObjectDto.getSubscription().getId(), SubscriptionUpdateDto.builder().remainingData(responseObjectDto.getSubscription().getRemainingData()).build());
         invoiceService.createOrderInvoice(InvoiceCreateDto.builder().invoiceNumber(uuid.toString()).description(order.getDescription()).dueDate(savedOrder.getCreatedAt().plusDays(7L)).status(InvoiceStatus.UNPAID).total(order.getTotal()-savedOrder.getDiscount()).build(), savedOrder);
         return savedOrder;
     }

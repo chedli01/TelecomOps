@@ -1,5 +1,7 @@
 package com.coding.internship.user.client.service;
 
+import com.coding.internship.subscription.enums.SubscriptionStatus;
+import com.coding.internship.subscription.model.Subscription;
 import com.coding.internship.user.client.dto.ClientDataDto;
 import com.coding.internship.user.client.mapper.ClientMapper;
 import com.coding.internship.user.client.model.Client;
@@ -16,6 +18,15 @@ public class ClientService {
     public Client findClientById(Long id){
        return  clientRepository.findById(id).orElseThrow(()->new RuntimeException("client not found"));
 
+    }
+    public Subscription getActiveSub(Long id){
+        Client client = findClientById(id);
+        for (Subscription subscription : client.getSubscriptions()){
+            if (subscription.getStatus().equals(SubscriptionStatus.ACTIVE)){
+                return subscription;
+            }
+        }
+        return null;
     }
 
 }

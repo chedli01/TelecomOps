@@ -4,7 +4,7 @@ import com.coding.internship.product.enums.ProductCategory
 import com.coding.internship.product.service.SpeceficService
 import com.coding.internship.user.client.model.Client
 import com.coding.internship.order.model.Order
-
+import com.coding.internship.subscription.model.Subscription
 
 
 
@@ -50,11 +50,15 @@ rule "Order Discount For Big Total "
     agenda-group "discount"
     no-loop true
     when
-        $order : Order(getTotal()>1000)
+        $order : Order(getTotal()>1000,$client:client)
+        $subscription : Subscription(client.getId()==$client.getId())
     then
         modify($order){
             setDiscount($order.getTotal()*0.2+$order.getDiscount())
                 }
+        modify($subscription){
+            setRemainingData($subscription.getRemainingData()+1024)
+        }
         System.out.println("discount for big total applied");
 end
 

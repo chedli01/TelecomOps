@@ -1,9 +1,12 @@
 package com.coding.internship.drools.service;
 
+import com.coding.internship.drools.dto.ResponseObjectDto;
 import com.coding.internship.order.model.Order;
 import com.coding.internship.product.model.Product;
 import com.coding.internship.product.service.SpeceficService;
+import com.coding.internship.subscription.model.Subscription;
 import com.coding.internship.user.client.model.Client;
+import com.coding.internship.user.client.service.ClientService;
 import lombok.Data;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -19,6 +22,7 @@ public class DroolsService {
 
     private final KieContainer kieContainer;
     private final SpeceficService speceficService;
+    private final ClientService clientService;
 
 
     public Product applyDiscount(Product product) {
@@ -55,14 +59,16 @@ public class DroolsService {
             kieSession.dispose();
         }
     }
-    public Order applyDiscountOnOrder(Order order){
+    public ResponseObjectDto applyDiscountOnOrder(Order order){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
+        Subscription subscription =clientService.getActiveSub(order.getClient().getId());
         try {
 
             kieSession.insert(order);
+            kieSession.insert(subscription);
             kieSession.getAgenda().getAgendaGroup("discount").setFocus();
             kieSession.fireAllRules();
-            return order;
+            return ResponseObjectDto.builder().order(order).subscription(subscription).build();
         }
         finally {
             kieSession.dispose();
