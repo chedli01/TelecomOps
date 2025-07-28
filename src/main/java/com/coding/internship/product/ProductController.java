@@ -5,6 +5,7 @@ import com.coding.internship.product.dto.ProductCriteriaDto;
 import com.coding.internship.product.dto.ProductDataDto;
 import com.coding.internship.product.dto.ProductUpdateDto;
 import com.coding.internship.exception.RessourceNotFoundException;
+import com.coding.internship.product.mapper.ProductMapper;
 import com.coding.internship.product.model.Product;
 import com.coding.internship.product.service.ProductService;
 import com.coding.internship.user.model.User;
@@ -25,6 +26,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductMapper productMapper;
 
 
     @PostMapping
@@ -35,12 +37,12 @@ public class ProductController {
     @GetMapping("{id}")
     public ResponseEntity<ProductDataDto> getProductById(@PathVariable Long id, @AuthenticationPrincipal User user) {
         System.out.println("user : " + user.getEmail()+user.getFirstName()+user.getId());
-        return ResponseEntity.ok(productService.getProductById(id));
+        return ResponseEntity.ok(productMapper.mapToDto(productService.getProductById(id)));
     }
 
     @PutMapping("{id}")
     public ResponseEntity<ProductDataDto> updateProduct(@RequestBody ProductUpdateDto productUpdateDto, @PathVariable Long id) {
-        return ResponseEntity.ok(productService.updateProduct(productUpdateDto, id));
+        return ResponseEntity.ok(productMapper.mapToDto(productService.updateProduct(productUpdateDto, id)));
 
     }
 
@@ -56,7 +58,7 @@ public class ProductController {
 
     @GetMapping("/find-by-price-between")
     public ResponseEntity<List<ProductDataDto>> findProductByPriceBetween(@RequestParam Double min, @RequestParam Double max) {
-        return ResponseEntity.ok(productService.findProductByPriceBetween(min, max));
+        return ResponseEntity.ok(productService.findProductByPriceBetween(min, max).stream().map(productMapper::mapToDto).toList() );
     }
 
     @GetMapping

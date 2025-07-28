@@ -11,11 +11,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AdminService {
     private final AdminRepository adminRepository;
-    private final AdminMapper adminMapper;
 
-    public AdminDataDto findAdminById(Long id){
-        Admin admin=adminRepository.findById(id).orElseThrow(()->new RuntimeException("admin not found"));
-        return adminMapper.mapToDto(admin) ;
+    public Admin findAdminById(Long id){
+        return adminRepository.findById(id).orElseThrow(()->new RuntimeException("admin not found"));
     }
 
     public Admin createAdmin(Admin admin){

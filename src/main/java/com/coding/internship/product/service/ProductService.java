@@ -39,16 +39,15 @@ public class ProductService {
 
     }
 
-    public List<ProductDataDto> getAllProducts() {
-        return productRepository.findAll().stream().map(productMapper::mapToDto).toList();
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 
-    public ProductDataDto getProductById(Long id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new RessourceNotFoundException("product not found"));
-        return productMapper.mapToDto(product);
+    public Product getProductById(Long id) {
+        return productRepository.findById(id).orElseThrow(() -> new RessourceNotFoundException("product not found"));
     }
 
-    public ProductDataDto updateProduct(ProductUpdateDto productUpdateDto, Long id) {
+    public Product updateProduct(ProductUpdateDto productUpdateDto, Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new RessourceNotFoundException("product not found"));
         if (productUpdateDto.getName() != null) {
             product.setName(productUpdateDto.getName());
@@ -63,7 +62,7 @@ public class ProductService {
         if (productUpdateDto.getCategory() != null) {
             product.setCategory(productUpdateDto.getCategory());
         }
-        return productMapper.mapToDto(productRepository.save(product));
+        return productRepository.save(product);
     }
 
     public void deleteProductById(Long id) {
@@ -73,10 +72,10 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public List<ProductDataDto> findProductByPriceBetween(Double min, Double max) {
+    public List<Product> findProductByPriceBetween(Double min, Double max) {
 //        return productRepository.findProductByPriceBetween(min, max).stream().map(productMapper::mapToDto).toList();
         Specification<Product> spec = ProductSpecifications.hasPriceBetween(min,max);
-        return productRepository.findAll(spec).stream().map(productMapper::mapToDto).toList();
+        return productRepository.findAll(spec);
 
     }
 
