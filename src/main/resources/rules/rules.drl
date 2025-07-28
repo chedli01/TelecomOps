@@ -7,6 +7,7 @@ import com.coding.internship.order.model.Order
 import com.coding.internship.subscription.model.Subscription
 import com.coding.internship.drools.dto.DataVerificationResult
 import com.coding.internship.subscription.enums.SubscriptionStatus
+import com.coding.internship.notification.sms.service.SmsService
 
 
 
@@ -80,6 +81,20 @@ rule "data verification"
           setVerified(true)
        }
 end
+global SmsService smsService;
+
+rule "notify On Data exhaustion"
+    agenda-group "data"
+    no-loop true
+    when
+    $subscription : Subscription(getRemainingData()-consumedData<getRemainingData()*0.2,getRemainingData()>=consumedData,getStatus().equals(SubscriptionStatus.ACTIVE))
+    then
+     smsService.sendSms("+216"+$subscription.getClient().getPhoneNumber(),"you have only 20% remaining data");
+
+
+
+end
+
 
 //
 //global SpeceficService productService;

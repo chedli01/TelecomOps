@@ -2,6 +2,7 @@ package com.coding.internship.drools.service;
 
 import com.coding.internship.drools.dto.DataVerificationResult;
 import com.coding.internship.drools.dto.ResponseObjectDto;
+import com.coding.internship.notification.sms.service.SmsService;
 import com.coding.internship.order.model.Order;
 import com.coding.internship.product.model.Product;
 import com.coding.internship.product.service.SpeceficService;
@@ -24,6 +25,7 @@ public class DroolsService {
     private final KieContainer kieContainer;
     private final SpeceficService speceficService;
     private final ClientService clientService;
+    private final SmsService smsService;
 
 
     public Product applyDiscount(Product product) {
@@ -80,6 +82,8 @@ public class DroolsService {
         try {
             DataVerificationResult dataVerificationResult = new DataVerificationResult();
             kieSession.setGlobal("consumedData", consumedData);
+            kieSession.setGlobal("smsService",smsService);
+
 
 
             kieSession.insert(subscription);
