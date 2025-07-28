@@ -80,7 +80,7 @@ public class DroolsService {
     public Boolean verifyData(Subscription subscription,Double consumedData){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {
-            DataVerificationResult dataVerificationResult = new DataVerificationResult();
+            DataVerificationResult dataVerificationResult = new DataVerificationResult(false);
             kieSession.setGlobal("consumedData", consumedData);
             kieSession.setGlobal("smsService",smsService);
 
