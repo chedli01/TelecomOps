@@ -6,6 +6,8 @@ import com.coding.internship.order.enums.OrderStatus;
 import com.coding.internship.order.model.Order;
 import com.coding.internship.order.model.OrderItem;
 import com.coding.internship.order.repository.OrderRepository;
+import com.coding.internship.user.client.model.Client;
+import com.coding.internship.user.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,11 @@ import java.util.UUID;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemService orderItemService;
+    private final ClientService clientService;
 
-    public Order makeOrder(OrderCreateDto orderCreateDto){
+    public Order makeOrder(OrderCreateDto orderCreateDto,Long clientId){
         List<OrderItem> orderItems = new ArrayList<>();
+        Client client = clientService.findClientById(clientId);
         for(OrderItemCreateDto orderItemCreateDto:orderCreateDto.getOrderItems()){
             orderItems.add(orderItemService.buildOrderItem(orderItemCreateDto));
         }
@@ -29,14 +33,17 @@ public class OrderService {
                 .description(orderCreateDto.getDescription())
                 .total(calculateTotal(orderItems))
                 .discount(0.0)
-                .status(OrderStatus.PENDING).orderItems(orderItems).build();
+                .status(OrderStatus.PENDING)
+                .orderItems(orderItems)
+                .client(client)
+                .build();
         for (OrderItem orderItem : orderItems){
             orderItem.setOrder(order);
         }
         Order savedOrder = orderRepository.save(order);
         return savedOrder;
     }
-    public Double calculateTotal(List<OrderItem> orderItems){
+    private Double calculateTotal(List<OrderItem> orderItems){
         Double total = 0.0;
         for(OrderItem orderItem:orderItems){
             total+=orderItem.getQuantity()*orderItem.getUnitPrice();
