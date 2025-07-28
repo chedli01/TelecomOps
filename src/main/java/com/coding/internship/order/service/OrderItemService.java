@@ -15,7 +15,8 @@ public class OrderItemService {
     private final ProductService productService;
 
     public OrderItem buildOrderItem(OrderItemCreateDto orderItemCreateDto){
-        return OrderItem.builder().product(productService.getProductById(orderItemCreateDto.getProductId())).quantity(orderItemCreateDto.getQuantity()).unitPrice(orderItemCreateDto.getUnitPrice()).build();
+        Product product = productService.getProductById(orderItemCreateDto.getProductId());
+        return OrderItem.builder().product(product).quantity(orderItemCreateDto.getQuantity()).unitPrice(product.getPrice()).build();
 
     }
 

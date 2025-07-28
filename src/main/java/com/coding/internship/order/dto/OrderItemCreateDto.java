@@ -12,6 +12,4 @@ import lombok.NoArgsConstructor;
 public class OrderItemCreateDto {
     private Long productId;
     private Integer quantity;
-    private Double unitPrice;
-
 }
