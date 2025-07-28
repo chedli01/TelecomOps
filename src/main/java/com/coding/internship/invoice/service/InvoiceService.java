@@ -18,7 +18,7 @@ public class InvoiceService {
     private final SubscriptionInvoiceRepository subscriptionInvoiceRepository;
     private final OrderInvoiceRepository orderInvoiceRepository;
 
-    public String createSubInvoice(Subscription subscription, InvoiceCreateDto invoiceCreateDto){
+    public Invoice createSubInvoice(Subscription subscription, InvoiceCreateDto invoiceCreateDto){
         var invoice = SubscriptionInvoice.builder().invoiceNumber(invoiceCreateDto.getInvoiceNumber())
                 .description(invoiceCreateDto.getDescription())
                 .dueDate(invoiceCreateDto.getDueDate())
@@ -26,10 +26,7 @@ public class InvoiceService {
                 .status(invoiceCreateDto.getStatus())
                 .subscription(subscription)
                 .build();
-        subscriptionInvoiceRepository.save(invoice);
-        return invoice.getInvoiceNumber();
-
-
+        return subscriptionInvoiceRepository.save(invoice);
     }
     public Invoice getInvoiceById(Long id){
         return invoiceRepository.findById(id).orElseThrow(()->new RuntimeException("invoice not found"));

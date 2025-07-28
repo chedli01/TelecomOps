@@ -20,13 +20,13 @@ public class PaymentService {
     private final InvoiceService invoiceService;
     private final PaymentMapper paymentMapper;
 
-    public PaymentDataDto createPayment(Long invoiceId, PaymentMethod paymentMethod){
+    public Payment createPayment(Long invoiceId, PaymentMethod paymentMethod){
         Invoice invoice = invoiceService.getInvoiceById(invoiceId);
         UUID uuid = UUID.randomUUID();
         var payment = Payment.builder().paymentDate(LocalDateTime.now()).paymentNumber(uuid.toString()).paymentMethod(paymentMethod).invoice(invoice).build();
         Payment savedPayment = paymentRepository.save(payment);
         invoiceService.setPaid(invoiceId);
-        return paymentMapper.mapToDto(savedPayment);
+        return savedPayment;
     }
 
 }

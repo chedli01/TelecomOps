@@ -29,9 +29,9 @@ public class SubscriptionService {
     private final ClientService clientService;
     private final InvoiceService invoiceService;
 
-    public SubscriptionDataDto subscribeToPlan(Long planId, Long clientId){
+    public Subscription subscribeToPlan(Long planId, Long clientId){
         Plan plan = planService.getPlanById(planId);
-        Client client = clientService.getClientById(clientId);
+        Client client = clientService.findClientById(clientId);
         var subscription = Subscription.builder()
                            .plan(plan)
                            .client(client).startDate(LocalDateTime.now()).endDate(LocalDateTime.now().plusDays(plan.getValidityDays()))
@@ -41,17 +41,17 @@ public class SubscriptionService {
         UUID uuid = UUID.randomUUID();
 
         invoiceService.createSubInvoice(savedSub, InvoiceCreateDto.builder().invoiceNumber(uuid.toString()).description(plan.getDescription()).dueDate(savedSub.getEndDate().minusDays(3L)).status(InvoiceStatus.UNPAID).total(plan.getPrice()-savedSub.getDiscount()).build());
-        return subscriptionMapper.mapToDto(savedSub);
+        return savedSub;
 
 
 
     }
 
-    public List<SubscriptionDataDto> getAllSubscriptions(){
-        return subscriptionRepository.findAll().stream().map(subscriptionMapper::mapToDto).toList();
+    public List<Subscription> getAllSubscriptions(){
+        return subscriptionRepository.findAll();
     }
 
-    public SubscriptionDataDto makeCall(Long clientId,Double minutes){
+    public Subscription makeCall(Long clientId,Double minutes){
         Subscription subscription = subscriptionRepository.findByClientId(clientId);
         if(subscription.getRemainingCalls()<minutes){
             throw new IllegalArgumentException("not enough calls");
@@ -62,7 +62,7 @@ public class SubscriptionService {
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingCalls(subscription.getRemainingCalls()-minutes).build());
     }
 
-    public SubscriptionDataDto makeSms(Long clientId){
+    public Subscription makeSms(Long clientId){
         Subscription subscription = subscriptionRepository.findByClientId(clientId);
         if(subscription.getRemainingSms()<1){
             throw new IllegalArgumentException("not enough sms");
@@ -73,7 +73,7 @@ public class SubscriptionService {
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingSms(subscription.getRemainingSms()-1).build());
     }
 
-    public SubscriptionDataDto consumeData(Long clientId,Double data){
+    public Subscription consumeData(Long clientId,Double data){
         Subscription subscription = subscriptionRepository.findByClientId(clientId);
         if(subscription.getRemainingData()<data){
             throw new IllegalArgumentException("not enough data");
@@ -84,7 +84,7 @@ public class SubscriptionService {
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingData(subscription.getRemainingData()-data).build());
     }
 
-    public SubscriptionDataDto updateSubscription(Long id, SubscriptionUpdateDto subscriptionUpdateDto){
+    public Subscription updateSubscription(Long id, SubscriptionUpdateDto subscriptionUpdateDto){
         Subscription subscription = subscriptionRepository.findById(id).orElseThrow(()->new RuntimeException("subscription not found"));
         if(subscriptionUpdateDto.getDiscount()!=null){
             subscription.setDiscount(subscriptionUpdateDto.getDiscount());
@@ -101,8 +101,8 @@ public class SubscriptionService {
         if(subscriptionUpdateDto.getStatus()!=null){
             subscription.setStatus(subscriptionUpdateDto.getStatus());
         }
-        subscriptionRepository.save(subscription);
-        return subscriptionMapper.mapToDto(subscription);
+        return subscriptionRepository.save(subscription);
+
 
     }
 
