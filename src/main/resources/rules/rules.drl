@@ -39,12 +39,26 @@ rule "Order Discount For Students"
        $order : Order($client:getClient(),client.isStudent==true)
      then
        modify($order){
-       setDiscount($order.getTotal()*0.1)
+       setDiscount($order.getTotal()*0.1+$order.getDiscount())
        }
 
        System.out.println("discount for student applied");
 
 end
+
+rule "Order Discount For Big Total "
+    agenda-group "discount"
+    no-loop true
+    when
+        $order : Order(getTotal()>1000)
+    then
+        modify($order){
+            setDiscount($order.getTotal()*0.2+$order.getDiscount())
+                }
+        System.out.println("discount for big total applied");
+end
+
+
 //
 //global SpeceficService productService;
 //global Long ProductId;

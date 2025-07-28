@@ -47,7 +47,7 @@ public class OrderService {
             orderItem.setOrder(order);
         }
 //        Order savedOrder = orderRepository.save(order);
-        Order savedOrder =orderRepository.save(droolsService.applyDiscountForStudent(order)) ;
+        Order savedOrder =orderRepository.save(droolsService.applyDiscountOnOrder(order)) ;
         invoiceService.createOrderInvoice(InvoiceCreateDto.builder().invoiceNumber(uuid.toString()).description(order.getDescription()).dueDate(savedOrder.getCreatedAt().plusDays(7L)).status(InvoiceStatus.UNPAID).total(order.getTotal()-savedOrder.getDiscount()).build(), savedOrder);
         return savedOrder;
     }

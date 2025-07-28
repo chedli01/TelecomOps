@@ -55,7 +55,7 @@ public class DroolsService {
             kieSession.dispose();
         }
     }
-    public Order applyDiscountForStudent(Order order){
+    public Order applyDiscountOnOrder(Order order){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {
 
