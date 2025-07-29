@@ -11,6 +11,7 @@ import com.coding.internship.notification.sms.service.SmsService
 import com.coding.internship.payment.model.Payment
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import com.coding.internship.user.client.service.ClientService;
 
 
 rule "Price Discount"
@@ -50,7 +51,7 @@ rule "Order Discount For Students"
        System.out.println("discount for student applied");
 
 end
-
+//
 rule "Order Discount For Big Total "
     agenda-group "discount"
     no-loop true
@@ -66,13 +67,14 @@ rule "Order Discount For Big Total "
         }
         System.out.println("discount for big total applied");
 end
-
+//
 global Double consumedData;
-
+//
 rule "data verification"
     agenda-group "data"
     no-loop true
     when
+       eval(consumedData != null)
        $subscription : Subscription(getRemainingData()>=consumedData,getStatus().equals(SubscriptionStatus.ACTIVE))
        $result : DataVerificationResult()
 
@@ -89,6 +91,7 @@ rule "notify On Data exhaustion"
     agenda-group "data"
     no-loop true
     when
+    eval(consumedData!=null)
     $subscription : Subscription(getRemainingData()-consumedData<getRemainingData()*0.2,getRemainingData()>=consumedData,getStatus().equals(SubscriptionStatus.ACTIVE))
     then
      smsService.sendSms("+216"+$subscription.getClient().getPhoneNumber(),"you have only 20% remaining data");
@@ -96,7 +99,7 @@ rule "notify On Data exhaustion"
 
 
 end
-
+//
 rule "late payment penalty"
       agenda-group "payment"
       no-loop true
@@ -107,6 +110,21 @@ rule "late payment penalty"
                  setAmount($payment.getAmount()*(1+0.01*$days))
           }
           System.out.println("late payment penalty applied"+$days);
+
+end
+
+global Long previousSubPlanId
+
+rule "discount on renewing sub"
+      agenda-group "discount"
+      no-loop true
+      when
+          $subscription: Subscription(plan.getId()==previousSubPlanId,$plan : plan)
+      then
+          modify($subscription){
+                setDiscount(0.1*$plan.getPrice())
+          }
+          System.out.println("discount on renewing sub applied");
 
 end
 

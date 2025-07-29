@@ -110,6 +110,24 @@ public class DroolsService {
             kieSession.dispose();
         }
     }
+    public Subscription applyDiscountOnSub(Subscription subscription){
+        KieSession kieSession = kieContainer.newKieSession("ksession-rules");
+        Subscription sub = clientService.getLatestInactiveSub(subscription.getClient().getId()).orElse(null);
+
+        try {
+            kieSession.getAgenda().getAgendaGroup("data").clear();
+            kieSession.setGlobal("previousSubPlanId",sub.getPlan().getId());
+
+            kieSession.insert(subscription);
+            kieSession.getAgenda().getAgendaGroup("discount").setFocus();
+            kieSession.fireAllRules();
+            return subscription;
+        }
+        finally {
+            kieSession.dispose();
+        }
+
+    }
 //
 //    public Product changeInDb(Product product,Long id){
 //        KieSession kieSession = kieContainer.newKieSession("ksession-rules");

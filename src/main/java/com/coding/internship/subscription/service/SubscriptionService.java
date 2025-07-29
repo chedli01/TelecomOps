@@ -39,8 +39,9 @@ public class SubscriptionService {
                            .client(client).startDate(LocalDateTime.now()).endDate(LocalDateTime.now().plusDays(plan.getValidityDays()))
                 .remainingData(plan.getDataQuota()).remainingCalls(plan.getCallsMinutes()).remainingSms(plan.getSmsNumber()).discount(0.0).status(SubscriptionStatus.ACTIVE)
                 .build();
-        Subscription savedSub = subscriptionRepository.save(subscription);
+        Subscription savedSub = subscriptionRepository.save(droolsService.applyDiscountOnSub(subscription));
         UUID uuid = UUID.randomUUID();
+
 
         invoiceService.createSubInvoice(savedSub, InvoiceCreateDto.builder().invoiceNumber(uuid.toString()).description(plan.getDescription()).dueDate(savedSub.getEndDate().minusDays(3L)).status(InvoiceStatus.UNPAID).total(plan.getPrice()-savedSub.getDiscount()).build());
         return savedSub;
