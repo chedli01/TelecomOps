@@ -23,6 +23,7 @@ public class Payment {
     private String paymentNumber;
     private LocalDateTime paymentDate;
     private PaymentMethod paymentMethod;
+    private Double amount;
     @OneToOne
     @JoinColumn(name = "invoice_id",nullable = false)
     private Invoice invoice;

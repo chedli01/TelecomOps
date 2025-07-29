@@ -1,5 +1,6 @@
 package com.coding.internship.payment.service;
 
+import com.coding.internship.drools.service.DroolsService;
 import com.coding.internship.invoice.model.Invoice;
 import com.coding.internship.invoice.service.InvoiceService;
 import com.coding.internship.payment.dto.PaymentDataDto;
@@ -19,6 +20,7 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final InvoiceService invoiceService;
     private final PaymentMapper paymentMapper;
+    private final DroolsService droolsService;
 
     public Payment createPayment(Long invoiceId, PaymentMethod paymentMethod){
         Invoice invoice = invoiceService.getInvoiceById(invoiceId);
@@ -26,6 +28,8 @@ public class PaymentService {
         var payment = Payment.builder().paymentDate(LocalDateTime.now()).paymentNumber(uuid.toString()).paymentMethod(paymentMethod).invoice(invoice).build();
         Payment savedPayment = paymentRepository.save(payment);
         invoiceService.setPaid(invoiceId);
+        droolsService.applyLatePaymentPenalty(savedPayment);
+
         return savedPayment;
     }
 

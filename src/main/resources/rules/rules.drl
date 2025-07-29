@@ -8,7 +8,9 @@ import com.coding.internship.subscription.model.Subscription
 import com.coding.internship.drools.dto.DataVerificationResult
 import com.coding.internship.subscription.enums.SubscriptionStatus
 import com.coding.internship.notification.sms.service.SmsService
-
+import com.coding.internship.payment.model.Payment
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 
 rule "Price Discount"
@@ -92,6 +94,18 @@ rule "notify On Data exhaustion"
      smsService.sendSms("+216"+$subscription.getClient().getPhoneNumber(),"you have only 20% remaining data");
 
 
+
+end
+
+rule "late payment penalty"
+      agenda-group "payment"
+      no-loop true
+      when
+          $payment: Payment($days:ChronoUnit.DAYS.between(invoice.getDueDate(),getPaymentDate())>0)
+      then
+          modify($payment){
+
+          }
 
 end
 

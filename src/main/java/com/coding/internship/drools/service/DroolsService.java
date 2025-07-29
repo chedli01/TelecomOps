@@ -4,6 +4,7 @@ import com.coding.internship.drools.dto.DataVerificationResult;
 import com.coding.internship.drools.dto.ResponseObjectDto;
 import com.coding.internship.notification.sms.service.SmsService;
 import com.coding.internship.order.model.Order;
+import com.coding.internship.payment.model.Payment;
 import com.coding.internship.product.model.Product;
 import com.coding.internship.product.service.SpeceficService;
 import com.coding.internship.subscription.model.Subscription;
@@ -96,6 +97,17 @@ public class DroolsService {
             kieSession.dispose();
         }
 
+    }
+    public void applyLatePaymentPenalty(Payment payment){
+        KieSession kieSession = kieContainer.newKieSession("ksession-rules");
+        try {
+            kieSession.insert(payment);
+            kieSession.getAgenda().getAgendaGroup("payment").setFocus();
+            kieSession.fireAllRules();
+        }
+        finally {
+            kieSession.dispose();
+        }
     }
 //
 //    public Product changeInDb(Product product,Long id){
