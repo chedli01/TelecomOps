@@ -91,8 +91,12 @@ rule "notify On Data exhaustion"
     agenda-group "data"
     no-loop true
     when
-    eval(consumedData!=null)
-    $subscription : Subscription(getRemainingData()-consumedData<getRemainingData()*0.2,getRemainingData()>=consumedData,getStatus().equals(SubscriptionStatus.ACTIVE))
+    $subscription : Subscription(getStatus() == SubscriptionStatus.ACTIVE)
+    eval(consumedData != null &&
+                 $subscription.getRemainingData() >= consumedData &&
+                 $subscription.getRemainingData() - consumedData < $subscription.getRemainingData() * 0.2)
+
+
     then
      smsService.sendSms("+216"+$subscription.getClient().getPhoneNumber(),"you have only 20% remaining data");
 

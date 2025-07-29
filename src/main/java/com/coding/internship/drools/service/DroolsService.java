@@ -115,8 +115,11 @@ public class DroolsService {
         Subscription sub = clientService.getLatestInactiveSub(subscription.getClient().getId()).orElse(null);
 
         try {
-            kieSession.getAgenda().getAgendaGroup("data").clear();
+//            kieSession.getAgenda().getAgendaGroup("data").clear();
             kieSession.setGlobal("previousSubPlanId",sub.getPlan().getId());
+//            kieSession.setGlobal("consumedData",0.0);
+//            kieSession.getAgenda().getAgendaGroup("data").clear();
+
 
             kieSession.insert(subscription);
             kieSession.getAgenda().getAgendaGroup("discount").setFocus();
