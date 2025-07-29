@@ -103,9 +103,7 @@ rule "late payment penalty"
       when
           $payment: Payment($days:ChronoUnit.DAYS.between(invoice.getDueDate(),getPaymentDate())>0)
       then
-          modify($payment){
-
-          }
+          System.out.println("late payment penalty applied"+$days);
 
 end
 
