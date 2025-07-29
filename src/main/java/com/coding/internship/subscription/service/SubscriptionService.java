@@ -112,6 +112,14 @@ public class SubscriptionService {
 
 
     }
+    public Subscription cancelSub(Long clientId){
+        Subscription subscription = clientService.getActiveSub(clientId);
+        if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
+            throw new IllegalArgumentException("subscription is inactive");
+        }
+        return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().status(SubscriptionStatus.INACTIVE).build());
+
+    }
 
 
 }

@@ -40,4 +40,9 @@ public class SubscriptionController {
     public SubscriptionDataDto useData(@AuthenticationPrincipal Client client,@PathVariable Double quantity){
         return subscriptionMapper.mapToDto(subscriptionService.consumeData(client.getId(),quantity));
     }
+    @PostMapping("/cancel")
+    public SubscriptionDataDto cancelSubscription(@AuthenticationPrincipal Client client){
+        return subscriptionMapper.mapToDto(subscriptionService.cancelSub(client.getId()));
+
+    }
 }
