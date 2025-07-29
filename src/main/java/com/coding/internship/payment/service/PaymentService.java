@@ -1,6 +1,7 @@
 package com.coding.internship.payment.service;
 
 import com.coding.internship.drools.service.DroolsService;
+import com.coding.internship.invoice.enums.InvoiceStatus;
 import com.coding.internship.invoice.model.Invoice;
 import com.coding.internship.invoice.service.InvoiceService;
 import com.coding.internship.payment.dto.PaymentDataDto;
@@ -24,6 +25,9 @@ public class PaymentService {
 
     public Payment createPayment(Long invoiceId, PaymentMethod paymentMethod){
         Invoice invoice = invoiceService.getInvoiceById(invoiceId);
+        if(invoice.getStatus().equals(InvoiceStatus.PAID)){
+            throw new RuntimeException("invoice is already paid");
+        }
         UUID uuid = UUID.randomUUID();
         var payment = Payment.builder().paymentDate(LocalDateTime.now()).paymentNumber(uuid.toString()).paymentMethod(paymentMethod).amount(invoice.getTotal()).invoice(invoice).build();
         Payment savedPayment = paymentRepository.save(droolsService.applyLatePaymentPenalty(payment));
