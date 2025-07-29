@@ -98,12 +98,13 @@ public class DroolsService {
         }
 
     }
-    public void applyLatePaymentPenalty(Payment payment){
+    public Payment applyLatePaymentPenalty(Payment payment){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {
             kieSession.insert(payment);
             kieSession.getAgenda().getAgendaGroup("payment").setFocus();
             kieSession.fireAllRules();
+            return payment;
         }
         finally {
             kieSession.dispose();

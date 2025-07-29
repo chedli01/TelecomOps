@@ -17,4 +17,5 @@ public class PaymentDataDto {
     private String paymentNumber;
     private LocalDateTime paymentDate;
     private PaymentMethod paymentMethod;
+    private Double amount;
 }
