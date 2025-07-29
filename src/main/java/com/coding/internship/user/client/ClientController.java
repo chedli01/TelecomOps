@@ -34,4 +34,8 @@ public class ClientController {
     public List<SubscriptionDataDto> getClientActiveSubs(@PathVariable Long id){
         return clientService.getSubscriptions(id).stream().map(subscriptionMapper::mapToDto).toList();
     }
+    @GetMapping("{id}/sub/inactive")
+    public SubscriptionDataDto getClientLatestInactiveSub(@PathVariable Long id){
+        return subscriptionMapper.mapToDto(clientService.getLatestInactiveSub(id).orElse(null));
+    }
 }

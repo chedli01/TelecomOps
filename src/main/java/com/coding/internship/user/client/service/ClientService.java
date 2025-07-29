@@ -9,7 +9,9 @@ import com.coding.internship.user.client.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +35,15 @@ public class ClientService {
     public List<Subscription> getSubscriptions(Long id){
         Client client = findClientById(id);
         return client.getSubscriptions();
+    }
+    public Optional<Subscription> getLatestInactiveSub(Long id){
+        List<Subscription> subscriptions = getSubscriptions(id);
+        Optional<Subscription> latestInactive = subscriptions.stream()
+                .filter(sub -> !sub.getStatus().equals(SubscriptionStatus.ACTIVE))
+                .max(Comparator.comparing(Subscription::getEndDate));
+
+        return latestInactive;
+
     }
 
 }
