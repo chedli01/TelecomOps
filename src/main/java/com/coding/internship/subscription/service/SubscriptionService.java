@@ -2,6 +2,7 @@ package com.coding.internship.subscription.service;
 
 import com.coding.internship.drools.service.DroolsService;
 import com.coding.internship.invoice.dto.InvoiceCreateDto;
+import com.coding.internship.invoice.dto.InvoiceUpdateDto;
 import com.coding.internship.invoice.enums.InvoiceStatus;
 import com.coding.internship.invoice.service.InvoiceService;
 import com.coding.internship.plan.model.Plan;
@@ -115,8 +116,9 @@ public class SubscriptionService {
     public Subscription cancelSub(Long clientId){
         Subscription subscription = clientService.getActiveSub(clientId);
         if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
-            throw new IllegalArgumentException("subscription is inactive");
+            throw new IllegalArgumentException("subscription is already inactive");
         }
+        invoiceService.updateInvoice(subscription.getInvoice().getId(), InvoiceUpdateDto.builder().status(InvoiceStatus.CANCELLED).build());
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().status(SubscriptionStatus.INACTIVE).build());
 
     }
