@@ -9,6 +9,8 @@ import com.coding.internship.user.client.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ClientService {
@@ -27,6 +29,10 @@ public class ClientService {
             }
         }
         return null;
+    }
+    public List<Subscription> getSubscriptions(Long id){
+        Client client = findClientById(id);
+        return client.getSubscriptions();
     }
 
 }

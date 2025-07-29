@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/client")
@@ -27,5 +29,9 @@ public class ClientController {
     public SubscriptionDataDto getClientActiveSub(@PathVariable Long id){
         return subscriptionMapper.mapToDto(clientService.getActiveSub(id));
 
+    }
+    @GetMapping("/{id}/subscriptions")
+    public List<SubscriptionDataDto> getClientActiveSubs(@PathVariable Long id){
+        return clientService.getSubscriptions(id).stream().map(subscriptionMapper::mapToDto).toList();
     }
 }
