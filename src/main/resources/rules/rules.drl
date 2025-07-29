@@ -99,6 +99,28 @@ rule "notify On Data exhaustion"
 
     then
      smsService.sendSms("+216"+$subscription.getClient().getPhoneNumber(),"you have only 20% remaining data");
+     System.out.println("data exhausted"+consumedData);
+
+
+
+end
+
+rule "80% peak on data"
+    agenda-group "data"
+    no-loop true
+    when
+    $subscription : Subscription(getStatus() == SubscriptionStatus.ACTIVE)
+    eval(consumedData != null &&
+                 $subscription.getRemainingData() >= consumedData &&
+                 $subscription.getRemainingData() - consumedData < $subscription.getRemainingData() * 0.2
+                 && ChronoUnit.DAYS.between(LocalDate.now(), $subscription.getEndDate()) >20)
+
+
+    then
+//     smsService.sendSms("+216"+$subscription.getClient().getPhoneNumber(),"you have only 20% remaining data");
+
+     System.out.println("recommend +");
+
 
 
 
@@ -123,7 +145,9 @@ rule "discount on renewing sub"
       agenda-group "discount"
       no-loop true
       when
-          $subscription: Subscription(plan.getId()==previousSubPlanId,$plan : plan)
+           $subscription: Subscription($plan : plan, $planId : plan.id)
+           eval(previousSubPlanId != null && previousSubPlanId.equals($planId))
+
       then
           modify($subscription){
                 setDiscount(0.1*$plan.getPrice())
