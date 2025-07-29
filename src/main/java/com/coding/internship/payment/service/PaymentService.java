@@ -1,6 +1,7 @@
 package com.coding.internship.payment.service;
 
 import com.coding.internship.drools.service.DroolsService;
+import com.coding.internship.invoice.dto.InvoiceUpdateDto;
 import com.coding.internship.invoice.enums.InvoiceStatus;
 import com.coding.internship.invoice.model.Invoice;
 import com.coding.internship.invoice.service.InvoiceService;
@@ -31,7 +32,7 @@ public class PaymentService {
         UUID uuid = UUID.randomUUID();
         var payment = Payment.builder().paymentDate(LocalDateTime.now()).paymentNumber(uuid.toString()).paymentMethod(paymentMethod).amount(invoice.getTotal()).invoice(invoice).build();
         Payment savedPayment = paymentRepository.save(droolsService.applyLatePaymentPenalty(payment));
-        invoiceService.setPaid(invoiceId);
+        invoiceService.updateInvoice(invoiceId, InvoiceUpdateDto.builder().status(InvoiceStatus.PAID).build());
 
 
         return savedPayment;
