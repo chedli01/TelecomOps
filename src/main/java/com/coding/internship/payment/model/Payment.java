@@ -22,6 +22,7 @@ public class Payment {
     private Long id;
     private String paymentNumber;
     private LocalDateTime paymentDate;
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
     private Double amount;
     @OneToOne
