@@ -1,5 +1,7 @@
 package com.coding.internship.plan;
 
+import com.coding.internship.plan.dto.PlanDataDto;
+import com.coding.internship.plan.mapper.PlanMapper;
 import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.service.PlanService;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/plan")
 public class PlanController {
     private final PlanService planService;
+    private final PlanMapper planMapper;
 
     @GetMapping("/{id}")
-    public Plan getPlanById(@PathVariable  Long id){
-        return planService.getPlanById(id);
+    public PlanDataDto getPlanById(@PathVariable  Long id){
+        return planMapper.mapToDto(planService.getPlanById(id));
     }
     @GetMapping("/next/{id}")
-    public Plan getNextPlanByDataQuota(@PathVariable  Long id){
-        return planService.getNextPlanByDataQuota(id);
+    public PlanDataDto getNextPlanByDataQuota(@PathVariable  Long id){
+        return planMapper.mapToDto(planService.getNextPlanByDataQuota(id)) ;
     }
 }
