@@ -14,6 +14,9 @@ public class PlanService {
     public Plan getPlanById(Long id){
         return planRepository.findById(id).orElseThrow(()->new RuntimeException("plan not found"));
     }
+    public Plan getNextPlanByDataQuota(Long id){
+        return planRepository.getNextPlanByDataQuota(id);
+    }
 
 
 }
