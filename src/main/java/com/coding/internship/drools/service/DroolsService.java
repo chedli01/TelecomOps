@@ -6,6 +6,7 @@ import com.coding.internship.notification.email.EmailService;
 import com.coding.internship.notification.sms.service.SmsService;
 import com.coding.internship.order.model.Order;
 import com.coding.internship.payment.model.Payment;
+import com.coding.internship.plan.service.PlanService;
 import com.coding.internship.product.model.Product;
 import com.coding.internship.product.service.SpeceficService;
 import com.coding.internship.subscription.model.Subscription;
@@ -29,6 +30,7 @@ public class DroolsService {
     private final ClientService clientService;
     private final SmsService smsService;
     private final EmailService emailService;
+    private final PlanService planService;
 
 
     public Product applyDiscount(Product product) {
@@ -87,6 +89,7 @@ public class DroolsService {
             kieSession.setGlobal("consumedData", consumedData);
             kieSession.setGlobal("smsService",smsService);
             kieSession.setGlobal("emailService",emailService);
+            kieSession.setGlobal("planService",planService);
 
 
 

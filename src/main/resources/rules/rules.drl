@@ -13,6 +13,7 @@ import com.coding.internship.payment.model.Payment
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import com.coding.internship.user.client.service.ClientService;
+import com.coding.internship.plan.service.PlanService
 
 
 rule "Price Discount"
@@ -99,13 +100,14 @@ rule "notify On Data exhaustion"
 
 
     then
-     smsService.sendSms("+216"+$subscription.getClient().getPhoneNumber(),"you have only 20% remaining data");
+//     smsService.sendSms("+216"+$subscription.getClient().getPhoneNumber(),"you have only 20% remaining data");
      System.out.println("data exhausted"+consumedData);
 
 
 
 end
 global EmailService emailService;
+global PlanService planService;
 
 rule "80% peak on data"
     agenda-group "data"
@@ -119,7 +121,8 @@ rule "80% peak on data"
 
 
     then
-     emailService.sendSimpleEmail($subscription.getClient().getEmail(), "plan", "update please");
+     emailService.sendSimpleEmail($subscription.getClient().getEmail(), "plan",$subscription.getPlan().getDescription());
+
 
 
      System.out.println("recommend +");
