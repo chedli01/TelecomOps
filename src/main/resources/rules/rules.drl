@@ -6,8 +6,9 @@ import com.coding.internship.user.client.model.Client
 import com.coding.internship.order.model.Order
 import com.coding.internship.subscription.model.Subscription
 import com.coding.internship.drools.dto.DataVerificationResult
-import com.coding.internship.drools.dto.CallVerificationResult
+import com.coding.internship.drools.dto.VerificationResult
 import com.coding.internship.drools.dto.CallVerificationRequest
+import com.coding.internship.drools.dto.SmsVerificationRequest
 
 
 import com.coding.internship.subscription.enums.SubscriptionStatus
@@ -172,7 +173,7 @@ rule "call balance verification"
       when
          $request : CallVerificationRequest()
          $subscription : Subscription(getStatus().equals(SubscriptionStatus.ACTIVE),getRemainingCalls()>=$request.getMinutesConsumed())
-         $result : CallVerificationResult()
+         $result : VerificationResult()
 
 
 
@@ -181,6 +182,23 @@ rule "call balance verification"
             setValid(true)
          }
          System.out.println("call balance verification applied");
+
+end
+rule "sms balance verification"
+      agenda-group "sms"
+      no-loop true
+      when
+         $request : SmsVerificationRequest()
+         $subscription : Subscription(getStatus().equals(SubscriptionStatus.ACTIVE),getRemainingSms()>=$request.getSmsConsumed())
+         $result : VerificationResult()
+
+
+
+      then
+         modify($result){
+            setValid(true)
+         }
+         System.out.println("sms balance verification applied");
 
 end
 

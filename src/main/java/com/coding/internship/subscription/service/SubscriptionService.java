@@ -1,6 +1,7 @@
 package com.coding.internship.subscription.service;
 
 import com.coding.internship.drools.dto.CallVerificationRequest;
+import com.coding.internship.drools.dto.SmsVerificationRequest;
 import com.coding.internship.drools.service.DroolsService;
 import com.coding.internship.invoice.dto.InvoiceCreateDto;
 import com.coding.internship.invoice.dto.InvoiceUpdateDto;
@@ -60,7 +61,7 @@ public class SubscriptionService {
         Subscription subscription = clientService.getActiveSub(clientId);
         CallVerificationRequest callVerificationRequest = CallVerificationRequest.builder().minutesConsumed(minutes).build();
         if(droolsService.verifyCalls(subscription,callVerificationRequest)==false){
-            throw new IllegalArgumentException("not valid transaction");
+            throw new IllegalArgumentException("not valid call transaction");
         }
 
 
@@ -74,13 +75,17 @@ public class SubscriptionService {
     }
 
     public Subscription makeSms(Long clientId){
-        Subscription subscription = subscriptionRepository.findByClientId(clientId);
-        if(subscription.getRemainingSms()<1){
-            throw new IllegalArgumentException("not enough sms");
+        Subscription subscription =clientService.getActiveSub(clientId);
+        SmsVerificationRequest smsVerificationRequest = SmsVerificationRequest.builder().smsConsumed(1).build();
+        if(droolsService.verifySms(subscription,smsVerificationRequest)==false){
+            throw new IllegalArgumentException("not valid sms  transaction");
         }
-        if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
-            throw new IllegalArgumentException("subscription is inactive");
-        }
+//        if(subscription.getRemainingSms()<1){
+//            throw new IllegalArgumentException("not enough sms");
+//        }
+//        if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
+//            throw new IllegalArgumentException("subscription is inactive");
+//        }
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingSms(subscription.getRemainingSms()-1).build());
     }
 

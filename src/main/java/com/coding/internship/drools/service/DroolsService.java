@@ -1,9 +1,6 @@
 package com.coding.internship.drools.service;
 
-import com.coding.internship.drools.dto.CallVerificationRequest;
-import com.coding.internship.drools.dto.CallVerificationResult;
-import com.coding.internship.drools.dto.DataVerificationResult;
-import com.coding.internship.drools.dto.ResponseObjectDto;
+import com.coding.internship.drools.dto.*;
 import com.coding.internship.notification.email.EmailService;
 import com.coding.internship.notification.sms.service.SmsService;
 import com.coding.internship.order.model.Order;
@@ -12,12 +9,10 @@ import com.coding.internship.plan.service.PlanService;
 import com.coding.internship.product.model.Product;
 import com.coding.internship.product.service.SpeceficService;
 import com.coding.internship.subscription.model.Subscription;
-import com.coding.internship.user.client.model.Client;
 import com.coding.internship.user.client.service.ClientService;
 import lombok.Data;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.mvel2.ast.Or;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -142,16 +137,16 @@ public class DroolsService {
     public Boolean verifyCalls(Subscription subscription, CallVerificationRequest callVerificationRequest){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {
-            CallVerificationResult callVerificationResult = new CallVerificationResult(false);
+            VerificationResult verificationResult = new VerificationResult(false);
 
 
 
             kieSession.insert(subscription);
             kieSession.insert(callVerificationRequest);
-            kieSession.insert(callVerificationResult);
+            kieSession.insert(verificationResult);
             kieSession.getAgenda().getAgendaGroup("calls").setFocus();
             kieSession.fireAllRules();
-            return callVerificationResult.isValid();
+            return verificationResult.isValid();
         }
         finally {
             kieSession.dispose();
@@ -159,6 +154,27 @@ public class DroolsService {
 
 
     }
+    public Boolean verifySms(Subscription subscription, SmsVerificationRequest smsVerificationRequest){
+        KieSession kieSession = kieContainer.newKieSession("ksession-rules");
+        try {
+            VerificationResult verificationResult = new VerificationResult(false);
+
+
+
+            kieSession.insert(subscription);
+            kieSession.insert(smsVerificationRequest);
+            kieSession.insert(verificationResult);
+            kieSession.getAgenda().getAgendaGroup("sms").setFocus();
+            kieSession.fireAllRules();
+            return verificationResult.isValid();
+        }
+        finally {
+            kieSession.dispose();
+        }
+
+
+    }
+
 //
 //    public Product changeInDb(Product product,Long id){
 //        KieSession kieSession = kieContainer.newKieSession("ksession-rules");
