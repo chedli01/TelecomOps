@@ -79,11 +79,10 @@ public class DroolsService {
             kieSession.dispose();
         }
     }
-    public Boolean verifyData(Subscription subscription,Double consumedData){
+    public Boolean verifyData(Subscription subscription,DataVerificationRequest dataVerificationRequest){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {
             DataVerificationResult dataVerificationResult = new DataVerificationResult(false);
-            kieSession.setGlobal("consumedData", consumedData);
             kieSession.setGlobal("smsService",smsService);
             kieSession.setGlobal("emailService",emailService);
             kieSession.setGlobal("planService",planService);
@@ -91,6 +90,7 @@ public class DroolsService {
 
 
             kieSession.insert(subscription);
+            kieSession.insert(dataVerificationRequest);
             kieSession.insert(dataVerificationResult);
             kieSession.getAgenda().getAgendaGroup("data").setFocus();
             kieSession.fireAllRules();
@@ -118,12 +118,7 @@ public class DroolsService {
         Subscription sub = clientService.getLatestInactiveSub(subscription.getClient().getId()).orElse(null);
 
         try {
-//            kieSession.getAgenda().getAgendaGroup("data").clear();
             kieSession.setGlobal("previousSubPlanId",sub.getPlan().getId());
-//            kieSession.setGlobal("consumedData",0.0);
-//            kieSession.getAgenda().getAgendaGroup("data").clear();
-
-
             kieSession.insert(subscription);
             kieSession.getAgenda().getAgendaGroup("discount").setFocus();
             kieSession.fireAllRules();

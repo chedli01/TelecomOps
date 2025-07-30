@@ -9,6 +9,9 @@ import com.coding.internship.drools.dto.DataVerificationResult
 import com.coding.internship.drools.dto.VerificationResult
 import com.coding.internship.drools.dto.CallVerificationRequest
 import com.coding.internship.drools.dto.SmsVerificationRequest
+import com.coding.internship.drools.dto.DataVerificationRequest
+
+
 
 
 import com.coding.internship.subscription.enums.SubscriptionStatus
@@ -74,15 +77,13 @@ rule "Order Discount For Big Total "
         }
         System.out.println("discount for big total applied");
 end
-//
-global Double consumedData;
-//
+
 rule "data verification"
     agenda-group "data"
     no-loop true
     when
-       eval(consumedData != null)
-       $subscription : Subscription(getRemainingData()>=consumedData,getStatus().equals(SubscriptionStatus.ACTIVE))
+       $request : DataVerificationRequest()
+       $subscription : Subscription(getRemainingData()>=$request.getConsumedData(),getStatus().equals(SubscriptionStatus.ACTIVE))
        $result : DataVerificationResult()
 
 
@@ -98,15 +99,10 @@ rule "notify On Data exhaustion"
     agenda-group "data"
     no-loop true
     when
-    $subscription : Subscription(getStatus() == SubscriptionStatus.ACTIVE)
-    eval(consumedData != null &&
-                 $subscription.getRemainingData() >= consumedData &&
-                 $subscription.getRemainingData() - consumedData < $subscription.getRemainingData() * 0.2)
-
-
+    $request : DataVerificationRequest()
+    $subscription : Subscription(getStatus() == SubscriptionStatus.ACTIVE,getRemainingData()>$request.getConsumedData(),getRemainingData()-$request.getConsumedData()<getRemainingData()*0.2)
     then
-//     smsService.sendSms("+216"+$subscription.getClient().getPhoneNumber(),"you have only 20% remaining data");
-     System.out.println("data exhausted"+consumedData);
+     System.out.println("data exhausted");
 
 
 
@@ -118,11 +114,10 @@ rule "80% peak on data"
     agenda-group "data"
     no-loop true
     when
-    $subscription : Subscription(getStatus() == SubscriptionStatus.ACTIVE)
-    eval(consumedData != null &&
-                 $subscription.getRemainingData() >= consumedData &&
-                 $subscription.getRemainingData() - consumedData < $subscription.getRemainingData() * 0.2
-                 && ChronoUnit.DAYS.between(LocalDate.now(), $subscription.getEndDate()) >20)
+    $request : DataVerificationRequest()
+    $subscription : Subscription(getStatus() == SubscriptionStatus.ACTIVE,getRemainingData()>=$request.getConsumedData(),getRemainingData()-$request.getConsumedData()<getRemainingData()*0.2)
+    eval(ChronoUnit.DAYS.between(LocalDate.now(), $subscription.getEndDate()) > 20)
+
 
 
     then
