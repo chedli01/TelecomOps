@@ -6,6 +6,10 @@ import com.coding.internship.user.client.model.Client
 import com.coding.internship.order.model.Order
 import com.coding.internship.subscription.model.Subscription
 import com.coding.internship.drools.dto.DataVerificationResult
+import com.coding.internship.drools.dto.CallVerificationResult
+import com.coding.internship.drools.dto.CallVerificationRequest
+
+
 import com.coding.internship.subscription.enums.SubscriptionStatus
 import com.coding.internship.notification.sms.service.SmsService
 import com.coding.internship.notification.email.EmailService
@@ -121,7 +125,7 @@ rule "80% peak on data"
 
 
     then
-     emailService.sendSimpleEmail($subscription.getClient().getEmail(), "plan",$subscription.getPlan().getDescription());
+//     emailService.sendSimpleEmail($subscription.getClient().getEmail(), "plan",$subscription.getPlan().getDescription());
 
 
 
@@ -159,6 +163,24 @@ rule "discount on renewing sub"
                 setDiscount(0.1*$plan.getPrice())
           }
           System.out.println("discount on renewing sub applied");
+
+end
+
+rule "call balance verification"
+      agenda-group "calls"
+      no-loop true
+      when
+         $request : CallVerificationRequest()
+         $subscription : Subscription(getStatus().equals(SubscriptionStatus.ACTIVE),getRemainingCalls()>=$request.getMinutesConsumed())
+         $result : CallVerificationResult()
+
+
+
+      then
+         modify($result){
+            setValid(true)
+         }
+         System.out.println("call balance verification applied");
 
 end
 

@@ -1,5 +1,6 @@
 package com.coding.internship.subscription.service;
 
+import com.coding.internship.drools.dto.CallVerificationRequest;
 import com.coding.internship.drools.service.DroolsService;
 import com.coding.internship.invoice.dto.InvoiceCreateDto;
 import com.coding.internship.invoice.dto.InvoiceUpdateDto;
@@ -56,13 +57,19 @@ public class SubscriptionService {
     }
 
     public Subscription makeCall(Long clientId,Double minutes){
-        Subscription subscription = subscriptionRepository.findByClientId(clientId);
-        if(subscription.getRemainingCalls()<minutes){
-            throw new IllegalArgumentException("not enough calls");
+        Subscription subscription = clientService.getActiveSub(clientId);
+        CallVerificationRequest callVerificationRequest = CallVerificationRequest.builder().minutesConsumed(minutes).build();
+        if(droolsService.verifyCalls(subscription,callVerificationRequest)==false){
+            throw new IllegalArgumentException("not valid transaction");
         }
-        if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
-            throw new IllegalArgumentException("subscription is inactive");
-        }
+
+
+//        if(subscription.getRemainingCalls()<minutes){
+//            throw new IllegalArgumentException("not enough calls");
+//        }
+//        if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
+//            throw new IllegalArgumentException("subscription is inactive");
+//        }
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingCalls(subscription.getRemainingCalls()-minutes).build());
     }
 

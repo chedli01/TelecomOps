@@ -1,5 +1,7 @@
 package com.coding.internship.drools.service;
 
+import com.coding.internship.drools.dto.CallVerificationRequest;
+import com.coding.internship.drools.dto.CallVerificationResult;
 import com.coding.internship.drools.dto.DataVerificationResult;
 import com.coding.internship.drools.dto.ResponseObjectDto;
 import com.coding.internship.notification.email.EmailService;
@@ -135,6 +137,26 @@ public class DroolsService {
         finally {
             kieSession.dispose();
         }
+
+    }
+    public Boolean verifyCalls(Subscription subscription, CallVerificationRequest callVerificationRequest){
+        KieSession kieSession = kieContainer.newKieSession("ksession-rules");
+        try {
+            CallVerificationResult callVerificationResult = new CallVerificationResult(false);
+
+
+
+            kieSession.insert(subscription);
+            kieSession.insert(callVerificationRequest);
+            kieSession.insert(callVerificationResult);
+            kieSession.getAgenda().getAgendaGroup("calls").setFocus();
+            kieSession.fireAllRules();
+            return callVerificationResult.isValid();
+        }
+        finally {
+            kieSession.dispose();
+        }
+
 
     }
 //
