@@ -63,14 +63,6 @@ public class SubscriptionService {
         if(droolsService.verifyCalls(subscription,callVerificationRequest)==false){
             throw new IllegalArgumentException("not valid call transaction");
         }
-
-
-//        if(subscription.getRemainingCalls()<minutes){
-//            throw new IllegalArgumentException("not enough calls");
-//        }
-//        if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
-//            throw new IllegalArgumentException("subscription is inactive");
-//        }
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingCalls(subscription.getRemainingCalls()-minutes).build());
     }
 
@@ -80,27 +72,17 @@ public class SubscriptionService {
         if(droolsService.verifySms(subscription,smsVerificationRequest)==false){
             throw new IllegalArgumentException("not valid sms  transaction");
         }
-//        if(subscription.getRemainingSms()<1){
-//            throw new IllegalArgumentException("not enough sms");
-//        }
-//        if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
-//            throw new IllegalArgumentException("subscription is inactive");
-//        }
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingSms(subscription.getRemainingSms()-1).build());
     }
 
     public Subscription consumeData(Long clientId,Double data){
         Subscription subscription = clientService.getActiveSub(clientId);
-//        if(subscription.getRemainingData()<data){
-//            throw new IllegalArgumentException("not enough data");
-//        }
+
 
         if(droolsService.verifyData(subscription,data)==false){
             throw new IllegalArgumentException("not valid transaction");
         }
-//        if(SubscriptionStatus.INACTIVE.equals(subscription.getStatus())){
-//            throw new IllegalArgumentException("subscription is inactive");
-//        }
+
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingData(subscription.getRemainingData()-data).build());
     }
 
