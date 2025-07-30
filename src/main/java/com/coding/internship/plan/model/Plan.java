@@ -27,7 +27,7 @@ public class Plan {
     private Double callsMinutes;
     private Integer smsNumber;
     private Integer validityDays;
-    @OneToMany(mappedBy = "plan")
+    @OneToMany(mappedBy = "plan",fetch = FetchType.LAZY)
     private List<Subscription> subscriptions;
 
 }
