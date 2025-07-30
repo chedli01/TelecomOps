@@ -11,6 +11,7 @@ public class SmsService {
     private String fromNumber;
 
     public void sendSms(String to, String body) {
+        System.out.println("sending sms to " + to);
         Message.creator(
                 new PhoneNumber(to),
                 new PhoneNumber(fromNumber),

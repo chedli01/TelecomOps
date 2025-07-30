@@ -119,7 +119,6 @@ rule "80% peak on data"
 
 
     then
-//     smsService.sendSms("+216"+$subscription.getClient().getPhoneNumber(),"you have only 20% remaining data");
      emailService.sendSimpleEmail($subscription.getClient().getEmail(), "plan", "update please");
 
 
