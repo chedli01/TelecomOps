@@ -10,6 +10,7 @@ import com.coding.internship.invoice.dto.InvoiceUpdateDto;
 import com.coding.internship.invoice.enums.InvoiceStatus;
 import com.coding.internship.invoice.service.InvoiceService;
 import com.coding.internship.notification.email.EmailService;
+import com.coding.internship.notification.sms.service.SmsService;
 import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.service.PlanService;
 import com.coding.internship.subscription.dto.SubscriptionDataDto;
@@ -39,6 +40,7 @@ public class SubscriptionService {
     private final InvoiceService invoiceService;
     private final DroolsService droolsService;
     private final EmailService emailService;
+    private final SmsService smsService;
 
     public Subscription subscribeToPlan(Long planId, Long clientId){
         Plan plan = planService.getPlanById(planId);
@@ -95,6 +97,8 @@ public class SubscriptionService {
         }
         if(dataVerificationResult.isSendSmsAlert()){
             System.out.println("send sms logic");
+            smsService.sendSms(client.getPhoneNumber(),"You have exceeded 80% of your data quota");
+
 
         }
         if(dataVerificationResult.isSendEmailUpgradeRecommendation()){
