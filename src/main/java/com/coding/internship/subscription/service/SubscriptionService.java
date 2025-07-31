@@ -9,6 +9,7 @@ import com.coding.internship.invoice.dto.InvoiceCreateDto;
 import com.coding.internship.invoice.dto.InvoiceUpdateDto;
 import com.coding.internship.invoice.enums.InvoiceStatus;
 import com.coding.internship.invoice.service.InvoiceService;
+import com.coding.internship.notification.email.EmailService;
 import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.service.PlanService;
 import com.coding.internship.subscription.dto.SubscriptionDataDto;
@@ -23,7 +24,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -35,6 +38,7 @@ public class SubscriptionService {
     private final ClientService clientService;
     private final InvoiceService invoiceService;
     private final DroolsService droolsService;
+    private final EmailService emailService;
 
     public Subscription subscribeToPlan(Long planId, Long clientId){
         Plan plan = planService.getPlanById(planId);
@@ -79,6 +83,8 @@ public class SubscriptionService {
 
     public Subscription consumeData(Long clientId,Double data){
         Subscription subscription = clientService.getActiveSub(clientId);
+        Plan plan = subscription.getPlan();
+        Client client = subscription.getClient();
         DataVerificationRequest dataVerificationRequest = DataVerificationRequest.builder().consumedData(data).build();
 
         DataVerificationResult dataVerificationResult = droolsService.verifyData(subscription,dataVerificationRequest);
@@ -89,9 +95,33 @@ public class SubscriptionService {
         }
         if(dataVerificationResult.isSendSmsAlert()){
             System.out.println("send sms logic");
+
         }
         if(dataVerificationResult.isSendEmailUpgradeRecommendation()){
-            System.out.println("send email logic : " + planService.getNextPlanByDataQuota(subscription.getPlan().getId()).getDescription() );
+            Plan recommendedPlan = planService.getNextPlanByDataQuota(plan.getId());
+            System.out.println("send email logic : " + recommendedPlan.getDescription());
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("name", client.getFirstName() +" "+ client.getLastName());
+            variables.put("currentPlanName",plan.getName() );
+            variables.put("currentPlanDescription",plan.getDescription());
+            variables.put("currentPlanPrice",plan.getPrice());
+            variables.put("currentPlanDataQuota",plan.getDataQuota());
+            variables.put("currentPlanCallsMinutes",plan.getCallsMinutes());
+            variables.put("currentPlanSmsNumber",plan.getSmsNumber());
+            variables.put("currentPlanValidityDays",plan.getValidityDays());
+
+
+
+            variables.put("suggestedPlanName",recommendedPlan.getName() );
+            variables.put("suggestedPlanDescription",recommendedPlan.getDescription());
+            variables.put("suggestedPlanPrice",recommendedPlan.getPrice());
+            variables.put("suggestedPlanDataQuota",recommendedPlan.getDataQuota());
+            variables.put("suggestedPlanCallsMinutes",recommendedPlan.getCallsMinutes());
+            variables.put("suggestedPlanSmsNumber",recommendedPlan.getSmsNumber());
+            variables.put("suggestedPlanValidityDays",recommendedPlan.getValidityDays());
+
+            emailService.sendHtmlEmail(client.getEmail(),"Plan Upgrade",variables);
+
         }
 
 

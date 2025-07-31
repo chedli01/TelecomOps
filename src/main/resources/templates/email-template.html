@@ -1,11 +1,87 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Email</title>
+    <title>Plan Suggestion</title>
 </head>
-<body>
-<h2>Hello [[${name}]]!</h2>
-<p>Your current plan is: <strong>[[${currentPlan}]]</strong></p>
-<p>We suggest upgrading to: <strong>[[${suggestedPlan}]]</strong></p>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; color: #333;">
+<div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+    <h2 style="color: #2c3e50;">Hello [[${name}]]!</h2>
+
+    <p style="font-size: 16px;">
+        We noticed that you have already used over <strong>80%</strong> of your data allowance with more than
+        <strong>20 days</strong> remaining in your current plan cycle.
+        To ensure uninterrupted service and a better experience, we recommend upgrading to a plan with higher limits.
+    </p>
+
+    <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;"/>
+
+    <h3 style="color: #e67e22;">Your Current Plan</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <tr>
+            <td style="padding: 8px;"><strong>Name:</strong></td>
+            <td style="padding: 8px;">[[${currentPlanName}]]</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;"><strong>Description:</strong></td>
+            <td style="padding: 8px;">[[${currentPlanDescription}]]</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;"><strong>Price:</strong></td>
+            <td style="padding: 8px;">[[${currentPlanPrice}]] TND</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;"><strong>Data Quota:</strong></td>
+            <td style="padding: 8px;">[[${currentPlanDataQuota}]] GB</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;"><strong>Call Minutes:</strong></td>
+            <td style="padding: 8px;">[[${currentPlanCallsMinutes}]] minutes</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;"><strong>SMS:</strong></td>
+            <td style="padding: 8px;">[[${currentPlanSmsNumber}]] messages</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;"><strong>Validity:</strong></td>
+            <td style="padding: 8px;">[[${currentPlanValidityDays}]] days</td>
+        </tr>
+    </table>
+
+    <h3 style="color: #27ae60;">Recommended Plan</h3>
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td style="padding: 8px;"><strong>Name:</strong></td>
+            <td style="padding: 8px;">[[${suggestedPlanName}]]</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;"><strong>Description:</strong></td>
+            <td style="padding: 8px;">[[${suggestedPlanDescription}]]</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;"><strong>Price:</strong></td>
+            <td style="padding: 8px;">[[${suggestedPlanPrice}]] TND</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;"><strong>Data Quota:</strong></td>
+            <td style="padding: 8px;">[[${suggestedPlanDataQuota}]] GB</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;"><strong>Call Minutes:</strong></td>
+            <td style="padding: 8px;">[[${suggestedPlanCallsMinutes}]] minutes</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;"><strong>SMS:</strong></td>
+            <td style="padding: 8px;">[[${suggestedPlanSmsNumber}]] messages</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;"><strong>Validity:</strong></td>
+            <td style="padding: 8px;">[[${suggestedPlanValidityDays}]] days</td>
+        </tr>
+    </table>
+
+    <p style="margin-top: 30px; font-size: 14px; color: #555;">
+        If you have any questions or need help upgrading your plan, feel free to contact our support team.
+    </p>
+</div>
 </body>
 </html>
