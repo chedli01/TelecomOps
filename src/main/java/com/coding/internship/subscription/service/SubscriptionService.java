@@ -20,9 +20,12 @@ import com.coding.internship.subscription.enums.SubscriptionStatus;
 import com.coding.internship.subscription.mapper.SubscriptionMapper;
 import com.coding.internship.subscription.model.Subscription;
 import com.coding.internship.subscription.repository.SubscriptionRepository;
+import com.coding.internship.user.admin.model.Admin;
 import com.coding.internship.user.client.model.Client;
 import com.coding.internship.user.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -169,8 +172,17 @@ public class SubscriptionService {
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().status(SubscriptionStatus.INACTIVE).build());
 
     }
-    public Subscription getSubById(Long id){
-        return subscriptionRepository.findById(id).orElseThrow(()->new RessourceNotFoundException("subscription not found"));
+    public Subscription getSubById(Long id,Long userId){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Subscription subscription = subscriptionRepository.findById(id).orElseThrow(()->new RessourceNotFoundException("subscription not found"));
+        if (principal instanceof Client client && !subscription.getClient().getId().equals(client.getId()) ) {
+            throw new AccessDeniedException("You are not allowed to access this subscription");
+
+        }
+        return subscription;
+
+
+
     }
 
 
