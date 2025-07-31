@@ -216,6 +216,24 @@ rule "call balance verification"
          System.out.println("call balance verification applied");
 
 end
+////////////////////////////////////////////////////
+rule "gift  verification"
+      agenda-group "calls"
+      no-loop true
+      when
+         $request : CallVerificationRequest()
+         $subscription : Subscription(getStatus().equals(SubscriptionStatus.ACTIVE),getRemainingCalls()>=$request.getMinutesConsumed(),$request.getTotalConsumed()<1000,$request.getMinutesConsumed()+$request.getTotalConsumed()>1000)
+         $result : VerificationResult()
+
+
+
+      then
+         modify($result){
+            setGetGift(true)
+         }
+         System.out.println("gift verification applied");
+
+end
 ///////////////////////////////////////////////////////////////////
 rule "sms balance verification"
       agenda-group "sms"

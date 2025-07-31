@@ -127,10 +127,10 @@ public class DroolsService {
         }
 
     }
-    public Boolean verifyCalls(Subscription subscription, CallVerificationRequest callVerificationRequest){
+    public VerificationResult verifyCalls(Subscription subscription, CallVerificationRequest callVerificationRequest){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {
-            VerificationResult verificationResult = new VerificationResult(false);
+            VerificationResult verificationResult = new VerificationResult(false,false);
 
 
 
@@ -139,7 +139,7 @@ public class DroolsService {
             kieSession.insert(verificationResult);
             kieSession.getAgenda().getAgendaGroup("calls").setFocus();
             kieSession.fireAllRules();
-            return verificationResult.isValid();
+            return verificationResult;
         }
         finally {
             kieSession.dispose();
@@ -150,7 +150,7 @@ public class DroolsService {
     public Boolean verifySms(Subscription subscription, SmsVerificationRequest smsVerificationRequest){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {
-            VerificationResult verificationResult = new VerificationResult(false);
+            VerificationResult verificationResult = new VerificationResult(false,false);
 
 
 

@@ -1,9 +1,6 @@
 package com.coding.internship.subscription.service;
 
-import com.coding.internship.drools.dto.CallVerificationRequest;
-import com.coding.internship.drools.dto.DataVerificationRequest;
-import com.coding.internship.drools.dto.DataVerificationResult;
-import com.coding.internship.drools.dto.SmsVerificationRequest;
+import com.coding.internship.drools.dto.*;
 import com.coding.internship.drools.service.DroolsService;
 import com.coding.internship.exception.RessourceNotFoundException;
 import com.coding.internship.invoice.dto.InvoiceCreateDto;
@@ -77,10 +74,16 @@ public class SubscriptionService {
 
     public Subscription makeCall(Long clientId,Double minutes){
         Subscription subscription = clientService.getActiveSub(clientId);
-        CallVerificationRequest callVerificationRequest = CallVerificationRequest.builder().minutesConsumed(minutes).build();
-        if(droolsService.verifyCalls(subscription,callVerificationRequest)==false){
+        CallVerificationRequest callVerificationRequest = CallVerificationRequest.builder().minutesConsumed(minutes).totalConsumed(900.0).build();
+        VerificationResult verificationResult =droolsService.verifyCalls(subscription,callVerificationRequest);
+        if(!verificationResult.isValid()){
             throw new IllegalArgumentException("not valid call transaction");
         }
+        if (verificationResult.isGetGift()){
+            System.out.println("gift logic");
+
+        }
+
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingCalls(subscription.getRemainingCalls()-minutes).build());
     }
 

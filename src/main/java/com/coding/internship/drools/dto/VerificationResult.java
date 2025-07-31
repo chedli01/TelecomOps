@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VerificationResult {
     private boolean isValid;
+    private boolean getGift;
 }

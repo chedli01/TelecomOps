@@ -38,4 +38,8 @@ public class ClientController {
     public SubscriptionDataDto getClientLatestInactiveSub(@PathVariable Long id){
         return subscriptionMapper.mapToDto(clientService.getLatestInactiveSub(id).orElse(null));
     }
+    @GetMapping("{id}/calls")
+    public Double getClientTotalCallMinutes(@PathVariable Long id){
+        return clientService.getClientTotalCallMinutes(id);
+    }
 }

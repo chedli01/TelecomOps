@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CallVerificationRequest {
     private double minutesConsumed;
+    private double totalConsumed;
 
 }
