@@ -5,6 +5,7 @@ import com.coding.internship.user.admin.enums.AdminRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,7 +42,12 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers(WHITE_LIST_URL).permitAll().requestMatchers("/api/admin/*").hasRole(AdminRole.SUPER_ADMIN.name()).anyRequest().authenticated()
+                        req.requestMatchers(WHITE_LIST_URL).permitAll()
+                                .requestMatchers("/api/admin/*").hasRole(AdminRole.SUPER_ADMIN.name())
+                                .requestMatchers(HttpMethod.PUT,"/api/products/**").hasAnyRole(AdminRole.ADMIN.name(),AdminRole.SUPER_ADMIN.name())
+                                .requestMatchers(HttpMethod.POST,"/api/products/**").hasAnyRole(AdminRole.ADMIN.name(),AdminRole.SUPER_ADMIN.name())
+                                .requestMatchers(HttpMethod.DELETE,"/api/products/**").hasRole(AdminRole.SUPER_ADMIN.name())
+                                .anyRequest().authenticated()
 
 
                 )
