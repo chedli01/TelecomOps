@@ -22,6 +22,10 @@ public class PlanController {
     public PlanDataDto createPlan(@RequestBody PlanCreateDto planCreateDto){
         return planMapper.mapToDto(planService.createPlan(planCreateDto)) ;
     }
+    @PutMapping("/{id}")
+    public PlanDataDto updatePlan(@RequestBody PlanCreateDto planCreateDto,@PathVariable  Long id){
+        return planMapper.mapToDto(planService.updatePlan(planCreateDto,id)) ;
+    }
 
     @GetMapping("/next/{id}")
     public PlanDataDto getNextPlanByDataQuota(@PathVariable  Long id){

@@ -29,6 +29,31 @@ public class PlanService {
         return planRepository.save(plan);
 
     }
+    public Plan updatePlan(PlanCreateDto planCreateDto, Long id){
+        Plan plan= getPlanById(id);
+        if(planCreateDto.getName()!=null){
+            plan.setName(planCreateDto.getName());
+        }
+        if(planCreateDto.getDescription()!=null){
+            plan.setDescription(planCreateDto.getDescription());
+        }
+        if(planCreateDto.getPrice()!=null){
+            plan.setPrice(planCreateDto.getPrice());
+        }
+        if (planCreateDto.getDataQuota() != null) {
+            plan.setDataQuota(planCreateDto.getDataQuota());
+        }
+        if (planCreateDto.getCallsMinutes() != null) {
+            plan.setCallsMinutes(planCreateDto.getCallsMinutes());
+        }
+        if (planCreateDto.getSmsNumber() != null) {
+            plan.setSmsNumber(planCreateDto.getSmsNumber());
+        }
+        if (planCreateDto.getValidityDays() != null) {
+            plan.setValidityDays(planCreateDto.getValidityDays());
+        }
+        return planRepository.save(plan);
+    }
 
 
     public Plan getNextPlanByDataQuota(Long id){
