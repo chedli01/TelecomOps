@@ -3,7 +3,6 @@ package com.coding.internship.plan.service;
 import com.coding.internship.plan.dto.PlanCreateDto;
 import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.repository.PlanRepository;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

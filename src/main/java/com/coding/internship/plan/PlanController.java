@@ -3,7 +3,6 @@ package com.coding.internship.plan;
 import com.coding.internship.plan.dto.PlanCreateDto;
 import com.coding.internship.plan.dto.PlanDataDto;
 import com.coding.internship.plan.mapper.PlanMapper;
-import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.service.PlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
