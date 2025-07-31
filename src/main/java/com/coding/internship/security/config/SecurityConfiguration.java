@@ -22,6 +22,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private static final String[] WHITE_LIST_URL = {"/api/auth/**",
+            "/api/subscription/**",
             "/api/sms/**",
             "/v2/api-docs",
             "/v3/api-docs",
@@ -50,7 +51,8 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT,"/api/plan/**").hasAnyRole(AdminRole.ADMIN.name(),AdminRole.SUPER_ADMIN.name())
                                 .requestMatchers(HttpMethod.POST,"/api/plan/**").hasAnyRole(AdminRole.ADMIN.name(),AdminRole.SUPER_ADMIN.name())
                                 .requestMatchers(HttpMethod.DELETE,"/api/plan/**").hasRole(AdminRole.SUPER_ADMIN.name())
-                                .anyRequest().authenticated()
+                                .anyRequest()
+                                .authenticated()
 
 
                 )
