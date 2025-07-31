@@ -79,10 +79,10 @@ public class DroolsService {
             kieSession.dispose();
         }
     }
-    public Boolean verifyData(Subscription subscription,DataVerificationRequest dataVerificationRequest){
+    public DataVerificationResult verifyData(Subscription subscription,DataVerificationRequest dataVerificationRequest){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {
-            DataVerificationResult dataVerificationResult = new DataVerificationResult(false);
+            DataVerificationResult dataVerificationResult = new DataVerificationResult(false,false,false);
             kieSession.setGlobal("smsService",smsService);
             kieSession.setGlobal("emailService",emailService);
             kieSession.setGlobal("planService",planService);
@@ -94,13 +94,14 @@ public class DroolsService {
             kieSession.insert(dataVerificationResult);
             kieSession.getAgenda().getAgendaGroup("data").setFocus();
             kieSession.fireAllRules();
-            return dataVerificationResult.isVerified();
+            return dataVerificationResult;
         }
         finally {
             kieSession.dispose();
         }
 
     }
+
     public Payment applyLatePaymentPenalty(Payment payment){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {

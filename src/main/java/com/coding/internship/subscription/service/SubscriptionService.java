@@ -2,6 +2,7 @@ package com.coding.internship.subscription.service;
 
 import com.coding.internship.drools.dto.CallVerificationRequest;
 import com.coding.internship.drools.dto.DataVerificationRequest;
+import com.coding.internship.drools.dto.DataVerificationResult;
 import com.coding.internship.drools.dto.SmsVerificationRequest;
 import com.coding.internship.drools.service.DroolsService;
 import com.coding.internship.invoice.dto.InvoiceCreateDto;
@@ -80,10 +81,19 @@ public class SubscriptionService {
         Subscription subscription = clientService.getActiveSub(clientId);
         DataVerificationRequest dataVerificationRequest = DataVerificationRequest.builder().consumedData(data).build();
 
+        DataVerificationResult dataVerificationResult = droolsService.verifyData(subscription,dataVerificationRequest);
 
-        if(droolsService.verifyData(subscription,dataVerificationRequest)==false){
+
+        if(!dataVerificationResult.isVerified()){
             throw new IllegalArgumentException("not valid transaction");
         }
+        if(dataVerificationResult.isSendSmsAlert()){
+            System.out.println("send sms logic");
+        }
+        if(dataVerificationResult.isSendEmailUpgradeRecommendation()){
+            System.out.println("send email logic : " + planService.getNextPlanByDataQuota(subscription.getPlan().getId()).getDescription() );
+        }
+
 
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().remainingData(subscription.getRemainingData()-data).build());
     }

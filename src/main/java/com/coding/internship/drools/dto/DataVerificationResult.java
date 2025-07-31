@@ -11,4 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DataVerificationResult {
     private boolean isVerified;
+    private boolean sendSmsAlert;
+    private boolean sendEmailUpgradeRecommendation;
 }

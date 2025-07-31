@@ -101,7 +101,13 @@ rule "notify On Data exhaustion"
     when
     $request : DataVerificationRequest()
     $subscription : Subscription(getStatus() == SubscriptionStatus.ACTIVE,getRemainingData()>$request.getConsumedData(),getRemainingData()-$request.getConsumedData()<getRemainingData()*0.2)
+    $result : DataVerificationResult()
+
     then
+     modify($result){
+            setSendSmsAlert(true)
+
+     }
      System.out.println("data exhausted");
 
 
@@ -110,18 +116,24 @@ end
 global EmailService emailService;
 global PlanService planService;
 
-rule "80% peak on data"
+rule "80% peak on data usage"
     agenda-group "data"
     no-loop true
     when
     $request : DataVerificationRequest()
     $subscription : Subscription(getStatus() == SubscriptionStatus.ACTIVE,getRemainingData()>=$request.getConsumedData(),getRemainingData()-$request.getConsumedData()<getRemainingData()*0.2)
     eval(ChronoUnit.DAYS.between(LocalDate.now(), $subscription.getEndDate()) > 20)
+    $result : DataVerificationResult()
 
 
 
     then
 //     emailService.sendSimpleEmail($subscription.getClient().getEmail(), "plan",$subscription.getPlan().getDescription());
+
+      modify($result){
+            setSendEmailUpgradeRecommendation(true)
+
+      }
 
 
 
