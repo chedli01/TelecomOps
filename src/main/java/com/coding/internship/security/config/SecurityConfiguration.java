@@ -46,7 +46,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/api/admin/*").hasRole(AdminRole.SUPER_ADMIN.name())
                                 .requestMatchers(HttpMethod.PUT,"/api/products/**").hasAnyRole(AdminRole.ADMIN.name(),AdminRole.SUPER_ADMIN.name())
                                 .requestMatchers(HttpMethod.POST,"/api/products/**").hasAnyRole(AdminRole.ADMIN.name(),AdminRole.SUPER_ADMIN.name())
-                                .requestMatchers(HttpMethod.DELETE,"/api/products/**").hasRole(AdminRole.SUPER_ADMIN.name())
+//                                .requestMatchers(HttpMethod.DELETE,"/api/products/**").hasRole(AdminRole.SUPER_ADMIN.name())
                                 .requestMatchers(HttpMethod.PUT,"/api/plan/**").hasAnyRole(AdminRole.ADMIN.name(),AdminRole.SUPER_ADMIN.name())
                                 .requestMatchers(HttpMethod.POST,"/api/plan/**").hasAnyRole(AdminRole.ADMIN.name(),AdminRole.SUPER_ADMIN.name())
                                 .requestMatchers(HttpMethod.DELETE,"/api/plan/**").hasRole(AdminRole.SUPER_ADMIN.name())
