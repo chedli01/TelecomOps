@@ -26,6 +26,12 @@ public class PlanController {
     public PlanDataDto updatePlan(@RequestBody PlanCreateDto planCreateDto,@PathVariable  Long id){
         return planMapper.mapToDto(planService.updatePlan(planCreateDto,id)) ;
     }
+    @DeleteMapping("/{id}")
+    public String deletePlanById(@PathVariable  Long id){
+        planService.deletePlan(id);
+        return "plan with id " + id + " deleted";
+
+    }
 
     @GetMapping("/next/{id}")
     public PlanDataDto getNextPlanByDataQuota(@PathVariable  Long id){

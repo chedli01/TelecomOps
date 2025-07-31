@@ -1,5 +1,6 @@
 package com.coding.internship.plan.service;
 
+import com.coding.internship.exception.RessourceNotFoundException;
 import com.coding.internship.plan.dto.PlanCreateDto;
 import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.repository.PlanRepository;
@@ -53,6 +54,13 @@ public class PlanService {
             plan.setValidityDays(planCreateDto.getValidityDays());
         }
         return planRepository.save(plan);
+    }
+
+    public void deletePlan(Long id){
+        if (!planRepository.existsById(id)) {
+            throw new RessourceNotFoundException("plan not found");
+        }
+        planRepository.deleteById(id);
     }
 
 
