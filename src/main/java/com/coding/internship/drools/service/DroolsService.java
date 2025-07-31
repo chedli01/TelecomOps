@@ -96,7 +96,7 @@ public class DroolsService {
 
     }
 
-    public Payment applyLatePaymentPenalty(Payment payment){
+    public Payment applyPaymentProcess(Payment payment){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {
             kieSession.insert(payment);

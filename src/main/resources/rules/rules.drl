@@ -141,6 +141,25 @@ rule "late payment penalty"
 
 end
 ///////////////////////////////////////////////////////
+rule "Early payment gift"
+      agenda-group "payment"
+      no-loop true
+      when
+          $payment: Payment(ChronoUnit.DAYS.between(invoice.getCreatedAt(),getPaymentDate())==0)
+      then
+          modify($payment){
+                 setAmount($payment.getAmount()*(1-0.05))
+          }
+          System.out.println("early payment gift applied");
+
+end
+
+
+
+
+
+
+///////////////////////////////////////
 
 rule "discount on renewing sub"
       agenda-group "discount"

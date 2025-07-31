@@ -31,7 +31,7 @@ public class PaymentService {
         }
         UUID uuid = UUID.randomUUID();
         var payment = Payment.builder().paymentDate(LocalDateTime.now()).paymentNumber(uuid.toString()).paymentMethod(paymentMethod).amount(invoice.getTotal()).invoice(invoice).build();
-        Payment savedPayment = paymentRepository.save(droolsService.applyLatePaymentPenalty(payment));
+        Payment savedPayment = paymentRepository.save(droolsService.applyPaymentProcess(payment));
         invoiceService.updateInvoice(invoiceId, InvoiceUpdateDto.builder().status(InvoiceStatus.PAID).build());
 
 
