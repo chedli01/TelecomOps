@@ -45,6 +45,12 @@ public class SubscriptionService {
     public Subscription subscribeToPlan(Long planId, Long clientId){
         Plan plan = planService.getPlanById(planId);
         Client client = clientService.findClientById(clientId);
+
+        Subscription activeSub = clientService.getActiveSub(clientId);
+        if(activeSub!=null){
+            updateSubscription(activeSub.getId(),SubscriptionUpdateDto.builder().status(SubscriptionStatus.INACTIVE).build());
+        }
+
         var subscription = Subscription.builder()
                            .plan(plan)
                            .client(client).startDate(LocalDateTime.now()).endDate(LocalDateTime.now().plusDays(plan.getValidityDays()))
