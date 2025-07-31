@@ -22,6 +22,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private static final String[] WHITE_LIST_URL = {"/api/auth/**",
+            "api/plan/**",
             "/api/sms/**",
             "/v2/api-docs",
             "/v3/api-docs",
