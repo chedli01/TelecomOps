@@ -27,6 +27,10 @@ public class SubscriptionController {
     public List<SubscriptionDataDto> getAllSubscriptions(){
         return subscriptionService.getAllSubscriptions().stream().map(subscriptionMapper::mapToDto).toList();
     }
+    @GetMapping("/{id}")
+    public SubscriptionDataDto getSubscriptionById(@PathVariable Long id){
+        return subscriptionMapper.mapToDto(subscriptionService.getSubById(id));
+    }
     @PostMapping("/call/{minutes}")
     public SubscriptionDataDto makeCall(@AuthenticationPrincipal Client client,@PathVariable Double minutes){
         return subscriptionMapper.mapToDto(subscriptionService.makeCall(client.getId(),minutes));

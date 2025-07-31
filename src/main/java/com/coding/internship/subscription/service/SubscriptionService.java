@@ -5,6 +5,7 @@ import com.coding.internship.drools.dto.DataVerificationRequest;
 import com.coding.internship.drools.dto.DataVerificationResult;
 import com.coding.internship.drools.dto.SmsVerificationRequest;
 import com.coding.internship.drools.service.DroolsService;
+import com.coding.internship.exception.RessourceNotFoundException;
 import com.coding.internship.invoice.dto.InvoiceCreateDto;
 import com.coding.internship.invoice.dto.InvoiceUpdateDto;
 import com.coding.internship.invoice.enums.InvoiceStatus;
@@ -167,6 +168,9 @@ public class SubscriptionService {
         invoiceService.updateInvoice(subscription.getInvoice().getId(), InvoiceUpdateDto.builder().status(InvoiceStatus.CANCELLED).build());
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().status(SubscriptionStatus.INACTIVE).build());
 
+    }
+    public Subscription getSubById(Long id){
+        return subscriptionRepository.findById(id).orElseThrow(()->new RessourceNotFoundException("subscription not found"));
     }
 
 
