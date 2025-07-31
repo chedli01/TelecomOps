@@ -15,9 +15,13 @@ import com.coding.internship.notification.sms.service.SmsService
 import com.coding.internship.notification.email.EmailService
 import com.coding.internship.payment.model.Payment
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+
 import java.time.temporal.ChronoUnit;
 import com.coding.internship.user.client.service.ClientService;
 import com.coding.internship.plan.service.PlanService
+import com.coding.internship.user.client.enums.ClientType
 global String targetCategory;
 global java.util.List modifiedProducts;
 global Long previousSubPlanId
@@ -150,6 +154,29 @@ rule "discount on renewing sub"
                 setDiscount(0.1*$plan.getPrice())
           }
           System.out.println("discount on renewing sub applied");
+
+end
+/////////////////////////
+rule "previlege VIP client"
+      agenda-group "sub"
+      no-loop true
+      when
+           $subscription: Subscription($plan:plan,$startDate:getStartDate(),client.getType().equals(ClientType.VIP))
+
+      then
+          modify($subscription){
+                setRemainingData($subscription.getRemainingData()*1.5)
+          }
+          modify($subscription){
+                setRemainingCalls($subscription.getRemainingCalls()*1.5)
+          }
+          modify($subscription){
+                setRemainingSms($subscription.getRemainingSms()*2)
+                    }
+          modify($subscription){
+                setEndDate($startDate.plusDays($plan.getValidityDays()*2))
+                    }
+          System.out.println("VIP ");
 
 end
 //////////////////////////////////////////////////////////////////

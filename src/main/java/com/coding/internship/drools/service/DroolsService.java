@@ -108,7 +108,7 @@ public class DroolsService {
             kieSession.dispose();
         }
     }
-    public Subscription applyDiscountOnSub(Subscription subscription){
+    public Subscription applyProcessOnSub(Subscription subscription){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         Subscription sub = clientService.getLatestInactiveSub(subscription.getClient().getId()).orElse(null);
 
@@ -116,6 +116,9 @@ public class DroolsService {
             kieSession.setGlobal("previousSubPlanId",sub.getPlan().getId());
             kieSession.insert(subscription);
             kieSession.getAgenda().getAgendaGroup("discount").setFocus();
+            kieSession.getAgenda().getAgendaGroup("sub").setFocus();
+
+
             kieSession.fireAllRules();
             return subscription;
         }

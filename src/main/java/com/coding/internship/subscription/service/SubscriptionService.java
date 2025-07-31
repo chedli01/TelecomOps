@@ -56,7 +56,7 @@ public class SubscriptionService {
                            .client(client).startDate(LocalDateTime.now()).endDate(LocalDateTime.now().plusDays(plan.getValidityDays()))
                 .remainingData(plan.getDataQuota()).remainingCalls(plan.getCallsMinutes()).remainingSms(plan.getSmsNumber()).discount(0.0).status(SubscriptionStatus.ACTIVE)
                 .build();
-        Subscription savedSub = subscriptionRepository.save(droolsService.applyDiscountOnSub(subscription));
+        Subscription savedSub = subscriptionRepository.save(droolsService.applyProcessOnSub(subscription));
         UUID uuid = UUID.randomUUID();
 
 
