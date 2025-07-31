@@ -45,5 +45,16 @@ public class ClientService {
         return latestInactive;
 
     }
+    public Double getClientTotalCallMinutes(Long id){
+        List<Subscription> subscriptions = getSubscriptions(id);
+        Double totalCallMinutes = 0.0;
+        for (Subscription subscription : subscriptions){
+            totalCallMinutes+=subscription.getPlan().getCallsMinutes();
+
+        }
+        return totalCallMinutes;
+
+
+    }
 
 }
