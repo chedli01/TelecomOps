@@ -10,10 +10,6 @@ import com.coding.internship.drools.dto.VerificationResult
 import com.coding.internship.drools.dto.CallVerificationRequest
 import com.coding.internship.drools.dto.SmsVerificationRequest
 import com.coding.internship.drools.dto.DataVerificationRequest
-
-
-
-
 import com.coding.internship.subscription.enums.SubscriptionStatus
 import com.coding.internship.notification.sms.service.SmsService
 import com.coding.internship.notification.email.EmailService
@@ -22,8 +18,12 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import com.coding.internship.user.client.service.ClientService;
 import com.coding.internship.plan.service.PlanService
+global String targetCategory;
+global java.util.List modifiedProducts;
+global Long previousSubPlanId
 
 
+/////////////////////////////////////////
 rule "Price Discount"
     agenda-group "pricing"
     no-loop true
@@ -33,9 +33,9 @@ rule "Price Discount"
         System.out.println("Applied discount to " + $product.getId());
         modify($product){setPrice( $product.getPrice() - ($product.getPrice()*0.1))}
 end
-global String targetCategory;
-global java.util.List modifiedProducts;
+////////////////////////////////////////
 
+//////////////////////////////////////
 rule "Category Discount" no-loop true
     when
         $product : Product(category.name() == targetCategory, $originalPrice : price)
@@ -47,6 +47,7 @@ rule "Category Discount" no-loop true
         modifiedProducts.add($product);
         System.out.println("Applied discount to " + $product.getId() + " with new price" + newPrice + "having as category"+ $product.getCategory());
 end
+///////////////////////////////////////////
 
 rule "Order Discount For Students"
      agenda-group "discount"
@@ -61,7 +62,7 @@ rule "Order Discount For Students"
        System.out.println("discount for student applied");
 
 end
-//
+/////////////////////////////////////////////////
 rule "Order Discount For Big Total "
     agenda-group "discount"
     no-loop true
@@ -77,14 +78,14 @@ rule "Order Discount For Big Total "
         }
         System.out.println("discount for big total applied");
 end
-
+//////////////////////////////////////////////////////////////
 rule "data verification"
     agenda-group "data"
     no-loop true
     when
-       $request : DataVerificationRequest()
-       $subscription : Subscription(getRemainingData()>=$request.getConsumedData(),getStatus().equals(SubscriptionStatus.ACTIVE))
-       $result : DataVerificationResult()
+        $request : DataVerificationRequest()
+        $subscription : Subscription(getRemainingData()>=$request.getConsumedData(),getStatus().equals(SubscriptionStatus.ACTIVE))
+        $result : DataVerificationResult()
 
 
 
@@ -93,57 +94,36 @@ rule "data verification"
           setVerified(true)
        }
 end
-global SmsService smsService;
-
+////////////////////////////////////////////////////////////
 rule "notify On Data exhaustion"
     agenda-group "data"
     no-loop true
     when
-    $request : DataVerificationRequest()
-    $subscription : Subscription(getStatus() == SubscriptionStatus.ACTIVE,getRemainingData()>$request.getConsumedData(),getRemainingData()-$request.getConsumedData()<getRemainingData()*0.2)
-    $result : DataVerificationResult()
-
+        $request : DataVerificationRequest()
+        $subscription : Subscription(getStatus() == SubscriptionStatus.ACTIVE,getRemainingData()>$request.getConsumedData(),getRemainingData()-$request.getConsumedData()<getRemainingData()*0.2)
+        $result : DataVerificationResult()
     then
-     modify($result){
+        modify($result){
             setSendSmsAlert(true)
-
-     }
-     System.out.println("data exhausted");
-
-
-
+            }
+        System.out.println("data exhausted");
 end
-global EmailService emailService;
-global PlanService planService;
-
+/////////////////////////////////////////////
 rule "80% peak on data usage"
     agenda-group "data"
     no-loop true
     when
-    $request : DataVerificationRequest()
-    $subscription : Subscription(getStatus() == SubscriptionStatus.ACTIVE,getRemainingData()>=$request.getConsumedData(),getRemainingData()-$request.getConsumedData()<getRemainingData()*0.2)
-    eval(ChronoUnit.DAYS.between(LocalDate.now(), $subscription.getEndDate()) > 20)
-    $result : DataVerificationResult()
-
-
-
+        $request : DataVerificationRequest()
+        $subscription : Subscription(getStatus() == SubscriptionStatus.ACTIVE,getRemainingData()>=$request.getConsumedData(),getRemainingData()-$request.getConsumedData()<getRemainingData()*0.2)
+        eval(ChronoUnit.DAYS.between(LocalDate.now(), $subscription.getEndDate()) > 20)
+        $result : DataVerificationResult()
     then
-//     emailService.sendSimpleEmail($subscription.getClient().getEmail(), "plan",$subscription.getPlan().getDescription());
-
       modify($result){
             setSendEmailUpgradeRecommendation(true)
-
       }
-
-
-
      System.out.println("recommend +");
-
-
-
-
 end
-//
+///////////////////////////////////////////////////////
 rule "late payment penalty"
       agenda-group "payment"
       no-loop true
@@ -156,8 +136,7 @@ rule "late payment penalty"
           System.out.println("late payment penalty applied"+$days);
 
 end
-
-global Long previousSubPlanId
+///////////////////////////////////////////////////////
 
 rule "discount on renewing sub"
       agenda-group "discount"
@@ -173,7 +152,7 @@ rule "discount on renewing sub"
           System.out.println("discount on renewing sub applied");
 
 end
-
+//////////////////////////////////////////////////////////////////
 rule "call balance verification"
       agenda-group "calls"
       no-loop true
@@ -191,6 +170,7 @@ rule "call balance verification"
          System.out.println("call balance verification applied");
 
 end
+///////////////////////////////////////////////////////////////////
 rule "sms balance verification"
       agenda-group "sms"
       no-loop true
@@ -198,17 +178,13 @@ rule "sms balance verification"
          $request : SmsVerificationRequest()
          $subscription : Subscription(getStatus().equals(SubscriptionStatus.ACTIVE),getRemainingSms()>=$request.getSmsConsumed())
          $result : VerificationResult()
-
-
-
       then
          modify($result){
             setValid(true)
          }
          System.out.println("sms balance verification applied");
-
 end
-
+///////////////////////////////////////////////////
 
 //
 //global SpeceficService productService;

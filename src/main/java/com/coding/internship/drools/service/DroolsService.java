@@ -83,12 +83,6 @@ public class DroolsService {
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {
             DataVerificationResult dataVerificationResult = new DataVerificationResult(false,false,false);
-            kieSession.setGlobal("smsService",smsService);
-            kieSession.setGlobal("emailService",emailService);
-            kieSession.setGlobal("planService",planService);
-
-
-
             kieSession.insert(subscription);
             kieSession.insert(dataVerificationRequest);
             kieSession.insert(dataVerificationResult);
