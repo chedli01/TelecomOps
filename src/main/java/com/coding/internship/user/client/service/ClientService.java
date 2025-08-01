@@ -41,7 +41,7 @@ public class ClientService {
         List<Subscription> subscriptions = getSubscriptions(id);
         Optional<Subscription> latestInactive = subscriptions.stream()
                 .filter(sub -> !sub.getStatus().equals(SubscriptionStatus.ACTIVE))
-                .max(Comparator.comparing(Subscription::getEndDate));
+                .max(Comparator.comparing(Subscription::getStartDate));
 
         return latestInactive;
 

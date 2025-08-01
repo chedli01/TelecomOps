@@ -59,6 +59,7 @@ public class SubscriptionService {
                 .remainingData(plan.getDataQuota()).remainingCalls(plan.getCallsMinutes()).remainingSms(plan.getSmsNumber()).discount(0.0).status(SubscriptionStatus.ACTIVE)
                 .build();
         Subscription savedSub = subscriptionRepository.save(droolsService.applyProcessOnSub(subscription));
+        System.out.println("type"+ client.getType());
         if(client.getType().equals(ClientType.CUSTOMER)){
             clientService.updateClient(clientId, UpdateClientDto.builder().clientType(ClientType.SUBSCRIBER).build());
         }

@@ -114,6 +114,7 @@ public class DroolsService {
 
         try {
             kieSession.setGlobal("previousSubPlanId",sub.getPlan().getId());
+            System.out.println("previousSubPlanId: "+sub.getPlan().getId());
             kieSession.insert(subscription);
             kieSession.getAgenda().getAgendaGroup("discount").setFocus();
             kieSession.getAgenda().getAgendaGroup("sub").setFocus();
