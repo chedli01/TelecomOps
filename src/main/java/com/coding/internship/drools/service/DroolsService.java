@@ -82,7 +82,7 @@ public class DroolsService {
     public DataVerificationResult verifyData(Subscription subscription,DataVerificationRequest dataVerificationRequest){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         try {
-            DataVerificationResult dataVerificationResult = new DataVerificationResult(false,false,false);
+            DataVerificationResult dataVerificationResult = new DataVerificationResult(false,false,false,false);
             kieSession.insert(subscription);
             kieSession.insert(dataVerificationRequest);
             kieSession.insert(dataVerificationResult);

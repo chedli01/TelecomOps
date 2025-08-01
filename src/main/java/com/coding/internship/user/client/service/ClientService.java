@@ -48,6 +48,7 @@ public class ClientService {
     }
     public Double getClientTotalCallMinutes(Long id){
         List<Subscription> subscriptions = getSubscriptions(id);
+        subscriptions.remove(getActiveSub(id));
         Double totalCallMinutes = 0.0;
         for (Subscription subscription : subscriptions){
             totalCallMinutes+=subscription.getPlan().getCallsMinutes();
@@ -59,6 +60,7 @@ public class ClientService {
     }
     public Double getClientTotalData(Long id){
         List<Subscription> subscriptions = getSubscriptions(id);
+        subscriptions.remove(getActiveSub(id));
         Double totalData = 0.0;
         for (Subscription subscription : subscriptions){
             totalData+=subscription.getPlan().getDataQuota();

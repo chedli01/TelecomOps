@@ -111,9 +111,16 @@ public class SubscriptionService {
         Subscription subscription = clientService.getActiveSub(clientId);
         Plan plan = subscription.getPlan();
         Client client = subscription.getClient();
-        DataVerificationRequest dataVerificationRequest = DataVerificationRequest.builder().consumedData(data).build();
+        DataVerificationRequest dataVerificationRequest = DataVerificationRequest.builder().consumedData(data).totalData(clientService.getClientTotalData(clientId)).build();
 
         DataVerificationResult dataVerificationResult = droolsService.verifyData(subscription,dataVerificationRequest);
+        System.out.println("consumed total "+dataVerificationRequest.getTotalData());
+
+        if(dataVerificationResult.isUpgradeClientToVip()){
+            clientService.updateClient(clientId,UpdateClientDto.builder().clientType(ClientType.VIP).build());
+
+
+        }
 
 
         if(!dataVerificationResult.isVerified()){

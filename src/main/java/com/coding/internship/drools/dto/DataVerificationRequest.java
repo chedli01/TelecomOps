@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DataVerificationRequest {
     private Double consumedData;
+    private Double totalData;
 }
