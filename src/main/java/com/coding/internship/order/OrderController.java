@@ -8,6 +8,7 @@ import com.coding.internship.order.model.Order;
 import com.coding.internship.order.service.OrderService;
 import com.coding.internship.user.client.model.Client;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class OrderController {
     public OrderDataDto makeOrder(@RequestBody OrderCreateDto orderCreateDto, @AuthenticationPrincipal Client client){
         return orderMapper.mapToDto(orderService.makeOrder(orderCreateDto,client.getId())) ;
     }
+    @PreAuthorize("hasAnyRole('ADMIN','SUPER_ADMIN')")
     @PutMapping("/{id}")
     public OrderDataDto updateOrder(@RequestBody OrderUpdateDto orderUpdateDto,@PathVariable Long id){
         return orderMapper.mapToDto(orderService.updateOrder(id,orderUpdateDto));
