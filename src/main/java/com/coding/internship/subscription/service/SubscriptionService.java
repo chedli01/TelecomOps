@@ -17,6 +17,8 @@ import com.coding.internship.subscription.dto.SubscriptionUpdateDto;
 import com.coding.internship.subscription.enums.SubscriptionStatus;
 import com.coding.internship.subscription.model.Subscription;
 import com.coding.internship.subscription.repository.SubscriptionRepository;
+import com.coding.internship.user.client.dto.UpdateClientDto;
+import com.coding.internship.user.client.enums.ClientType;
 import com.coding.internship.user.client.model.Client;
 import com.coding.internship.user.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +59,9 @@ public class SubscriptionService {
                 .remainingData(plan.getDataQuota()).remainingCalls(plan.getCallsMinutes()).remainingSms(plan.getSmsNumber()).discount(0.0).status(SubscriptionStatus.ACTIVE)
                 .build();
         Subscription savedSub = subscriptionRepository.save(droolsService.applyProcessOnSub(subscription));
+        if(client.getType().equals(ClientType.CUSTOMER)){
+            clientService.updateClient(clientId, UpdateClientDto.builder().clientType(ClientType.SUBSCRIBER).build());
+        }
         UUID uuid = UUID.randomUUID();
 
 
