@@ -57,6 +57,16 @@ public class ClientService {
 
 
     }
+    public Double getClientTotalData(Long id){
+        List<Subscription> subscriptions = getSubscriptions(id);
+        Double totalData = 0.0;
+        for (Subscription subscription : subscriptions){
+            totalData+=subscription.getPlan().getDataQuota();
+
+        }
+        return totalData;
+
+    }
     public Client updateClient(Long id, UpdateClientDto updateClientDto){
         Client client = findClientById(id);
         if(updateClientDto.getFirstName()!=null){
