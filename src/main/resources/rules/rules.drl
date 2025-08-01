@@ -82,6 +82,23 @@ rule "Order Discount For Big Total "
         }
         System.out.println("discount for big total applied");
 end
+
+
+///////////////////////////////////
+rule "Upgrade client to vip on big orders total "
+    agenda-group "discount"
+    no-loop true
+    when
+        $client : Client()
+        $order : Order(getTotal()>5000,client.getId()==$client.getId())
+
+    then
+        modify($client){
+            setType(ClientType.VIP)
+                }
+
+        System.out.println("upgrade total");
+end
 //////////////////////////////////////////////////////////////
 rule "data verification"
     agenda-group "data"

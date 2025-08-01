@@ -14,6 +14,7 @@ import com.coding.internship.order.repository.OrderRepository;
 import com.coding.internship.subscription.dto.SubscriptionUpdateDto;
 import com.coding.internship.subscription.model.Subscription;
 import com.coding.internship.subscription.service.SubscriptionService;
+import com.coding.internship.user.client.dto.UpdateClientDto;
 import com.coding.internship.user.client.model.Client;
 import com.coding.internship.user.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +56,7 @@ public class OrderService {
         ResponseObjectDto responseObjectDto = droolsService.applyDiscountOnOrder(order);
         Order savedOrder =orderRepository.save(responseObjectDto.getOrder()) ;
         subscriptionService.updateSubscription(responseObjectDto.getSubscription().getId(), SubscriptionUpdateDto.builder().remainingData(responseObjectDto.getSubscription().getRemainingData()).build());
+        clientService.updateClient(clientId, UpdateClientDto.builder().clientType(responseObjectDto.getClient().getType()).build());
         invoiceService.createOrderInvoice(InvoiceCreateDto.builder().invoiceNumber(uuid.toString()).description(order.getDescription()).dueDate(savedOrder.getCreatedAt().plusDays(7L)).status(InvoiceStatus.UNPAID).total(order.getTotal()-savedOrder.getDiscount()).build(), savedOrder);
         return savedOrder;
     }
