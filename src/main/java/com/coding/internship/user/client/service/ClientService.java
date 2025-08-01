@@ -3,6 +3,7 @@ package com.coding.internship.user.client.service;
 import com.coding.internship.subscription.enums.SubscriptionStatus;
 import com.coding.internship.subscription.model.Subscription;
 import com.coding.internship.user.client.dto.ClientDataDto;
+import com.coding.internship.user.client.dto.UpdateClientDto;
 import com.coding.internship.user.client.mapper.ClientMapper;
 import com.coding.internship.user.client.model.Client;
 import com.coding.internship.user.client.repository.ClientRepository;
@@ -56,7 +57,32 @@ public class ClientService {
 
 
     }
-    public Client updateClient(Client client){
+    public Client updateClient(Long id, UpdateClientDto updateClientDto){
+        Client client = findClientById(id);
+        if(updateClientDto.getFirstName()!=null){
+            client.setFirstName(updateClientDto.getFirstName());
+        }
+        if(updateClientDto.getLastName()!=null){
+            client.setLastName(updateClientDto.getLastName());
+        }
+        if(updateClientDto.getAddress()!=null){
+            client.setAddress(updateClientDto.getAddress());
+        }
+        if(updateClientDto.getCin()!=null){
+            client.setCin(updateClientDto.getCin());
+        }
+        if(updateClientDto.getPhoneNumber()!=null){
+            client.setPhoneNumber(updateClientDto.getPhoneNumber());
+        }
+        if(updateClientDto.getIsStudent()!=null){
+            client.setIsStudent(updateClientDto.getIsStudent());
+        }
+        if(updateClientDto.getEmail()!=null){
+            client.setEmail(updateClientDto.getEmail());
+        }
+        if(updateClientDto.getClientType()!=null){
+            client.setType(updateClientDto.getClientType());
+        }
         return clientRepository.save(client);
     }
 
