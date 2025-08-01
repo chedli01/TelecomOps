@@ -7,6 +7,7 @@ import com.coding.internship.invoice.enums.InvoiceStatus;
 import com.coding.internship.invoice.service.InvoiceService;
 import com.coding.internship.order.dto.OrderCreateDto;
 import com.coding.internship.order.dto.OrderItemCreateDto;
+import com.coding.internship.order.dto.OrderUpdateDto;
 import com.coding.internship.order.enums.OrderStatus;
 import com.coding.internship.order.model.Order;
 import com.coding.internship.order.model.OrderItem;
@@ -68,6 +69,25 @@ public class OrderService {
         }
         return total;
 
+    }
+    public Order updateOrder(Long id, OrderUpdateDto  orderUpdateDto){
+        Order order = orderRepository.getReferenceById(id);
+        if(orderUpdateDto.getOrderNumber() != null){
+            order.setOrderNumber(orderUpdateDto.getOrderNumber());
+        }
+        if(orderUpdateDto.getDescription() != null){
+            order.setDescription(orderUpdateDto.getDescription());
+        }
+        if(orderUpdateDto.getTotal() != null){
+            order.setTotal(orderUpdateDto.getTotal());
+        }
+        if(orderUpdateDto.getDiscount() != null){
+            order.setDiscount(orderUpdateDto.getDiscount());
+        }
+        if (orderUpdateDto.getStatus() != null){
+            order.setStatus(orderUpdateDto.getStatus());
+        }
+        return orderRepository.save(order);
     }
 
 
