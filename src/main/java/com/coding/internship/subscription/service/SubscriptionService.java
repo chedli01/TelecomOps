@@ -6,27 +6,17 @@ import com.coding.internship.exception.RessourceNotFoundException;
 import com.coding.internship.invoice.dto.InvoiceCreateDto;
 import com.coding.internship.invoice.dto.InvoiceUpdateDto;
 import com.coding.internship.invoice.enums.InvoiceStatus;
-import com.coding.internship.invoice.model.Invoice;
-import com.coding.internship.invoice.model.OrderInvoice;
 import com.coding.internship.invoice.service.InvoiceService;
 import com.coding.internship.notification.email.EmailService;
 import com.coding.internship.notification.sms.service.SmsService;
-import com.coding.internship.order.dto.OrderCreateDto;
-import com.coding.internship.order.dto.OrderItemCreateDto;
-import com.coding.internship.order.model.Order;
-import com.coding.internship.order.model.OrderItem;
-import com.coding.internship.order.service.OrderService;
 import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.service.PlanService;
 import com.coding.internship.product.model.Product;
 import com.coding.internship.product.service.ProductService;
-import com.coding.internship.subscription.dto.SubscriptionDataDto;
 import com.coding.internship.subscription.dto.SubscriptionUpdateDto;
 import com.coding.internship.subscription.enums.SubscriptionStatus;
-import com.coding.internship.subscription.mapper.SubscriptionMapper;
 import com.coding.internship.subscription.model.Subscription;
 import com.coding.internship.subscription.repository.SubscriptionRepository;
-import com.coding.internship.user.admin.model.Admin;
 import com.coding.internship.user.client.model.Client;
 import com.coding.internship.user.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +34,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
-    private final SubscriptionMapper subscriptionMapper;
     private final PlanService planService;
     private final ClientService clientService;
     private final InvoiceService invoiceService;
@@ -191,7 +180,7 @@ public class SubscriptionService {
         return updateSubscription(subscription.getId(),SubscriptionUpdateDto.builder().status(SubscriptionStatus.INACTIVE).build());
 
     }
-    public Subscription getSubById(Long id,Long userId){
+    public Subscription getSubById(Long id){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Subscription subscription = subscriptionRepository.findById(id).orElseThrow(()->new RessourceNotFoundException("subscription not found"));
         if (principal instanceof Client client && !subscription.getClient().getId().equals(client.getId()) ) {
