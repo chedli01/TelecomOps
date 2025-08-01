@@ -3,12 +3,14 @@ package com.coding.internship.product.dto;
 import com.coding.internship.product.enums.ProductCategory;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ProductCriteriaDto {
     @Parameter(description = "product name",required = false)
     private String name;

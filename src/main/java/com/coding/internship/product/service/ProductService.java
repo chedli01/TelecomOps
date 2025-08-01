@@ -6,6 +6,7 @@ import com.coding.internship.product.dto.ProductCriteriaDto;
 import com.coding.internship.product.dto.ProductDataDto;
 import com.coding.internship.product.dto.ProductUpdateDto;
 import com.coding.internship.exception.RessourceNotFoundException;
+import com.coding.internship.product.enums.ProductCategory;
 import com.coding.internship.product.mapper.ProductMapper;
 import com.coding.internship.product.model.Product;
 import com.coding.internship.product.repository.ProductRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -79,9 +81,9 @@ public class ProductService {
 
     }
 
-    public List<ProductDataDto> findByCriteria(ProductCriteriaDto criteriaDto,Pageable pageable) {
+    public List<Product> findByCriteria(ProductCriteriaDto criteriaDto,Pageable pageable) {
         Specification<Product> spec = ProductSpecifications.hasCategory(criteriaDto.getCategory()).and(ProductSpecifications.hasPriceBetween(criteriaDto.getMinPrice(), criteriaDto.getMaxPrice())).and(ProductSpecifications.hasName(criteriaDto.getName())).and(ProductSpecifications.hasPrice(criteriaDto.getPrice()));
-        return productRepository.findAll(spec,pageable).stream().map(productMapper::mapToDto).toList();
+        return productRepository.findAll(spec,pageable).stream().toList();
     }
     public List<ProductDataDto> findPaginated(Pageable pageable){
         Page<Product> page = productRepository.findAll(pageable);
@@ -105,6 +107,18 @@ public class ProductService {
 //        Product product=productRepository.findById(id).orElseThrow(()->new RessourceNotFoundException("product not found"));
 //        return droolsService.changeInDb(product,id);
 //    }
+
+    public Product findGiftedProducts(){
+        List<Product> products= findByCriteria(ProductCriteriaDto.builder().category(ProductCategory.ACCESSORY).build(),Pageable.unpaged());
+        if (products == null || products.isEmpty()) {
+            throw new IllegalArgumentException("gifted product list is null or empty");
+        }
+        Random random = new Random();
+        return products.get(random.nextInt(products.size()));
+
+
+
+    }
 
 
 }

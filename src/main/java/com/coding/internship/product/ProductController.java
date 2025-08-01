@@ -65,7 +65,7 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductDataDto>> findByCriteria(@ParameterObject ProductCriteriaDto criteriaDto,@ParameterObject Pageable pageable)
     {
-        return ResponseEntity.ok(productService.findByCriteria(criteriaDto,pageable));
+        return ResponseEntity.ok(productService.findByCriteria(criteriaDto,pageable).stream().map(productMapper::mapToDto).toList() );
     }
     @PostMapping("/discount/{id}")
     public Product applyDiscount(@PathVariable Long id){
@@ -74,6 +74,10 @@ public class ProductController {
     @PostMapping("/discount/category/{category}")
     public List<Product> applyDiscountForCategory(@PathVariable String category){
         return productService.makeDiscountForCategory(category);
+    }
+    @GetMapping("/gifted")
+    public ProductDataDto getGiftedProducts(){
+        return productMapper.mapToDto(productService.findGiftedProducts());
     }
 //    @PostMapping("/change/{id}")
 //    public Product changeInDb(@PathVariable Long id){
