@@ -56,5 +56,8 @@ public class ClientService {
 
 
     }
+    public Client updateClient(Client client){
+        return clientRepository.save(client);
+    }
 
 }
