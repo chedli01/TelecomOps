@@ -6,11 +6,20 @@ import com.coding.internship.exception.RessourceNotFoundException;
 import com.coding.internship.invoice.dto.InvoiceCreateDto;
 import com.coding.internship.invoice.dto.InvoiceUpdateDto;
 import com.coding.internship.invoice.enums.InvoiceStatus;
+import com.coding.internship.invoice.model.Invoice;
+import com.coding.internship.invoice.model.OrderInvoice;
 import com.coding.internship.invoice.service.InvoiceService;
 import com.coding.internship.notification.email.EmailService;
 import com.coding.internship.notification.sms.service.SmsService;
+import com.coding.internship.order.dto.OrderCreateDto;
+import com.coding.internship.order.dto.OrderItemCreateDto;
+import com.coding.internship.order.model.Order;
+import com.coding.internship.order.model.OrderItem;
+import com.coding.internship.order.service.OrderService;
 import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.service.PlanService;
+import com.coding.internship.product.model.Product;
+import com.coding.internship.product.service.ProductService;
 import com.coding.internship.subscription.dto.SubscriptionDataDto;
 import com.coding.internship.subscription.dto.SubscriptionUpdateDto;
 import com.coding.internship.subscription.enums.SubscriptionStatus;
@@ -42,6 +51,7 @@ public class SubscriptionService {
     private final DroolsService droolsService;
     private final EmailService emailService;
     private final SmsService smsService;
+    private final ProductService productService;
 
     public Subscription subscribeToPlan(Long planId, Long clientId){
         Plan plan = planService.getPlanById(planId);
@@ -81,6 +91,12 @@ public class SubscriptionService {
         }
         if (verificationResult.isGetGift()){
             System.out.println("gift logic");
+            Product giftedProduct = productService.findGiftedProduct();
+            System.out.println("you ve won a "+giftedProduct.getName());
+
+
+
+
 
         }
 

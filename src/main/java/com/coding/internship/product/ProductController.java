@@ -77,7 +77,7 @@ public class ProductController {
     }
     @GetMapping("/gifted")
     public ProductDataDto getGiftedProducts(){
-        return productMapper.mapToDto(productService.findGiftedProducts());
+        return productMapper.mapToDto(productService.findGiftedProduct());
     }
 //    @PostMapping("/change/{id}")
 //    public Product changeInDb(@PathVariable Long id){

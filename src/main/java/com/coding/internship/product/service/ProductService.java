@@ -108,7 +108,7 @@ public class ProductService {
 //        return droolsService.changeInDb(product,id);
 //    }
 
-    public Product findGiftedProducts(){
+    public Product findGiftedProduct(){
         List<Product> products= findByCriteria(ProductCriteriaDto.builder().category(ProductCategory.ACCESSORY).build(),Pageable.unpaged());
         if (products == null || products.isEmpty()) {
             throw new IllegalArgumentException("gifted product list is null or empty");
