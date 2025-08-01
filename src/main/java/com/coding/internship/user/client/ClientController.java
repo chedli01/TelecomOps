@@ -3,13 +3,12 @@ package com.coding.internship.user.client;
 import com.coding.internship.subscription.dto.SubscriptionDataDto;
 import com.coding.internship.subscription.mapper.SubscriptionMapper;
 import com.coding.internship.user.client.dto.ClientDataDto;
+import com.coding.internship.user.client.dto.UpdateClientDto;
 import com.coding.internship.user.client.mapper.ClientMapper;
 import com.coding.internship.user.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,5 +40,10 @@ public class ClientController {
     @GetMapping("{id}/calls")
     public Double getClientTotalCallMinutes(@PathVariable Long id){
         return clientService.getClientTotalCallMinutes(id);
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ClientDataDto updateClient(@PathVariable Long id, @RequestBody UpdateClientDto updateClientDto){
+        return clientMapper.mapToDto(clientService.updateClient(id,updateClientDto));
     }
 }
