@@ -13,5 +13,15 @@ public class BlackListedTokenService {
     public BlackListedToken getToken(String token) {
         return blackListedTokenRepository.findByToken(token);
     }
+    public boolean isTokenBlackListed(String token){
+        BlackListedToken blackListedToken = getToken(token);
+        if(blackListedToken!=null){
+            System.out.println("token is blacklisted");
+            return true;
+        }
+        System.out.println("token is not blacklisted");
+
+        return false;
+    }
 
 }
