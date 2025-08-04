@@ -8,9 +8,12 @@ import com.coding.internship.order.mapper.OrderMapper;
 import com.coding.internship.order.model.Order;
 import com.coding.internship.order.service.OrderService;
 import com.coding.internship.user.client.model.Client;
+import com.coding.internship.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +33,8 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public OrderDataDto getOrderById(@PathVariable Long id){
+        User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(user.getId());
         return orderMapper.mapToDto(orderService.getOrderById(id));
     }
 

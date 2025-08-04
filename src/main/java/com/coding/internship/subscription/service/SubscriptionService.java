@@ -47,7 +47,6 @@ public class SubscriptionService {
     private final EmailService emailService;
     private final SmsService smsService;
     private final ProductService productService;
-    private final OrderService orderService;
 
     public Subscription subscribeToPlan(Long planId, Long clientId){
         Plan plan = planService.getPlanById(planId);
@@ -93,10 +92,10 @@ public class SubscriptionService {
             System.out.println("gift logic");
             Product giftedProduct = productService.findGiftedProduct();
             System.out.println("you ve won a "+giftedProduct.getName());
-            OrderItemCreateDto orderItemCreateDto = OrderItemCreateDto.builder().productId(giftedProduct.getId()).quantity(1).build();
-            orderService.passFreeOrder(OrderCreateDto.builder().description(giftedProduct.getDescription()).
-                    orderItems(List.of(orderItemCreateDto))
-                    .build(),clientId);
+//            OrderItemCreateDto orderItemCreateDto = OrderItemCreateDto.builder().productId(giftedProduct.getId()).quantity(1).build();
+//            orderService.passFreeOrder(OrderCreateDto.builder().description(giftedProduct.getDescription()).
+//                    orderItems(List.of(orderItemCreateDto))
+//                    .build(),clientId);
 
 
 
@@ -203,15 +202,7 @@ public class SubscriptionService {
 
     }
     public Subscription getSubById(Long id){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Subscription subscription = subscriptionRepository.findById(id).orElseThrow(()->new RessourceNotFoundException("subscription not found"));
-        if (principal instanceof Client client && !subscription.getClient().getId().equals(client.getId()) ) {
-            throw new AccessDeniedException("You are not allowed to access this subscription");
-
-        }
-        return subscription;
-
-
+        return subscriptionRepository.findById(id).orElseThrow(()->new RessourceNotFoundException("subscription not found"));
 
     }
 
