@@ -10,13 +10,24 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class LogoutService implements LogoutHandler {
+    private final BlackListedTokenService blackListedTokenService;
 
 
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-
         System.out.println("logout");
+        final String authHeader = request.getHeader("Authorization");
+        final String jwt;
+        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+            System.out.println("token is null");
+            return;
+        }
+        jwt = authHeader.substring(7);
+
+        if(jwt!=null){
+            blackListedTokenService.saveToken(jwt);
+        }
 
     }
 }

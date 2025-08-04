@@ -23,5 +23,8 @@ public class BlackListedTokenService {
 
         return false;
     }
+    public BlackListedToken saveToken(String token){
+        return blackListedTokenRepository.save(BlackListedToken.builder().token(token).build());
+    }
 
 }
