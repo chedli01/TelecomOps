@@ -90,23 +90,8 @@ public class ProductService {
         return page.getContent().stream().map(productMapper::mapToDto).toList();
     }
 
-    public Product makeDiscount(Long id) {
-        Optional<Product> product=productRepository.findById(id);
-        if(product.isEmpty()){
-            throw new RessourceNotFoundException("product not found");
-        }
 
-        return productRepository.save(droolsService.applyDiscount(product.get()));
 
-    }
-    public List<Product> makeDiscountForCategory(String category){
-        List<Product> products=productRepository.findAll();
-        return droolsService.applyDiscountForCategory(products,category);
-    }
-//    public Product changeInDb(Long id){
-//        Product product=productRepository.findById(id).orElseThrow(()->new RessourceNotFoundException("product not found"));
-//        return droolsService.changeInDb(product,id);
-//    }
 
     public Product findGiftedProduct(){
         List<Product> products= findByCriteria(ProductCriteriaDto.builder().category(ProductCategory.ACCESSORY).build(),Pageable.unpaged());

@@ -56,7 +56,7 @@ public class OrderService {
             orderItem.setOrder(order);
         }
 //        Order savedOrder = orderRepository.save(order);
-        ResponseObjectDto responseObjectDto = droolsService.applyDiscountOnOrder(order);
+        ResponseObjectDto responseObjectDto = droolsService.applyOrderProcess(order);
         Order savedOrder =orderRepository.save(responseObjectDto.getOrder()) ;
         subscriptionService.updateSubscription(responseObjectDto.getSubscription().getId(), SubscriptionUpdateDto.builder().remainingData(responseObjectDto.getSubscription().getRemainingData()).build());
         clientService.updateClient(clientId, UpdateClientDto.builder().clientType(responseObjectDto.getClient().getType()).build());
