@@ -32,6 +32,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("@resourceAccess.hasAccessToResource(@orderService.getOrderById(#id))")
     public OrderDataDto getOrderById(@PathVariable Long id){
         User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(user.getId());
