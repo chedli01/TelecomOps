@@ -9,6 +9,10 @@ import com.coding.internship.invoice.enums.InvoiceStatus;
 import com.coding.internship.invoice.service.InvoiceService;
 import com.coding.internship.notification.email.EmailService;
 import com.coding.internship.notification.sms.service.SmsService;
+import com.coding.internship.order.dto.OrderCreateDto;
+import com.coding.internship.order.dto.OrderItemCreateDto;
+import com.coding.internship.order.model.OrderItem;
+import com.coding.internship.order.service.OrderService;
 import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.service.PlanService;
 import com.coding.internship.product.model.Product;
@@ -43,6 +47,7 @@ public class SubscriptionService {
     private final EmailService emailService;
     private final SmsService smsService;
     private final ProductService productService;
+    private final OrderService orderService;
 
     public Subscription subscribeToPlan(Long planId, Long clientId){
         Plan plan = planService.getPlanById(planId);
@@ -88,6 +93,10 @@ public class SubscriptionService {
             System.out.println("gift logic");
             Product giftedProduct = productService.findGiftedProduct();
             System.out.println("you ve won a "+giftedProduct.getName());
+            OrderItemCreateDto orderItemCreateDto = OrderItemCreateDto.builder().productId(giftedProduct.getId()).quantity(1).build();
+            orderService.passFreeOrder(OrderCreateDto.builder().description(giftedProduct.getDescription()).
+                    orderItems(List.of(orderItemCreateDto))
+                    .build(),clientId);
 
 
 

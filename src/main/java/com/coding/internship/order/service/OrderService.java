@@ -6,6 +6,7 @@ import com.coding.internship.invoice.dto.InvoiceCreateDto;
 import com.coding.internship.invoice.enums.InvoiceStatus;
 import com.coding.internship.invoice.service.InvoiceService;
 import com.coding.internship.order.dto.OrderCreateDto;
+import com.coding.internship.order.dto.OrderDataDto;
 import com.coding.internship.order.dto.OrderItemCreateDto;
 import com.coding.internship.order.dto.OrderUpdateDto;
 import com.coding.internship.order.enums.OrderStatus;
@@ -19,6 +20,7 @@ import com.coding.internship.user.client.dto.UpdateClientDto;
 import com.coding.internship.user.client.model.Client;
 import com.coding.internship.user.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.mvel2.ast.Or;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -95,6 +97,20 @@ public class OrderService {
     }
     public Order getOrderById(Long id){
         return orderRepository.findById(id).orElseThrow(()->new RuntimeException("order not found"));
+    }
+
+    public Order passFreeOrder(OrderCreateDto orderCreateDto,Long clientId){
+        Order order = Order.builder()
+                .orderNumber(UUID.randomUUID().toString())
+                .description(orderCreateDto.getDescription())
+                .discount(0.0)
+                .total(0.0)
+                .orderItems(orderCreateDto.getOrderItems().stream().map(orderItemService::buildOrderItem).toList())
+                .build();
+
+        return orderRepository.save(order);
+
+
     }
 
 
