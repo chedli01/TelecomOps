@@ -16,6 +16,7 @@ import com.coding.internship.notification.email.EmailService
 import com.coding.internship.payment.model.Payment
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import com.coding.internship.plan.model.Plan
 
 
 import java.time.temporal.ChronoUnit;
@@ -280,6 +281,31 @@ rule "sms balance verification"
          System.out.println("sms balance verification applied");
 end
 ///////////////////////////////////////////////////
+rule "discount on upgrading sub"
+      agenda-group "discount"
+      no-loop true
+      when
+
+           $subscription: Subscription($plan : plan)
+           $previousPlan : Plan($prevId:id)
+           eval($previousPlan.getPrice()<$plan.getPrice())
+
+
+      then
+          modify($subscription){
+                setDiscount(0.2*$plan.getPrice())
+          }
+          System.out.println("discount on upgrading sub applied");
+
+end
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////
 
 //
 //global SpeceficService productService;

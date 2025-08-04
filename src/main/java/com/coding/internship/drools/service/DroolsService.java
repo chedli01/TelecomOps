@@ -5,6 +5,7 @@ import com.coding.internship.notification.email.EmailService;
 import com.coding.internship.notification.sms.service.SmsService;
 import com.coding.internship.order.model.Order;
 import com.coding.internship.payment.model.Payment;
+import com.coding.internship.plan.model.Plan;
 import com.coding.internship.plan.service.PlanService;
 import com.coding.internship.product.model.Product;
 import com.coding.internship.product.service.SpeceficService;
@@ -65,7 +66,7 @@ public class DroolsService {
             kieSession.dispose();
         }
     }
-    public ResponseObjectDto applyDiscountOnOrder(Order order){
+    public ResponseObjectDto applyOrderProcess(Order order){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         Subscription subscription =clientService.getActiveSub(order.getClient().getId());
         Client client = order.getClient();
@@ -114,11 +115,13 @@ public class DroolsService {
     public Subscription applyProcessOnSub(Subscription subscription){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         Subscription sub = clientService.getLatestInactiveSub(subscription.getClient().getId()).orElse(null);
+        Plan previousPlan = sub.getPlan();
 
         try {
             kieSession.setGlobal("previousSubPlanId",sub.getPlan().getId());
             System.out.println("previousSubPlanId: "+sub.getPlan().getId());
             kieSession.insert(subscription);
+            kieSession.insert(previousPlan);
             kieSession.getAgenda().getAgendaGroup("discount").setFocus();
             kieSession.getAgenda().getAgendaGroup("sub").setFocus();
 
