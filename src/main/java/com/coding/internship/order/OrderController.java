@@ -3,6 +3,7 @@ package com.coding.internship.order;
 import com.coding.internship.order.dto.OrderCreateDto;
 import com.coding.internship.order.dto.OrderDataDto;
 import com.coding.internship.order.dto.OrderUpdateDto;
+import com.coding.internship.order.enums.OrderStatus;
 import com.coding.internship.order.mapper.OrderMapper;
 import com.coding.internship.order.model.Order;
 import com.coding.internship.order.service.OrderService;
@@ -12,12 +13,25 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/order")
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
+
+    @PreAuthorize("hasAnyRole('ADMIN','SUPER_ADMIN')")
+    @GetMapping
+    public List<OrderDataDto> getAllOrders(){
+        return orderService.getAllOrders().stream().map(orderMapper::mapToDto).toList();
+    }
+
+    @GetMapping("/{id}")
+    public OrderDataDto getOrderById(@PathVariable Long id){
+        return orderMapper.mapToDto(orderService.getOrderById(id));
+    }
 
     @PostMapping
     public OrderDataDto makeOrder(@RequestBody OrderCreateDto orderCreateDto, @AuthenticationPrincipal Client client){
@@ -28,5 +42,10 @@ public class OrderController {
     public OrderDataDto updateOrder(@RequestBody OrderUpdateDto orderUpdateDto,@PathVariable Long id){
         return orderMapper.mapToDto(orderService.updateOrder(id,orderUpdateDto));
 
+    }
+
+    @PostMapping("/{id}/cancel")
+    public OrderDataDto cancelOrder(@PathVariable Long id){
+        return orderMapper.mapToDto(orderService.updateOrder(id,OrderUpdateDto.builder().status(OrderStatus.CANCELLED).build()));
     }
 }
