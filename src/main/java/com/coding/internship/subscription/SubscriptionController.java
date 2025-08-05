@@ -25,6 +25,7 @@ public class SubscriptionController {
 
     }
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','SUPER_ADMIN')")
     public List<SubscriptionDataDto> getAllSubscriptions(){
         return subscriptionService.getAllSubscriptions().stream().map(subscriptionMapper::mapToDto).toList();
     }
