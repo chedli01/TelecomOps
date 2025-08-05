@@ -23,36 +23,10 @@ import java.time.temporal.ChronoUnit;
 import com.coding.internship.user.client.service.ClientService;
 import com.coding.internship.plan.service.PlanService
 import com.coding.internship.user.client.enums.ClientType
-global String targetCategory;
-global java.util.List modifiedProducts;
 global Long previousSubPlanId
 
 
-/////////////////////////////////////////
-rule "Price Discount"
-    agenda-group "pricing"
-    no-loop true
-    when
-        $product : Product(price>1000)
-    then
-        System.out.println("Applied discount to " + $product.getId());
-        modify($product){setPrice( $product.getPrice() - ($product.getPrice()*0.1))}
-end
-////////////////////////////////////////
 
-//////////////////////////////////////
-rule "Category Discount" no-loop true
-    when
-        $product : Product(category.name() == targetCategory, $originalPrice : price)
-    then
-        double newPrice = $originalPrice * 0.9; // 10% discount
-        modify($product) {
-            setPrice(newPrice)
-        };
-        modifiedProducts.add($product);
-        System.out.println("Applied discount to " + $product.getId() + " with new price" + newPrice + "having as category"+ $product.getCategory());
-end
-///////////////////////////////////////////
 
 rule "Order Discount For Students"
      agenda-group "discount"
@@ -298,29 +272,3 @@ rule "discount on upgrading sub"
           System.out.println("discount on upgrading sub applied");
 
 end
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////
-
-//
-//global SpeceficService productService;
-//global Long ProductId;
-//
-//rule "Change Description"
-//    agenda-group "renaming"
-//    no-loop true
-//    when
-//        $product : Product(id==ProductId)
-//    then
-//        modify($product){
-//        setDescription("changedddd")
-//
-//        }
-//        System.out.println("Changed description of " + $product.getId());
-//        productService.deleteProductById(ProductId);
-//end
