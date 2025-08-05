@@ -79,6 +79,10 @@ public class DroolsService {
     public Subscription applyProcessOnSub(Subscription subscription){
         KieSession kieSession = kieContainer.newKieSession("ksession-rules");
         Subscription sub = clientService.getLatestInactiveSub(subscription.getClient().getId()).orElse(null);
+        if(sub==null){
+            return subscription;
+
+        }
         Plan previousPlan = sub.getPlan();
 
         try {

@@ -25,7 +25,7 @@ public class ClientRegisterRequest {
     private String password;
     @NotBlank(message = "this field is required")
     private String address;
-    @Size(min = 8,max = 8,message = "phone-number should be composed of 8 numbers ")
+    @Size(min = 12,max = 12,message = "phone-number should be composed of 12 numbers ")
     @NotBlank(message = "field phone-number is required")
     private String phoneNumber;
     @Size(min = 8,max = 8,message = "cin should be composed of 8 numbers ")
