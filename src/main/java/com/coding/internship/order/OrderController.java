@@ -51,6 +51,7 @@ public class OrderController {
     }
 
     @PostMapping("/{id}/cancel")
+    @PreAuthorize("@resourceAccess.hasAccessToResource(@orderService.getOrderById(#id))")
     public OrderDataDto cancelOrder(@PathVariable Long id){
         return orderMapper.mapToDto(orderService.updateOrder(id,OrderUpdateDto.builder().status(OrderStatus.CANCELLED).build()));
     }

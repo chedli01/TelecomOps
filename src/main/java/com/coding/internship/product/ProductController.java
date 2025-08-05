@@ -47,7 +47,6 @@ public class ProductController {
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public ResponseEntity<String> deleteProductById(@PathVariable Long id) {
         try {
             productService.deleteProductById(id);
@@ -72,10 +71,6 @@ public class ProductController {
     public ProductDataDto getGiftedProducts(){
         return productMapper.mapToDto(productService.findGiftedProduct());
     }
-//    @PostMapping("/change/{id}")
-//    public Product changeInDb(@PathVariable Long id){
-//        return productService.changeInDb(id);
-//    }
 
 
 
