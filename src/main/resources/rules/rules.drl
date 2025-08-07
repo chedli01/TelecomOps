@@ -38,7 +38,7 @@ rule "Order Discount For Students"
        setDiscount($order.getTotal()*0.1+$order.getDiscount())
        }
 
-       System.out.println("discount for student applied");
+       System.out.println("discount for student order applied");
 
 end
 /////////////////////////////////////////////////
@@ -55,7 +55,7 @@ rule "Order Discount For Big Total "
         modify($subscription){
             setRemainingData($subscription.getRemainingData()+1024)
         }
-        System.out.println("discount for big total applied");
+        System.out.println("discount for big order total applied");
 end
 
 
@@ -72,7 +72,7 @@ rule "Upgrade client to vip on big orders total "
             setType(ClientType.VIP)
                 }
 
-        System.out.println("upgrade total");
+        System.out.println("Upgrade client to vip on big orders total");
 end
 //////////////////////////////////////////////////////////////
 rule "data verification"
@@ -117,7 +117,7 @@ rule "80% peak on data usage"
       modify($result){
             setSendEmailUpgradeRecommendation(true)
       }
-     System.out.println("recommend +");
+     System.out.println("recommend a plan upgrade ");
 end
 /////////////////////////////////////////////////////
 rule "upgrade to VIP"
@@ -131,7 +131,7 @@ rule "upgrade to VIP"
       modify($result){
             setUpgradeClientToVip(true)
       }
-     System.out.println("should upgrade to VIP ");
+     System.out.println(" upgrade user to VIP ");
 end
 ///////////////////////////////////////////////////////
 rule "late payment penalty"
@@ -151,7 +151,7 @@ rule "Early payment gift"
       agenda-group "payment"
       no-loop true
       when
-          $payment: Payment(ChronoUnit.DAYS.between(invoice.getCreatedAt(),getPaymentDate())==0)
+          $payment: Payment(ChronoUnit.DAYS.between(invoice.getDueDate(),getPaymentDate())==0)
       then
           modify($payment){
                  setAmount($payment.getAmount()*(1-0.05))
@@ -201,7 +201,7 @@ rule "previlege VIP client"
           modify($subscription){
                 setEndDate($startDate.plusDays($plan.getValidityDays()*2))
                     }
-          System.out.println("VIP ");
+          System.out.println("VIP client privilege  applied ");
 
 end
 //////////////////////////////////////////////////////////////////

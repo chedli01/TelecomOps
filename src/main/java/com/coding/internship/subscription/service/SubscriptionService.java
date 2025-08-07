@@ -63,7 +63,7 @@ public class SubscriptionService {
                 .remainingData(plan.getDataQuota()).remainingCalls(plan.getCallsMinutes()).remainingSms(plan.getSmsNumber()).discount(0.0).status(SubscriptionStatus.ACTIVE)
                 .build();
         Subscription savedSub = subscriptionRepository.save(droolsService.applyProcessOnSub(subscription));
-        System.out.println("type"+ client.getType());
+//        System.out.println("type"+ client.getType());
         if(client.getType().equals(ClientType.CUSTOMER)){
             clientService.updateClient(clientId, UpdateClientDto.builder().clientType(ClientType.SUBSCRIBER).build());
         }
@@ -89,7 +89,7 @@ public class SubscriptionService {
             throw new IllegalArgumentException("not valid call transaction");
         }
         if (verificationResult.isGetGift()){
-            System.out.println("gift logic");
+//            System.out.println("gift logic");
             Product giftedProduct = productService.findGiftedProduct();
             System.out.println("you ve won a "+giftedProduct.getName());
 //            OrderItemCreateDto orderItemCreateDto = OrderItemCreateDto.builder().productId(giftedProduct.getId()).quantity(1).build();
@@ -122,7 +122,7 @@ public class SubscriptionService {
         DataVerificationRequest dataVerificationRequest = DataVerificationRequest.builder().consumedData(data).totalData(clientService.getClientTotalData(clientId)).build();
 
         DataVerificationResult dataVerificationResult = droolsService.verifyData(subscription,dataVerificationRequest);
-        System.out.println("consumed total "+dataVerificationRequest.getTotalData());
+//        System.out.println("consumed total "+dataVerificationRequest.getTotalData());
 
         if(dataVerificationResult.isUpgradeClientToVip()){
             clientService.updateClient(clientId,UpdateClientDto.builder().clientType(ClientType.VIP).build());
@@ -135,14 +135,14 @@ public class SubscriptionService {
             throw new IllegalArgumentException("not valid transaction");
         }
         if(dataVerificationResult.isSendSmsAlert()){
-            System.out.println("send sms logic");
+//            System.out.println("send sms logic");
             smsService.sendSms(client.getPhoneNumber(),"You have exceeded 80% of your data quota");
 
 
         }
         if(dataVerificationResult.isSendEmailUpgradeRecommendation()){
             Plan recommendedPlan = planService.getNextPlanByDataQuota(plan.getId());
-            System.out.println("send email logic : " + recommendedPlan.getDescription());
+//            System.out.println("send email logic : " + recommendedPlan.getDescription());
             Map<String, Object> variables = new HashMap<>();
             variables.put("name", client.getFirstName() +" "+ client.getLastName());
             variables.put("currentPlanName",plan.getName() );
